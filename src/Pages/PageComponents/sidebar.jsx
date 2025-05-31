@@ -4,13 +4,13 @@ import { TiHome } from "react-icons/ti";
 import { PiBookOpenUserFill, PiSidebarFill } from "react-icons/pi";
 import { HiMiniPencilSquare } from "react-icons/hi2";
 import { useLocation, Link, useNavigate } from "react-router-dom";
-import axios from "axios";
+import secureAxios from "../../services/secureAxios";  // <-- updated here
 import { auth } from "../../firebase/firebase";
 
 const Sidebar = ({ isExpanded, setIsExpanded }) => {
   const location = useLocation();
   const navigate = useNavigate();
-  const baseURL = import.meta.env.VITE_API_BASE_URL;
+  const BASE_URL = import.meta.env.VITE_API_BASE_URL;
 
   const navItems = [
     {
@@ -53,7 +53,7 @@ const Sidebar = ({ isExpanded, setIsExpanded }) => {
         return;
       }
 
-      const userRes = await axios.get(`${baseURL}/user?email=${user.email}`);
+      const userRes = await secureAxios.get(`${BASE_URL}/user?email=${user.email}`); // replaced axios
       const { firstName, lastName } = userRes.data;
 
       if (!firstName || !lastName) {
@@ -61,11 +61,11 @@ const Sidebar = ({ isExpanded, setIsExpanded }) => {
         return;
       }
 
-      const res = await axios.get(
-        `${baseURL}/journal/today?firstName=${encodeURIComponent(
+      const res = await secureAxios.get(
+        `${BASE_URL}/journal/today?firstName=${encodeURIComponent(
           firstName
         )}&lastName=${encodeURIComponent(lastName)}`
-      );
+      ); // replaced axios
 
       if (res.data?.exists && res.data?.content) {
         navigate("/ViewJournal");
@@ -82,7 +82,7 @@ const Sidebar = ({ isExpanded, setIsExpanded }) => {
     <div
       className="h-screen bg-[#1F3463] text-white fixed flex flex-col justify-between transition-width duration-500 ease-in-out z-50 overflow-hidden"
       style={{
-        width: isExpanded ? 400 : 110,  // <-- increased from 60 to 80
+        width: isExpanded ? 400 : 110,
       }}
     >
       {/* Top Section */}
@@ -90,7 +90,7 @@ const Sidebar = ({ isExpanded, setIsExpanded }) => {
         {/* Logo */}
         <div
           className="flex items-center gap-3 px-5"
-          style={{ height: 80, minWidth: 80 }} // <-- updated to 80 here too
+          style={{ height: 80, minWidth: 80 }}
         >
           <img src="pictures/logo.png" alt="La Verdad Logo" className="h-[60px] ml-1" />
           <div

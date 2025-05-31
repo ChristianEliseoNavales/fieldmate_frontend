@@ -1,7 +1,7 @@
 import { useState, useEffect } from 'react';
 import { auth } from '../../firebase/firebase';
 import { onAuthStateChanged } from 'firebase/auth';
-import axios from 'axios';
+import secureAxios from '../secureAxios'; // Adjust the import path if necessary
 
 function getTodayDateString() {
   const today = new Date();
@@ -17,12 +17,12 @@ export const useCompanyJournal = () => {
   const [filteredJournals, setFilteredJournals] = useState([]);
   const [selectedDate, setSelectedDate] = useState(getTodayDateString());
   const [loading, setLoading] = useState(false);
-  const baseURL = import.meta.env.VITE_API_BASE_URL;
+  const BASE_URL = import.meta.env.VITE_API_BASE_URL;
 
   const fetchJournals = async (email) => {
     try {
       setLoading(true);
-      const res = await axios.get(`${baseURL}/journal/company?email=${email}`);
+      const res = await secureAxios.get(`${BASE_URL}/journal/company?email=${email}`);
       const data = Array.isArray(res.data) ? res.data : [];
       const filtered = data.filter(journal => journal.removed !== true);
       setAllJournals(filtered);
@@ -36,7 +36,7 @@ export const useCompanyJournal = () => {
 
   const toggleViewed = async (id, currentViewed) => {
     try {
-      await axios.patch(`${baseURL}/journal/${id}/viewed`, { viewed: !currentViewed });
+      await secureAxios.patch(`${BASE_URL}/journal/${id}/viewed`, { viewed: !currentViewed });
       setAllJournals(prev =>
         prev.map(j => j._id === id ? { ...j, viewed: !currentViewed } : j)
       );
@@ -47,7 +47,7 @@ export const useCompanyJournal = () => {
 
   const handleRemove = async (id) => {
     try {
-      await axios.patch(`${baseURL}/journal/${id}/remove`, { removed: true });
+      await secureAxios.patch(`${BASE_URL}/journal/${id}/remove`, { removed: true });
       setAllJournals(prev => prev.filter(j => j._id !== id));
     } catch (err) {
       console.error('Failed to remove journal:', err);

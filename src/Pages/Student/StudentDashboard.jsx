@@ -12,9 +12,9 @@ import userInfo from "../../services/userInfo";
 
 function StudentDashboard() {
   const [isSidebarExpanded, setIsSidebarExpanded] = useState(false);
-  const baseURL = import.meta.env.VITE_API_BASE_URL;
+  const BASE_URL = import.meta.env.VITE_API_BASE_URL;
 
-  const { firstName, lastName, company, loading } = userInfo(baseURL);
+  const { firstName, lastName, company, loading } = userInfo(BASE_URL);
   const summary = useAttendanceSummaryStats(firstName, lastName);
 
   const today = new Date();

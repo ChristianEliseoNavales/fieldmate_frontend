@@ -1,6 +1,6 @@
 // services/coordinator/useCompanyAttendance.js
 import { useState, useEffect } from 'react';
-import axios from 'axios';
+import secureAxios from '../secureAxios'; // adjust path if needed
 import { auth } from '../../firebase/firebase';
 import { onAuthStateChanged } from 'firebase/auth';
 
@@ -10,11 +10,10 @@ export default function useCompanyAttendance() {
   const [allAttendances, setAllAttendances] = useState([]);
   const [filteredAttendances, setFilteredAttendances] = useState([]);
   const [userEmail, setUserEmail] = useState('');
-  const baseURL = import.meta.env.VITE_API_BASE_URL;
-const [selectedDate, setSelectedDate] = useState(() => {
-  return new Date().toLocaleDateString("en-CA"); // "YYYY-MM-DD"
-});
-
+  const BASE_URL = import.meta.env.VITE_API_BASE_URL;
+  const [selectedDate, setSelectedDate] = useState(() => {
+    return new Date().toLocaleDateString("en-CA"); // "YYYY-MM-DD"
+  });
 
   const [modalVisible, setModalVisible] = useState(false);
   const [modalAction, setModalAction] = useState('');
@@ -22,10 +21,10 @@ const [selectedDate, setSelectedDate] = useState(() => {
 
   const fetchUserAndAttendance = async (email) => {
     try {
-      const userRes = await axios.get(`${baseURL}/users?email=${email}`);
+      const userRes = await secureAxios.get(`${BASE_URL}/users?email=${email}`);
       const { company } = userRes.data;
 
-      const attendanceRes = await axios.get(`${baseURL}/attendance/company?email=${email}`);
+      const attendanceRes = await secureAxios.get(`${BASE_URL}/attendance/company?email=${email}`);
       const all = attendanceRes.data || [];
 
       setAllAttendances(all);
@@ -66,7 +65,7 @@ const [selectedDate, setSelectedDate] = useState(() => {
 
   const handleModalConfirm = async () => {
     try {
-      await axios.put(`${baseURL}/attendance/${modalAction}/${modalRecordId}`);
+      await secureAxios.put(`${BASE_URL}/attendance/${modalAction}/${modalRecordId}`);
       setAllAttendances(prev => prev.filter(record => record._id !== modalRecordId));
       setFilteredAttendances(prev => prev.filter(record => record._id !== modalRecordId));
     } catch (err) {

@@ -1,10 +1,11 @@
 import React, { useEffect, useState } from "react";
 import { auth } from "../firebase/firebase";
 import { onAuthStateChanged } from "firebase/auth";
+import secureAxios from "../services/secureAxios";
 
 function CompanyDashboardStats({ onDataReady }) {
   const [loading, setLoading] = useState(true);
-  const baseURL = import.meta.env.VITE_API_BASE_URL;
+  const BASE_URL = import.meta.env.VITE_API_BASE_URL;
 
   // Helper to normalize dates like "5/21/2025" into "2025-05-21"
   const normalizeToISODate = (dateStr) => {
@@ -19,28 +20,28 @@ function CompanyDashboardStats({ onDataReady }) {
     return isoDate.toLocaleDateString("en-CA"); // "YYYY-MM-DD"
   };
 
-
   useEffect(() => {
     const fetchData = async () => {
       const user = auth.currentUser;
       if (!user?.email) return;
 
       try {
-        const userRes = await fetch(`${baseURL}/user?email=${user.email}`);
-        const userData = await userRes.json();
+        // Replace fetch with secureAxios
+        const userRes = await secureAxios.get(`${BASE_URL}/user`, {
+          params: { email: user.email }
+        });
+        const userData = userRes.data;
         const company = userData.company;
 
         const [attendanceRes, journalRes, usersRes] = await Promise.all([
-          fetch(`${baseURL}/attendance`),
-          fetch(`${baseURL}/journal`),
-          fetch(`${baseURL}/users`)
+          secureAxios.get(`${BASE_URL}/attendance`),
+          secureAxios.get(`${BASE_URL}/journal`),
+          secureAxios.get(`${BASE_URL}/users`)
         ]);
 
-        const [attendances, journals, users] = await Promise.all([
-          attendanceRes.json(),
-          journalRes.json(),
-          usersRes.json(),
-        ]);
+        const attendances = attendanceRes.data;
+        const journals = journalRes.data;
+        const users = usersRes.data;
 
         const today = new Date().toLocaleDateString("en-CA"); 
 
@@ -53,7 +54,6 @@ function CompanyDashboardStats({ onDataReady }) {
               (a) => a.company === company && normalizeToISODate(a.date) === today
             )
           : [];
-
 
         const presentInterns = todaysAttendances.length;
 

@@ -1,4 +1,5 @@
 import { useEffect, useState } from "react";
+import secureAxios from "../services/secureAxios";
 
 const useAttendanceSummaryStats = (firstName, lastName) => {
   const [summary, setSummary] = useState({
@@ -9,15 +10,15 @@ const useAttendanceSummaryStats = (firstName, lastName) => {
     remainingDays: 0,
   });
 
-  const baseURL = import.meta.env.VITE_API_BASE_URL;
+  const BASE_URL = import.meta.env.VITE_API_BASE_URL;
 
   useEffect(() => {
     const fetchStats = async () => {
       if (!firstName || !lastName) return;
 
       try {
-        const response = await fetch(`${baseURL}/attendance`);
-        const data = await response.json();
+        const response = await secureAxios.get(`${BASE_URL}/attendance`);
+        const data = response.data;
 
         const userRecords = data.filter(
           (r) =>
@@ -29,7 +30,7 @@ const useAttendanceSummaryStats = (firstName, lastName) => {
         // Present Days
         const presentDays = userRecords.length;
 
-        // Late Time
+        // Late Hours
         let totalLate = 0;
         userRecords.forEach((r) => {
           if (r.timeIn) {
@@ -43,29 +44,39 @@ const useAttendanceSummaryStats = (firstName, lastName) => {
         });
 
         // Total Hours
-        const totalHours = userRecords.reduce((acc, r) => acc + (parseFloat(r.hours) || 0), 0);
+        const totalHours = userRecords.reduce(
+          (acc, r) => acc + (parseFloat(r.hours) || 0),
+          0
+        );
 
-      // Absent Days
-      let absentDays = 0;
-      const uniqueDates = userRecords.map((r) => new Date(r.date).toDateString());
-      const dateSet = new Set(uniqueDates);
+        // Absent Days (excluding weekends)
+        let absentDays = 0;
+        const uniqueAttendanceDates = new Set(
+          userRecords.map((r) => new Date(r.date).toDateString())
+        );
 
-      if (userRecords.length > 0) {
-        const sorted = userRecords
-          .map((r) => new Date(r.date))
-          .sort((a, b) => a - b);
+        if (userRecords.length > 0) {
+          const sortedDates = userRecords
+            .map((r) => new Date(r.date))
+            .sort((a, b) => a - b);
 
-        const start = new Date(sorted[0]);
-        const end = new Date();
-        end.setDate(end.getDate() - 1); // Subtract 1 day to exclude today
+          const startDate = new Date(sortedDates[0]);
+          const endDate = new Date();
+          endDate.setDate(endDate.getDate() - 1); // yesterday
 
-        for (let d = new Date(start); d <= end; d.setDate(d.getDate() + 1)) {
-          if (!dateSet.has(d.toDateString())) {
-            absentDays++;
+          for (
+            let d = new Date(startDate);
+            d <= endDate;
+            d.setDate(d.getDate() + 1)
+          ) {
+            const dayOfWeek = d.getDay();
+            const dateStr = d.toDateString();
+
+            if (dayOfWeek !== 0 && dayOfWeek !== 6 && !uniqueAttendanceDates.has(dateStr)) {
+              absentDays++;
+            }
           }
         }
-      }
-
 
         setSummary({
           presentDays,

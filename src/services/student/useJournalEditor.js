@@ -1,4 +1,3 @@
-// /services/student/useJournalEditor.js
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { auth } from "../../firebase/firebase";
@@ -8,7 +7,7 @@ import Underline from "@tiptap/extension-underline";
 import TextAlign from "@tiptap/extension-text-align";
 import TextStyle from "@tiptap/extension-text-style";
 import { Extension } from "@tiptap/core";
-import axios from "axios";
+import secureAxios from "../secureAxios"; // secureAxios with Firebase auth token
 
 const FontSize = Extension.create({
   name: "fontSize",
@@ -45,7 +44,7 @@ const useJournalEditor = () => {
   const [isChecked, setIsChecked] = useState(false);
   const [fontSize, setFontSize] = useState(14);
   const navigate = useNavigate();
-  const baseURL = import.meta.env.VITE_API_BASE_URL;
+  const BASE_URL = import.meta.env.VITE_API_BASE_URL;
 
   const editor = useEditor({
     extensions: [
@@ -77,7 +76,7 @@ const useJournalEditor = () => {
     const content = editor?.getHTML();
     if (isChecked && content?.trim()) {
       try {
-        const response = await axios.post(`${baseURL}/journal`, {
+        const response = await secureAxios.post(`${BASE_URL}/journal`, {
           content,
           email: user.email,
         });

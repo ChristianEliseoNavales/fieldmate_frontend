@@ -18,9 +18,9 @@ function AdminDashboard() {
   const [coordinatorPage, setCoordinatorPage] = useState(1);
   const itemsPerPage = 10;
 
-  const baseURL = import.meta.env.VITE_API_BASE_URL;
-  const { firstName, lastName } = useAdminInfo(baseURL);
-  const { companies, coordinators, loading } = useDashboardStats(baseURL);
+  const BASE_URL = import.meta.env.VITE_API_BASE_URL;
+  const { firstName, lastName } = useAdminInfo(BASE_URL);
+  const { companies, coordinators, loading } = useDashboardStats(BASE_URL);
 
   const groupedCoordinators = groupCoordinatorsByCompany(coordinators);
 

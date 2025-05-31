@@ -24,8 +24,8 @@ function CompanyDashboard() {
   const internsPerPage = 5;
 
   const navigate = useNavigate();
-  const baseURL = import.meta.env.VITE_API_BASE_URL;
-  const { firstName, lastName, company, loading } = userInfo(baseURL);
+  const BASE_URL = import.meta.env.VITE_API_BASE_URL;
+  const { firstName, lastName, company, loading } = userInfo(BASE_URL);
 
   const handleCardNavigation = (buttonLabel) => {
     if (buttonLabel === "Go to Attendance Tracking") navigate("/CompanyAttendance");
@@ -34,7 +34,7 @@ function CompanyDashboard() {
 
   useEffect(() => {
     if (showModal || company) {
-      fetch(`${baseURL}/users`)
+      fetch(`${BASE_URL}/users`)
         .then(res => res.json())
         .then(data => {
           const filtered = data.filter(user => user.role === "Student" && user.company === company);

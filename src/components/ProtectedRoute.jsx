@@ -2,12 +2,13 @@ import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { onAuthStateChanged } from "firebase/auth";
 import { auth } from "../firebase/firebase";
+import secureAxios from "../services/secureAxios";
 
 const ProtectedRoute = ({ allowedRoles, children }) => {
   const [status, setStatus] = useState("checking"); // 'checking' | 'authorized' | 'unauthorized'
   const [userRole, setUserRole] = useState(null);
   const navigate = useNavigate();
-  const baseURL = import.meta.env.VITE_API_BASE_URL;
+  const BASE_URL = import.meta.env.VITE_API_BASE_URL;
 
   useEffect(() => {
     const unsubscribe = onAuthStateChanged(auth, async (user) => {
@@ -17,10 +18,11 @@ const ProtectedRoute = ({ allowedRoles, children }) => {
       }
 
       try {
-        const res = await fetch(`${baseURL}/user?email=${user.email}`);
-        if (!res.ok) throw new Error("Failed to fetch user");
+        const res = await secureAxios.get(`${BASE_URL}/user`, {
+          params: { email: user.email },
+        });
 
-        const data = await res.json();
+        const data = res.data;
 
         if (data?.role) {
           setUserRole(data.role);
@@ -44,7 +46,6 @@ const ProtectedRoute = ({ allowedRoles, children }) => {
 
   useEffect(() => {
     if (status === "unauthorized") {
-      // Redirect based on known role or fallback to SignIn
       if (userRole === "Student") {
         navigate("/StudentDashboard", { replace: true });
       } else if (userRole === "Coordinator") {

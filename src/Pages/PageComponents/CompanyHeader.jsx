@@ -4,6 +4,7 @@ import { auth } from "../../firebase/firebase";
 import { onAuthStateChanged } from "firebase/auth";
 import UserProfileModal from "./UserProfileModal";
 import Skeleton from "../../components/Skeleton";
+import secureAxios from "../../services/secureAxios";  // <-- import secureAxios
 
 function CompanyHeader({ isExpanded }) {
   const location = useLocation();
@@ -12,7 +13,7 @@ function CompanyHeader({ isExpanded }) {
   const [email, setEmail] = useState("");
   const [loading, setLoading] = useState(true);
   const [scrolled, setScrolled] = useState(false);
-  const baseURL = import.meta.env.VITE_API_BASE_URL;
+  const BASE_URL = import.meta.env.VITE_API_BASE_URL;
 
   const pageTitles = {
     '/CompanyDashboard': 'Company Dashboard',
@@ -43,8 +44,11 @@ function CompanyHeader({ isExpanded }) {
       const unsubscribe = onAuthStateChanged(auth, async (user) => {
         if (user?.email) {
           try {
-            const res = await fetch(`${baseURL}/user?email=${user.email}`);
-            const data = await res.json();
+            // Use secureAxios here for authenticated requests
+            const res = await secureAxios.get(`${BASE_URL}/user`, {
+              params: { email: user.email },
+            });
+            const data = res.data;
             if (data?.firstName && data?.lastName && data?.email) {
               localStorage.setItem("userInfo", JSON.stringify(data)); // ✅ cache it
               setFirstName(data.firstName);
@@ -87,25 +91,24 @@ function CompanyHeader({ isExpanded }) {
     >
       <h1 className="text-[28px] font-semibold">{title}</h1>
 
-    <div className="flex items-center">
-      <UserProfileModal
-        name={
-          loading ? (
-            <Skeleton width="100px" height="20px" />
-          ) : (
-            `${firstName} ${lastName}`
-          )
-        }
-        initials={
-          loading ? (
-            <Skeleton width="24px" height="24px" />
-          ) : (
-            getInitials(firstName, lastName)
-          )
-        }
-      />
-    </div>
-
+      <div className="flex items-center">
+        <UserProfileModal
+          name={
+            loading ? (
+              <Skeleton width="100px" height="20px" />
+            ) : (
+              `${firstName} ${lastName}`
+            )
+          }
+          initials={
+            loading ? (
+              <Skeleton width="24px" height="24px" />
+            ) : (
+              getInitials(firstName, lastName)
+            )
+          }
+        />
+      </div>
     </header>
   );
 }

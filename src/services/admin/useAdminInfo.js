@@ -1,8 +1,9 @@
 import { useState, useEffect } from 'react';
 import { onAuthStateChanged } from "firebase/auth";
 import { auth } from '../../firebase/firebase';
+import secureAxios from '../../services/secureAxios'; // adjust path if needed
 
-const useAdminInfo = (baseURL) => {
+const useAdminInfo = (BASE_URL) => {
   const [firstName, setFirstName] = useState("");
   const [lastName, setLastName] = useState("");
 
@@ -10,8 +11,10 @@ const useAdminInfo = (baseURL) => {
     const unsubscribe = onAuthStateChanged(auth, async (user) => {
       if (user?.email) {
         try {
-          const res = await fetch(`${baseURL}/user?email=${user.email}`);
-          const data = await res.json();
+          const res = await secureAxios.get(`${BASE_URL}/user`, {
+            params: { email: user.email }
+          });
+          const data = res.data;
           setFirstName(data.firstName || "");
           setLastName(data.lastName || "");
         } catch (err) {
@@ -21,7 +24,7 @@ const useAdminInfo = (baseURL) => {
     });
 
     return () => unsubscribe();
-  }, [baseURL]);
+  }, [BASE_URL]);
 
   return { firstName, lastName };
 };

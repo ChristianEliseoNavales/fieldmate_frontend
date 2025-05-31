@@ -1,7 +1,7 @@
 import { useState, useEffect } from "react";
-import axios from "axios";
+import secureAxios from "../services/secureAxios"; // adjust path if needed
 
-const baseURL = import.meta.env.VITE_API_BASE_URL;
+const BASE_URL = import.meta.env.VITE_API_BASE_URL;
 const pageSize = 5;
 
 export function useCompanyService() {
@@ -23,7 +23,7 @@ export function useCompanyService() {
 
   async function fetchCompanies() {
     try {
-      const res = await axios.get(`${baseURL}/companies`);
+      const res = await secureAxios.get(`${BASE_URL}/companies`);
       setCompanies(res.data);
     } catch (err) {
       setMessage("Failed to load companies.");
@@ -41,7 +41,7 @@ export function useCompanyService() {
     }
 
     try {
-      const res = await axios.post(`${baseURL}/companies`, {
+      const res = await secureAxios.post(`${BASE_URL}/companies`, {
         name: trimmedName,
       });
       setCompanies((prev) => [...prev, res.data]);
@@ -58,7 +58,7 @@ export function useCompanyService() {
     if (!selectedCompany) return;
 
     try {
-      await axios.delete(`${baseURL}/companies/${selectedCompany._id}`);
+      await secureAxios.delete(`${BASE_URL}/companies/${selectedCompany._id}`);
       setCompanies((prev) =>
         prev.filter((c) => c._id !== selectedCompany._id)
       );
@@ -75,7 +75,7 @@ export function useCompanyService() {
     if (!selectedCompany) return;
 
     try {
-      const res = await axios.patch(`${baseURL}/companies/${selectedCompany._id}`, {
+      const res = await secureAxios.patch(`${BASE_URL}/companies/${selectedCompany._id}`, {
         name: editedName,
       });
 

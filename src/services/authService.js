@@ -1,7 +1,13 @@
-import { signInWithEmailAndPassword, signInWithPopup, signOut, sendPasswordResetEmail } from "firebase/auth";
+import {
+  signInWithEmailAndPassword,
+  signInWithPopup,
+  signOut,
+  sendPasswordResetEmail,
+} from "firebase/auth";
 import { auth, googleProvider } from "../firebase/firebase";
+import secureAxios from "../services/secureAxios";
 
-const baseURL = import.meta.env.VITE_API_BASE_URL;
+const BASE_URL = import.meta.env.VITE_API_BASE_URL;
 
 export async function loginWithEmail(email, password) {
   const userCredential = await signInWithEmailAndPassword(auth, email, password);
@@ -9,13 +15,11 @@ export async function loginWithEmail(email, password) {
 
   if (!user || !user.email) throw new Error("Invalid user");
 
-  const res = await fetch(`${baseURL}/users/checkUserExists`, {
-    method: "POST",
-    headers: { "Content-Type": "application/json" },
-    body: JSON.stringify({ email: user.email }),
+  const res = await secureAxios.post(`${BASE_URL}/users/checkUserExists`, {
+    email: user.email,
   });
 
-  const data = await res.json();
+  const data = res.data;
 
   if (data.exists && data.user) {
     return data.user.role;
@@ -31,13 +35,11 @@ export async function loginWithGoogle() {
 
   if (!user || !user.email) throw new Error("Invalid Google user");
 
-  const res = await fetch(`${baseURL}/users/checkUserExists`, {
-    method: "POST",
-    headers: { "Content-Type": "application/json" },
-    body: JSON.stringify({ email: user.email }),
+  const res = await secureAxios.post(`${BASE_URL}/users/checkUserExists`, {
+    email: user.email,
   });
 
-  const data = await res.json();
+  const data = res.data;
 
   if (data.exists && data.user) {
     return data.user.role;

@@ -24,7 +24,7 @@ function LoadingPage() {
     if (progress === 100) {
       setTimeout(() => {
         setFadeOut(true); // trigger fade-out animation
-      }, 500);
+      }, 300);
     }
   }, [progress]);
 
@@ -33,7 +33,7 @@ function LoadingPage() {
     if (fadeOut) {
       const timeout = setTimeout(() => {
         navigate('/homepage');
-      }, 800); // wait for fade-out to complete before navigating
+      }, 300); // wait for fade-out to complete before navigating
       return () => clearTimeout(timeout);
     }
   }, [fadeOut, navigate]);

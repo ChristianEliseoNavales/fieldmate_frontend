@@ -1,24 +1,22 @@
 import React, { useState, useEffect } from "react";
 import { useLocation } from "react-router-dom";
-import { auth } from "../../firebase/firebase";
+import { auth, } from "../../firebase/firebase";
 import { onAuthStateChanged } from "firebase/auth";
 import UserProfileModal from "./UserProfileModal";
 import Skeleton from "../../components/Skeleton";
+import secureAxios from "../../services/secureAxios";
 
-
-function AdminHeader({isExpanded}) {
+function AdminHeader({ isExpanded }) {
   const location = useLocation();
   const [firstName, setFirstName] = useState("");
   const [lastName, setLastName] = useState("");
   const [email, setEmail] = useState("");
   const [loading, setLoading] = useState(true);
   const [scrolled, setScrolled] = useState(false);
-  const baseURL = import.meta.env.VITE_API_BASE_URL;
-  
-  const pageTitles = {
-    '/AdminDashboard': 'Admin Dashboard',
-    '/CompanyList': 'Company List',
 
+  const pageTitles = {
+    "/AdminDashboard": "Admin Dashboard",
+    "/CompanyList": "Company List",
   };
 
   const title = pageTitles[location.pathname] || "Dashboard";
@@ -39,15 +37,16 @@ function AdminHeader({isExpanded}) {
       setFirstName(user.firstName);
       setLastName(user.lastName);
       setEmail(user.email);
-      setLoading(false); // ✅ immediately stop loading
+      setLoading(false);
     } else {
       const unsubscribe = onAuthStateChanged(auth, async (user) => {
         if (user?.email) {
           try {
-            const res = await fetch(`${baseURL}/user?email=${user.email}`);
-            const data = await res.json();
+            // Use secureAxios instead of fetch
+            const res = await secureAxios.get(`/user?email=${user.email}`);
+            const data = res.data;
             if (data?.firstName && data?.lastName && data?.email) {
-              localStorage.setItem("userInfo", JSON.stringify(data)); // ✅ cache it
+              localStorage.setItem("userInfo", JSON.stringify(data));
               setFirstName(data.firstName);
               setLastName(data.lastName);
               setEmail(data.email);
@@ -87,28 +86,26 @@ function AdminHeader({isExpanded}) {
     >
       <h1 className="text-[28px] font-semibold">{title}</h1>
 
-    <div className="flex items-center">
-      <UserProfileModal
-        name={
-          loading ? (
-            <Skeleton width="100px" height="20px" />
-          ) : (
-            `${firstName} ${lastName}`
-          )
-        }
-        initials={
-          loading ? (
-            <Skeleton width="24px" height="24px" />
-          ) : (
-            getInitials(firstName, lastName)
-          )
-        }
-      />
-    </div>
-
+      <div className="flex items-center">
+        <UserProfileModal
+          name={
+            loading ? (
+              <Skeleton width="100px" height="20px" />
+            ) : (
+              `${firstName} ${lastName}`
+            )
+          }
+          initials={
+            loading ? (
+              <Skeleton width="24px" height="24px" />
+            ) : (
+              getInitials(firstName, lastName)
+            )
+          }
+        />
+      </div>
     </header>
   );
 }
-
 
 export default AdminHeader;

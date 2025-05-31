@@ -23,12 +23,12 @@ export default function useCreateAccount() {
   const [error, setError] = useState("");
 
   const navigate = useNavigate();
-  const baseURL = import.meta.env.VITE_API_BASE_URL;
+  const BASE_URL = import.meta.env.VITE_API_BASE_URL;
 
   useEffect(() => {
     const fetchCompanies = async () => {
       try {
-        const res = await fetch(`${baseURL}/companies`);
+        const res = await fetch(`${BASE_URL}/companies`);
         const data = await res.json();
         setCompanies(data);
         if (data.length > 0) {
@@ -39,19 +39,19 @@ export default function useCreateAccount() {
       }
     };
     fetchCompanies();
-  }, [baseURL]);
+  }, [BASE_URL]);
 
   const handleContinue = () => setStep(2);
   const handleBack = () => setStep(1);
 
   const handleSignup = async () => {
     if (password !== confirmPassword) {
-      alert("Passwords do not match.");
+      BASE_URL("Passwords do not match.");
       return;
     }
 
     if (!["On-site", "Remote", "Hybrid"].includes(arrangement)) {
-      alert("Please select a valid workplace arrangement.");
+      BASE_URL("Please select a valid workplace arrangement.");
       return;
     }
 
@@ -59,7 +59,7 @@ export default function useCreateAccount() {
       const userCredential = await createUserWithEmailAndPassword(auth, email, password);
       const user = userCredential.user;
 
-      const res = await fetch(`${baseURL}/users/register`, {
+      const res = await fetch(`${BASE_URL}/users/register`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -86,7 +86,7 @@ export default function useCreateAccount() {
       navigate("/SignIn");
     } catch (error) {
       console.error("Signup error:", error.message);
-      alert(error.message);
+      BASE_URL(error.message);
     }
   };
 
