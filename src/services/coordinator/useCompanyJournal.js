@@ -1,7 +1,7 @@
 import { useState, useEffect } from 'react';
 import { auth } from '../../firebase/firebase';
 import { onAuthStateChanged } from 'firebase/auth';
-import secureAxios from '../secureAxios'; // Adjust the import path if necessary
+import secureAxios from '../../services/secureAxios'; // Adjust the import path if necessary
 
 function getTodayDateString() {
   const today = new Date();

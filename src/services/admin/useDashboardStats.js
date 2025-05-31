@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react';
-import secureAxios from '../services/secureAxios'; // adjust path if needed
+import secureAxios from '../../services/secureAxios'; // adjust path if needed
 
 const useDashboardStats = (BASE_URL) => {
   const [companies, setCompanies] = useState([]);

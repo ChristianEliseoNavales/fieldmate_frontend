@@ -1,6 +1,6 @@
 // services/coordinator/useCompanyAttendance.js
 import { useState, useEffect } from 'react';
-import secureAxios from '../secureAxios'; // adjust path if needed
+import secureAxios from '../../services/secureAxios'; // adjust path if needed
 import { auth } from '../../firebase/firebase';
 import { onAuthStateChanged } from 'firebase/auth';
 

@@ -1,7 +1,7 @@
 import { useState, useEffect } from "react";
 import { onAuthStateChanged } from "firebase/auth";
 import { auth } from "../../firebase/firebase";
-import secureAxios from "../secureAxios";
+import secureAxios from "../../services/secureAxios";
 
 export default function useAttendance() {
   const [isSidebarExpanded, setIsSidebarExpanded] = useState(false);

@@ -7,7 +7,7 @@ import Underline from "@tiptap/extension-underline";
 import TextAlign from "@tiptap/extension-text-align";
 import TextStyle from "@tiptap/extension-text-style";
 import { Extension } from "@tiptap/core";
-import secureAxios from "../secureAxios"; // secureAxios with Firebase auth token
+import secureAxios from "../../services/secureAxios"; // secureAxios with Firebase auth token
 
 const FontSize = Extension.create({
   name: "fontSize",

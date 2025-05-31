@@ -1,7 +1,7 @@
 import { useEffect, useRef, useState } from "react";
 import { auth } from "../../firebase/firebase";
 import { onAuthStateChanged } from "firebase/auth";
-import secureAxios from "../secureAxios";
+import secureAxios from "../../services/secureAxios";
 import { useNavigate } from "react-router-dom";
 
 const useJournalData = () => {

@@ -1,6 +1,6 @@
 import { useEffect, useState, useRef } from "react";
 import { useParams, useNavigate } from "react-router-dom";
-import secureAxios from "../secureAxios"; // Adjust path if needed
+import secureAxios from "../../services/secureAxios"; // Adjust path if needed
 
 const useCompanyViewJournal = () => {
   const [isSidebarExpanded, setIsSidebarExpanded] = useState(false);
