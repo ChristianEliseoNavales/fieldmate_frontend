@@ -37,7 +37,7 @@ function AdminDashboard() {
           <div className="mt-25 px-5">
             <div className="bg-white p-5 rounded-[10px] shadow-sm flex items-center justify-between border border-[#D9D9D9]">
               <div className="flex items-center gap-4 h-[118px]">
-                <div className="flex items-center justify-center text-[#006fd6]">
+                <div className="flex items-center justify-center text-[#1E3A8A]">
                   <LuUser size={65} />
                 </div>
                 <div>
@@ -68,49 +68,59 @@ function AdminDashboard() {
             </div>
 
             {/* Company List Section */}
-            <div className="bg-white p-4 rounded-[10px] shadow-sm border border-[#D9D9D9]">
+            <div className="bg-white p-4 rounded-[10px] shadow-sm border border-[#D9D9D9] relative h-full flex flex-col justify-between">
               <p className="bg-[#243D73] text-white text-[22px] font-semibold p-4 rounded mb-4">Company List</p>
-              <ul className="space-y-2 text-[18px] text-gray-800">
-                {loading ? (
-                  <Skeleton width="90%" height="30px" />,
-                  <Skeleton width="90%" height="30px" />
-                ) : (
-                  <>
-                    {companies
+
+              <div className="flex-1">
+                <ul className="space-y-2 text-[20px] text-gray-800">
+                  {loading ? (
+                    <Skeleton width="90%" height="30px" />
+                  ) : (
+                    companies
                       .slice((companyPage - 1) * itemsPerPage, companyPage * itemsPerPage)
                       .map((c, idx) => (
                         <li className="mx-4 pb-2 border-b border-[#E0E0E0]" key={c._id}>
                           {(companyPage - 1) * itemsPerPage + idx + 1}. {c.name}
                         </li>
-                      ))}
-                    {companies.length > itemsPerPage && (
-                      <div className="flex justify-center gap-6 mt-4 text-[18px]">
-                        <button
-                          onClick={() => setCompanyPage((prev) => prev - 1)}
-                          disabled={companyPage === 1}
-                          className="p-2 bg-[#E0E0E0] rounded-full hover:bg-[#D0D0D0] disabled:opacity-40"
-                        >
-                          <FaChevronLeft />
-                        </button>
-                        <button
-                          onClick={() => setCompanyPage((prev) => prev + 1)}
-                          disabled={companyPage * itemsPerPage >= companies.length}
-                          className="p-2 bg-[#E0E0E0] rounded-full hover:bg-[#D0D0D0] disabled:opacity-40"
-                        >
-                          <FaChevronRight />
-                        </button>
-                      </div>
-                    )}
-                  </>
-                )}
-              </ul>
+                      ))
+                  )}
+                </ul>
+              </div>
+
+              {companies.length > itemsPerPage && !loading && (
+                <div className="absolute bottom-0 left-0 right-0 flex justify-center space-x-4 text-[20px] mb-5">
+                  <button
+                    onClick={() => setCompanyPage((prev) => prev - 1)}
+                    disabled={companyPage === 1}
+                    className="p-2 bg-[#E0E0E0] rounded-full hover:bg-[#D0D0D0] disabled:opacity-40"
+                  >
+                    <FaChevronLeft />
+                  </button>
+                  <button
+                    onClick={() => setCompanyPage((prev) => prev + 1)}
+                    disabled={companyPage * itemsPerPage >= companies.length}
+                    className="p-2 bg-[#E0E0E0] rounded-full hover:bg-[#D0D0D0] disabled:opacity-40"
+                  >
+                    <FaChevronRight />
+                  </button>
+                </div>
+              )}
             </div>
+
 
             {/* Coordinators Section */}
             <div className="bg-white rounded-[10px] shadow-sm border border-[#D9D9D9]">
               <div
                 className="flex justify-between bg-[#F8F8F8] items-center cursor-pointer border-b border-[#D9D9D9] rounded-t-lg"
-                onClick={() => setShowCoordinators(!showCoordinators)}
+                onClick={() => {
+                  if (selectedCoordinatorGroup) {
+                    setSelectedCoordinatorGroup(null);
+                    setShowCoordinators(true);
+                  } else {
+                    setShowCoordinators((prev) => !prev);
+                  }
+                }}
+
               >
                 <p className="text-[22px] font-semibold text-gray-800 p-6">
                   {selectedCoordinatorGroup ? `${selectedCoordinatorGroup} Coordinator` : 'Company Coordinator'}

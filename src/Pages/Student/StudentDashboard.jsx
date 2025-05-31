@@ -190,9 +190,8 @@ function StudentDashboard() {
               <Calendar year={currentYear} month={currentMonth} />
           </div>
         </div>
-
-        <Footer />
       </div>
+      <Footer />
     </div>
   );
 }

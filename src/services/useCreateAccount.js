@@ -20,6 +20,8 @@ export default function useCreateAccount() {
   const [confirmPassword, setConfirmPassword] = useState("");
   const [companies, setCompanies] = useState([]);
 
+  const [error, setError] = useState("");
+
   const navigate = useNavigate();
   const baseURL = import.meta.env.VITE_API_BASE_URL;
 
@@ -121,5 +123,8 @@ export default function useCreateAccount() {
     handleBack,
     handleSignup,
     login,
+
+    error,
+    setError,
   };
 }

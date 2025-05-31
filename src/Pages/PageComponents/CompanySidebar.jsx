@@ -11,7 +11,7 @@ const CompanySidebar = ({ isExpanded, setIsExpanded }) => {
   const navItems = [
     { label: "Company Dashboard", icon: <TiHome size={35} />, path: "/CompanyDashboard" },
     { label: "Attendance Tracking", icon: <FaUserCheck size={35} />, path: "/CompanyAttendance" },
-    { label: "Journal Submission", icon: <HiMiniPencilSquare size={35} />, path: "/CompanyJournal" },
+    { label: "Journal Submission", icon: <HiMiniPencilSquare size={35} />, path: "/CompanyJournal", activePaths: ["/CompanyJournal", "/CompanyViewJournal/:id"] },
   ];
 
   const toggleSidebar = () => {

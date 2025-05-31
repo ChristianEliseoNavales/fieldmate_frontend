@@ -39,7 +39,7 @@ function Explore() {
             <h1 className="text-[65px] md:text-[65px] text-[#1F3463] font-semibold mb-4">
               What FieldMate Offers
             </h1>
-            <h6 className="text-[26px] md:text-[25px] text-[#1F3463] max-w-[1306px]">
+            <h6 className="text-[20px] text-[#1F3463] max-w-[1306px]">
               FieldMate provides a structured and efficient way to manage internship attendance and compliance.
               <br />Here’s what you can do:
             </h6>
@@ -50,8 +50,8 @@ function Explore() {
             {/* Card 1 */}
             <div className="bg-white rounded-2xl shadow-md hover:shadow-lg transition h-[550px] flex-shrink-0 max-w-[500px]">
               <img src="/pictures/E1.png" alt="Reliable Attendance" className="mx-auto h-[400px]" />
-              <h3 className="text-[#1F3463] font-bold text-[29px] mb-2 text-center">Reliable Attendance Tracking</h3>
-              <p className="text-gray-700 text-center mb-5 text-[22px] px-1">
+              <h3 className="text-[#1F3463] font-bold text-[26px] mb-2 text-center">Reliable Attendance Tracking</h3>
+              <p className="text-gray-700 text-center mb-5 text-[18px] px-10">
                 Students can submit attendance despite varying internship work setups.
               </p>
             </div>
@@ -59,8 +59,8 @@ function Explore() {
             {/* Card 2 */}
             <div className="bg-white rounded-2xl shadow-md hover:shadow-lg transition h-[550px] flex-shrink-0 max-w-[500px]">
               <img src="/pictures/E2.png" alt="Seamless Verification" className="mx-auto h-[400px]" />
-              <h3 className="text-[#1F3463] font-bold text-[29px] mb-2 text-center">Seamless Verification</h3>
-              <p className="text-gray-700 text-center mb-5 text-[22px] px-1">
+              <h3 className="text-[#1F3463] font-bold text-[26px] mb-2 text-center">Seamless Verification</h3>
+              <p className="text-gray-700 text-center mb-5 text-[18px] px-10">
                 Daily journal submissions ensure attendance validation.
               </p>
             </div>
@@ -68,8 +68,8 @@ function Explore() {
             {/* Card 3 */}
             <div className="bg-white rounded-2xl shadow-md hover:shadow-lg transition h-auto flex-shrink-0 max-w-[500px]">
               <img src="/pictures/E3.png" alt="Role-Based Resources" className="mx-auto h-[400px]" />
-              <h3 className="text-[#1F3463] font-bold text-[29px] mb-2 text-center">Role-Based Resources</h3>
-              <p className="text-gray-700 text-center mb-5 text-[22px] px-1" >
+              <h3 className="text-[#1F3463] font-bold text-[26px] mb-2 text-center">Role-Based Resources</h3>
+              <p className="text-gray-700 text-center mb-5 text-[18px] px-10" >
                 Gain access to role-based materials tailored to your internship position.
               </p>
             </div>
@@ -91,7 +91,7 @@ function Explore() {
 
           {/* Sign Up Button (now back in main view) */}
           <div className="mt-5 flex justify-center">
-            <button className="bg-[#1E3A8A] text-white text-[27px] px-10 py-3 rounded-lg font-semibold" onClick={signUp}>
+            <button className="bg-[#1E3A8A] text-white text-[22px] px-10 py-3 rounded-lg font-semibold h-[65px]" onClick={signUp}>
               Sign Up Now
             </button>
           </div>
@@ -110,55 +110,55 @@ function Explore() {
           </div>
 
           {/* Heading */}
-          <h2 className="text-[65px] md:text-[40px] text-[#1F3463] font-semibold mb-4">
+          <h2 className="text-[65px] md:text-[40px] text-[#1F3463] font-semibold -mt-[1px] mb-4">
             Learn More About FieldMate
           </h2>
           
           {/* Paragraph */}
-          <p className="text-[26px] md:text-[20px] text-gray-700 max-w-[1506px]">
-            <span className="font-bold">FieldMate</span> is a structured and efficient platform designed to streamline internship attendance tracking and compliance. It enables students, coordinators, and companies to seamlessly manage attendance, submit journal entries, and access role-based resources tailored to their internship roles.
+          <p className="text-[20px] text-gray-700 max-w-[1506px] mb-4">
+            FieldMate is a streamlined platform for managing internship attendance, journals, and role-based resources <br />for students, coordinators, and companies.
           </p>
 
           {/* Carousel Cards */}
-          <div className="flex flex-wrap justify-center gap-8 mt-10">
+          <div className="flex flex-wrap justify-center gap-8 mt-4">
             {/* Card 1 */}
             <div className="bg-white rounded-2xl shadow-md p-6 max-w-[400px]">
-              <img src="/pictures/E4.png" alt="Get Started" className="mx-auto mb-6 h-[350px]" />
-              <h3 className="text-[#1F3463] font-bold text-[29px] mb-2">Get Started</h3>
-              <p className="text-gray-700 text-[22px]">Sign up and choose your role to begin your journey</p>
+              <img src="/pictures/E4.png" alt="Get Started" className="mx-auto mb-6 h-[330px]" />
+              <h3 className="text-[#1F3463] font-bold text-[26px] mb-2">Get Started</h3>
+              <p className="text-gray-700 text-[18px] px-10">Sign up and choose your role to begin your journey</p>
             </div>
 
             {/* Card 2 */}
             <div className="bg-white rounded-2xl shadow-md p-6 max-w-[400px]">
-              <img src="/pictures/E5.png" alt="Track Progress" className="mx-auto mb-6 h-[350px]" />
-              <h3 className="text-[#1F3463] font-bold text-[29px] mb-2">Track Progress</h3>
-              <p className="text-gray-700 text-[22px]">Log your attendance and track your progress</p>
+              <img src="/pictures/E5.png" alt="Track Progress" className="mx-auto mb-6 h-[330px]" />
+              <h3 className="text-[#1F3463] font-bold text-[26px] mb-2">Track Progress</h3>
+              <p className="text-gray-700 text-[18px] px-10">Log your attendance and track your progress</p>
             </div>
 
             {/* Card 3 */}
-            <div className="bg-white rounded-2xl shadow-md p-6 max-w-[400px]">
-              <img src="/pictures/E6.png" alt="Submit Journals" className="mx-auto mb-6 h-[350px]" />
-              <h3 className="text-[#1F3463] font-bold text-[29px] mb-2">Submit Journals</h3>
-              <p className="text-gray-700 text-[22px]">Record and submit your tasks and reflections</p>
+            <div className="bg-white rounded-2xl shadow-md p-6 max-w-[400px] h-[525px]">
+              <img src="/pictures/E6.png" alt="Submit Journals" className="mx-auto mb-6 h-[330px]" />
+              <h3 className="text-[#1F3463] font-bold text-[26px] mb-2">Submit Journals</h3>
+              <p className="text-gray-700 text-[18px] px-10">Record and submit your tasks and reflections</p>
             </div>
 
             {/* Card 4 */}
             <div className="bg-white rounded-2xl shadow-md p-6 max-w-[400px]">
-              <img src="/pictures/E7.png" alt="Access Resources" className="mx-auto mb-6 h-[350px]" />
-              <h3 className="text-[#1F3463] font-bold text-[29px] mb-2">Access Resources</h3>
-              <p className="text-gray-700 text-[22px]">Find tools and materials related to your role</p>
+              <img src="/pictures/E7.png" alt="Access Resources" className="mx-auto mb-6 h-[330px]" />
+              <h3 className="text-[#1F3463] font-bold text-[26px] mb-2">Access Resources</h3>
+              <p className="text-gray-700 text-[18px] px-10">Find tools and materials related to your role</p>
             </div>
           </div>
 
           {/* Pagination Dots */}
-          <div className="mt-5 flex justify-center gap-1">
+          <div className="mt-[34px] flex justify-center gap-1">
             <span className="w-[10px] h-[10px] bg-[#D9D9D9] rounded-full"></span>
             <span className="w-[10px] h-[10px] bg-[#8F8F8F] rounded-full"></span>
           </div>
 
           {/* Sign Up Button */}
           <div className="mt-5 flex justify-center">
-            <button className="bg-[#1E3A8A] text-white text-[27px] px-10 py-3 rounded-lg font-semibold" onClick={signUp}>
+            <button className="bg-[#1E3A8A] text-white text-[22px] px-10 py-3 rounded-lg font-semibold h-[65px]" onClick={signUp}>
               Sign Up Now
             </button>
           </div>

@@ -17,13 +17,13 @@ const Sidebar = ({ isExpanded, setIsExpanded }) => {
       label: "Student Dashboard",
       icon: <TiHome size={35} />,
       path: "/StudentDashboard",
-      activePaths: ["/StudentDashboard", "/StudentHome"],
+      activePaths: ["/StudentDashboard"],
     },
     {
       label: "Attendance Tracking",
       icon: <FaUserCheck size={35} />,
       path: "/Attendance",
-      activePaths: ["/Attendance", "/AttendanceHistory"],
+      activePaths: ["/Attendance"],
     },
     {
       label: "Journal Submission",

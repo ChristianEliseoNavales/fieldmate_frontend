@@ -144,18 +144,18 @@ function CompanyList() {
 
             {/* Pagination */}
             {companies.length > pageSize && (
-              <div className="mt-6 flex justify-center gap-6 text-[20px]">
+              <div className="mt-6 flex justify-center gap-4 text-[20px]">
                 <button
                   disabled={currentPage === 1}
                   onClick={() => setCurrentPage((p) => p - 1)}
-                  className="p-2 border border-[#D1D5DB] rounded hover:bg-[#F3F4F6] disabled:opacity-40"
+                  className="p-2 bg-[#E0E0E0] rounded-full hover:bg-[#D0D0D0] disabled:opacity-40"
                 >
                   <FaChevronLeft />
                 </button>
                 <button
                   disabled={currentPage === totalPages}
                   onClick={() => setCurrentPage((p) => p + 1)}
-                  className="p-2 border border-[#D1D5DB] rounded hover:bg-[#F3F4F6] disabled:opacity-40"
+                  className="p-2 bg-[#E0E0E0] rounded-full hover:bg-[#D0D0D0] disabled:opacity-40"
                 >
                   <FaChevronRight />
                 </button>
