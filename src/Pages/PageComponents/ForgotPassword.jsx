@@ -1,9 +1,10 @@
 import React, { useState } from "react";
-import secureAxios from "../../services/secureAxios";  // <-- replaced axios import
+import axios from "axios";
 import { FaArrowLeft } from "react-icons/fa";
 import { FaCheckCircle } from "react-icons/fa";
 import { IoMdClose } from "react-icons/io";
 import { FaEye, FaEyeSlash } from "react-icons/fa";
+
 
 function ForgotPassword({ isOpen, onClose, email, setEmail }) {
   const [step, setStep] = useState("email");
@@ -16,6 +17,7 @@ function ForgotPassword({ isOpen, onClose, email, setEmail }) {
   const [maxedOut, setMaxedOut] = useState(false);
   const [showNewPassword, setShowNewPassword] = useState(false);
   const [showConfirmPassword, setShowConfirmPassword] = useState(false);
+
 
   const BASE_URL = import.meta.env.VITE_API_BASE_URL;
 
@@ -50,26 +52,24 @@ function ForgotPassword({ isOpen, onClose, email, setEmail }) {
 
     try {
       if (step === "email") {
-        await secureAxios.post(`${BASE_URL}/auth/request-otp`, { email });
+        await axios.post(`${BASE_URL}/auth/request-otp`, { email });
         setStep("otp");
       } else if (step === "otp") {
         const enteredOtp = otp.join("");
         if (enteredOtp.length < 6) {
           setMessage("Please enter a 6-digit OTP.");
-          setLoading(false);
           return;
         }
 
-        await secureAxios.post(`${BASE_URL}/auth/verify-otp`, { email, otp: enteredOtp });
+        await axios.post(`${BASE_URL}/auth/verify-otp`, { email, otp: enteredOtp });
         setStep("reset");
       } else {
         if (newPassword !== confirmPassword) {
           setMessage("Passwords do not match.");
-          setLoading(false);
           return;
         }
 
-        await secureAxios.post(`${BASE_URL}/auth/reset-password`, { email, newPassword });
+        await axios.post(`${BASE_URL}/auth/reset-password`, { email, newPassword });
         setStep("success");
       }
     } catch (err) {
@@ -186,9 +186,9 @@ function ForgotPassword({ isOpen, onClose, email, setEmail }) {
               />
               <span
                 onClick={() => setShowNewPassword((prev) => !prev)}
-                className="absolute right-4 top-1/2 transform -translate-y-1/2 cursor-pointer text-gray-600"
+                className="absolute right-4 top-8 transform -translate-y-1/2 cursor-pointer text-gray-600"
               >
-                {showNewPassword ? <FaEye /> : <FaEyeSlash />}
+                {showNewPassword ? <FaEyeSlash /> : <FaEye />}
               </span>
             </div>
 
@@ -202,13 +202,14 @@ function ForgotPassword({ isOpen, onClose, email, setEmail }) {
               />
               <span
                 onClick={() => setShowConfirmPassword((prev) => !prev)}
-                className="absolute right-4 top-1/2 transform -translate-y-1/2 cursor-pointer text-gray-600"
+                className="absolute right-4 top-8 transform -translate-y-1/2 cursor-pointer text-gray-600"
               >
-                {showConfirmPassword ? <FaEye /> : <FaEyeSlash />}
+                {showConfirmPassword ? <FaEyeSlash /> : <FaEye />}
               </span>
             </div>
           </>
         )}
+
 
         {/* Step 4: Success */}
         {step === "success" && (
@@ -230,39 +231,51 @@ function ForgotPassword({ isOpen, onClose, email, setEmail }) {
 
         {/* Message Prompt */}
         {message && step !== "success" && (
-          <p
-            className={`mt-2 mb-4 text-center ${
-              maxedOut ? "text-red-600" : "text-[#FF0000]"
-            }`}
-          >
-            {message}
-          </p>
+          <p className="text-center text-red-600 font-medium text-[18px] mt-3">{message}</p>
         )}
 
-        {/* Continue or Resend Button */}
-        {!maxedOut && step !== "success" && (
+        {/* Action Button */}
+        {step !== "success" && !maxedOut && (
           <button
             onClick={handleContinue}
-            disabled={
-              loading ||
-              (step === "email" && !email) ||
-              (step === "otp" && otp.some((val) => val === "")) ||
-              (step === "reset" && (!newPassword || !confirmPassword))
-            }
-            className="mt-2 h-[56px] bg-[#1E3A8A] text-white text-[22px] font-semibold px-4 py-2 rounded w-full flex items-center justify-center cursor-pointer disabled:opacity-50 disabled:cursor-not-allowed"
+            disabled={loading}
+            className={`mt-6 h-[56px] bg-[#1E3A8A] text-white text-[22px] font-bold px-4 py-2 rounded w-full flex items-center justify-center cursor-pointer${
+              loading ? "cursor-not-allowed opacity-70" : ""
+            }`}
           >
-            {loading ? "Loading..." : step === "reset" ? "Reset Password" : "Continue"}
+            {loading ? (
+              <div className="flex gap-1 items-center h-[20px]">
+                <span
+                  className="w-2 h-2 bg-white rounded-full animate-bounce"
+                  style={{ animationDelay: "0ms" }}
+                ></span>
+                <span
+                  className="w-2 h-2 bg-white rounded-full animate-bounce"
+                  style={{ animationDelay: "150ms" }}
+                ></span>
+                <span
+                  className="w-2 h-2 bg-white rounded-full animate-bounce"
+                  style={{ animationDelay: "300ms" }}
+                ></span>
+              </div>
+            ) : step === "reset"
+              ? "Reset Password"
+              : step === "otp"
+              ? "Verify"
+              : "Send OTP"}
           </button>
         )}
 
-        {/* Back Button */}
-        {!maxedOut && step !== "email" && step !== "success" && (
+        {/* Close button if locked out */}
+        {maxedOut && (
           <button
-            onClick={handleBack}
-            className="mt-4 h-[56px] border border-[#1E3A8A] text-[#1E3A8A] text-[22px] font-semibold px-4 py-2 rounded w-full flex items-center justify-center cursor-pointer hover:bg-[#1E3A8A] hover:text-white transition-colors"
+            className="mt-6 px-6 py-3 bg-[#1E3A8A] text-white rounded text-[18px] font-semibold w-full cursor-pointer"
+            onClick={() => {
+              resetState();
+              onClose();
+            }}
           >
-            <FaArrowLeft className="mr-2" />
-            Back
+            Close
           </button>
         )}
       </div>

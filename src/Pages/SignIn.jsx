@@ -84,9 +84,9 @@ export default function LoginPage() {
               onClick={() => setShowPassword(!showPassword)}
             >
               {showPassword ? (
-                <FaEye size={25} />
+                <FaEyeSlash size={20} />
               ) : (
-                <FaEyeSlash size={25} className="text-[#D3CECE]" />
+                <FaEye size={20} />
               )}
             </span>
           </div>
