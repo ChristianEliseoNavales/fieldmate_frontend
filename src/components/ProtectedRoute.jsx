@@ -5,6 +5,7 @@ import { auth } from "../firebase/firebase";
 
 const ProtectedRoute = ({ allowedRoles, children }) => {
   const [status, setStatus] = useState("checking"); // 'checking' | 'authorized' | 'unauthorized'
+  const [userRole, setUserRole] = useState(null);
   const navigate = useNavigate();
   const baseURL = import.meta.env.VITE_API_BASE_URL;
 
@@ -21,8 +22,14 @@ const ProtectedRoute = ({ allowedRoles, children }) => {
 
         const data = await res.json();
 
-        if (data?.role && allowedRoles.includes(data.role)) {
-          setStatus("authorized");
+        if (data?.role) {
+          setUserRole(data.role);
+
+          if (allowedRoles.includes(data.role)) {
+            setStatus("authorized");
+          } else {
+            setStatus("unauthorized");
+          }
         } else {
           setStatus("unauthorized");
         }
@@ -37,9 +44,18 @@ const ProtectedRoute = ({ allowedRoles, children }) => {
 
   useEffect(() => {
     if (status === "unauthorized") {
-      navigate(-1);
+      // Redirect based on known role or fallback to SignIn
+      if (userRole === "Student") {
+        navigate("/StudentDashboard", { replace: true });
+      } else if (userRole === "Coordinator") {
+        navigate("/CompanyDashboard", { replace: true });
+      } else if (userRole === "Admin") {
+        navigate("/AdminDashboard", { replace: true });
+      } else {
+        navigate("/SignIn", { replace: true });
+      }
     }
-  }, [status, navigate]);
+  }, [status, userRole, navigate]);
 
   if (status === "checking") {
     return (
