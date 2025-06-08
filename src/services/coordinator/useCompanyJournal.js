@@ -15,9 +15,18 @@ export const useCompanyJournal = () => {
   const [isSidebarExpanded, setIsSidebarExpanded] = useState(false);
   const [allJournals, setAllJournals] = useState([]);
   const [filteredJournals, setFilteredJournals] = useState([]);
-  const [selectedDate, setSelectedDate] = useState(getTodayDateString());
+  const [selectedDate, setSelectedDate] = useState(() => {
+    return localStorage.getItem("selectedJournalDate") || getTodayDateString();
+  });
+
   const [loading, setLoading] = useState(false);
   const BASE_URL = import.meta.env.VITE_API_BASE_URL;
+
+  useEffect(() => {
+    if (selectedDate) {
+      localStorage.setItem("selectedJournalDate", selectedDate);
+    }
+  }, [selectedDate]);
 
   const fetchJournals = async (email) => {
     try {

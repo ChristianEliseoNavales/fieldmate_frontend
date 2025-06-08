@@ -36,15 +36,24 @@ function CompanyJournal() {
       >
         <CompanyHeader isExpanded={isSidebarExpanded} />
         <div className="mt-20 py-12 px-[7.5rem] bg-[#F5F6FA]">
-          <div className="mb-6 max-w-xs">
-            <input
-              type="date"
-              value={selectedDate}
-              onChange={(e) => setSelectedDate(e.target.value)}
-              className="w-full border border-gray-300 rounded-lg p-3 shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-400 transition"
-              aria-label="Select date"
-            />
-          </div>
+        <div className="mb-6 max-w-xs relative">
+          <input
+            type="date"
+            value={selectedDate}
+            onChange={(e) => setSelectedDate(e.target.value)}
+            onKeyDown={(e) => e.preventDefault()} // prevent manual typing
+            className={`w-full border border-gray-300 rounded-lg p-3 shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-400 transition appearance-none z-10 relative bg-transparent ${
+              !selectedDate ? 'text-transparent' : 'text-gray-700'
+            }`}
+          />
+
+          {!selectedDate && (
+            <span className="absolute left-4 top-3 text-gray-400 pointer-events-none z-0">
+              Pick a date
+            </span>
+          )}
+        </div>
+
 
           {!selectedDate ? (
             <p className="text-gray-500 text-xl select-none">Select a date to view daily journal submissions.</p>

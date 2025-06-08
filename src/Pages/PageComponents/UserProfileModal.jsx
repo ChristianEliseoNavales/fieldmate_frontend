@@ -70,6 +70,8 @@ const UserProfileModal = ({ name, initials }) => {
     try {
       await signOut(auth);
       localStorage.removeItem("userInfo");
+      localStorage.removeItem("companySelectedDate");
+      localStorage.removeItem("selectedJournalDate");
       setTimeout(() => {
         navigate("/SignIn");
       }, 100);

@@ -1,8 +1,9 @@
-// services/coordinator/useCompanyAttendance.js
 import { useState, useEffect } from 'react';
-import secureAxios from '../../services/secureAxios'; // adjust path if needed
+import secureAxios from '../../services/secureAxios';
 import { auth } from '../../firebase/firebase';
 import { onAuthStateChanged } from 'firebase/auth';
+
+const LOCAL_STORAGE_KEY = "companySelectedDate";
 
 export default function useCompanyAttendance() {
   const [isSidebarExpanded, setIsSidebarExpanded] = useState(false);
@@ -11,9 +12,13 @@ export default function useCompanyAttendance() {
   const [filteredAttendances, setFilteredAttendances] = useState([]);
   const [userEmail, setUserEmail] = useState('');
   const BASE_URL = import.meta.env.VITE_API_BASE_URL;
-  const [selectedDate, setSelectedDate] = useState(() => {
-    return new Date().toLocaleDateString("en-CA"); // "YYYY-MM-DD"
-  });
+
+  const getInitialDate = () => {
+    const stored = localStorage.getItem(LOCAL_STORAGE_KEY);
+    return stored ? stored : new Date().toLocaleDateString("en-CA");
+  };
+
+  const [selectedDate, setSelectedDate] = useState(getInitialDate);
 
   const [modalVisible, setModalVisible] = useState(false);
   const [modalAction, setModalAction] = useState('');
@@ -54,6 +59,10 @@ export default function useCompanyAttendance() {
   useEffect(() => {
     if (selectedDate && allAttendances.length > 0) {
       filterByDate(allAttendances, selectedDate);
+    }
+
+    if (selectedDate) {
+      localStorage.setItem(LOCAL_STORAGE_KEY, selectedDate);
     }
   }, [selectedDate]);
 
