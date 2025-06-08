@@ -41,7 +41,7 @@ function Resources() {
         <div
           className={`flex-1 flex flex-col transition-all duration-300 ease-in-out ${
             isSidebarExpanded ? 'ml-[400px]' : 'ml-[106px]'
-          } bg-[#F8FAFC] min-h-screen`}
+          } bg-[#F5F6FA] min-h-screen`}
         >
         <Header isExpanded={isSidebarExpanded} />
 

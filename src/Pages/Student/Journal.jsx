@@ -38,10 +38,10 @@ function Journal() {
       <div
         className={`flex-1 flex flex-col transition-all duration-300 ease-in-out ${
           isSidebarExpanded ? "ml-[400px]" : "ml-[106px]"
-        } bg-[#FAFAFF] min-h-screen`}
+        } bg-[#F5F6FA] min-h-screen`}
       >
         <Header isExpanded={isSidebarExpanded} />
-        <div className="p-6 mt-10 mx-20 mt-[100px]">
+        <div className="p-6 mt-10 mx-20 mt-[100px] ">
           {/* Editor */}
           {editor && (
             <div className="border border-gray-300 rounded-md bg-[#f9f9fc] shadow-sm">

@@ -49,7 +49,7 @@ function CompanyJournal() {
           {!selectedDate ? (
             <p className="text-gray-500 text-xl select-none">Select a date to view daily journal submissions.</p>
           ) : filteredJournals.length === 0 ? (
-            <p className="text-center text-gray-500 text-xl mt-[12.5rem] select-none">
+            <p className="text-gray-400 text-center text-xl mt-50 select-none font-medium">
               No journal entries found for this date.
             </p>
           ) : (

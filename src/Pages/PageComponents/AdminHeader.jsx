@@ -13,6 +13,7 @@ function AdminHeader({ isExpanded }) {
   const [email, setEmail] = useState("");
   const [loading, setLoading] = useState(true);
   const [scrolled, setScrolled] = useState(false);
+  const BASE_URL = import.meta.env.VITE_API_BASE_URL;
 
   const pageTitles = {
     "/AdminDashboard": "Admin Dashboard",
@@ -37,16 +38,18 @@ function AdminHeader({ isExpanded }) {
       setFirstName(user.firstName);
       setLastName(user.lastName);
       setEmail(user.email);
-      setLoading(false);
+      setLoading(false); // ✅ immediately stop loading
     } else {
       const unsubscribe = onAuthStateChanged(auth, async (user) => {
         if (user?.email) {
           try {
-            // Use secureAxios instead of fetch
-            const res = await secureAxios.get(`/user?email=${user.email}`);
+            // Replace fetch with secureAxios
+            const res = await secureAxios.get(`${BASE_URL}/user`, {
+              params: { email: user.email },
+            });
             const data = res.data;
             if (data?.firstName && data?.lastName && data?.email) {
-              localStorage.setItem("userInfo", JSON.stringify(data));
+              localStorage.setItem("userInfo", JSON.stringify(data)); // ✅ cache it
               setFirstName(data.firstName);
               setLastName(data.lastName);
               setEmail(data.email);

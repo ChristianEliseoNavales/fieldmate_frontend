@@ -78,11 +78,13 @@ const UserProfileModal = ({ name, initials }) => {
     }
   };
 
-  const getInitials = (name) => {
-    return name
-      .split(" ")
-      .map(word => word.charAt(0).toUpperCase())
-      .join("");
+  const getInitials = (firstName, lastName) => {
+    const getFirstInitial = (str) => {
+      const firstWord = str?.trim().split(" ")[0] || "";
+      return firstWord.charAt(0).toUpperCase();
+    };
+
+    return `${getFirstInitial(firstName)}${getFirstInitial(lastName)}`;
   };
 
   return (
@@ -102,7 +104,7 @@ const UserProfileModal = ({ name, initials }) => {
         <div className="absolute right-0 mt-2 w-[430px] bg-white border border-gray-200 shadow-lg rounded z-50">
           <div className="flex px-4 py-6 gap-3">
             <div className="bg-[#1F3463] text-white flex items-center justify-center text-[28px] font-bold h-[75px] w-[70px] rounded-[10px]">
-              {getInitials(`${firstName} ${lastName}`)}
+              {getInitials(firstName, lastName)}
             </div>
             <div className="flex-col content-center">
               <p className="text-[26px] font-semibold">{firstName} {lastName}</p>

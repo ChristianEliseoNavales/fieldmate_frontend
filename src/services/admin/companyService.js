@@ -44,12 +44,18 @@ export function useCompanyService() {
       const res = await secureAxios.post(`${BASE_URL}/companies`, {
         name: trimmedName,
       });
-      setCompanies((prev) => [...prev, res.data]);
+      const newCompany = res.data;              // ← contains createdAt
+
+      // 1️⃣ Put it at the VERY BEGINNING
+      setCompanies(prev => [newCompany, ...prev]);
+
+      // (optional) reset UI
       setCompanyName("");
-      setMessage("Company added successfully!");
+      setCurrentPage(1);  // jump back to first page
+      setMessage("Company added!");
       setMessageType("success");
     } catch (err) {
-      setMessage("Company Name Exists");
+      setMessage(err.response?.data?.message || "Failed to add.");
       setMessageType("error");
     }
   }
@@ -98,6 +104,21 @@ export function useCompanyService() {
     currentPage * pageSize
   );
 
+  const handleDeleteAllCompanies = async () => {
+  if (!confirm("Are you sure you want to delete ALL companies?")) return;
+
+  try {
+    const res = await secureAxios.delete(`${BASE_URL}/companies/deleteAll`);
+    setCompanies([]); // Clear UI list
+    setMessage("All companies deleted successfully.");
+    setMessageType("success");
+  } catch (err) {
+    console.error("Failed to delete all companies:", err);
+    setMessage("Failed to delete all companies.");
+    setMessageType("error");
+  }
+};
+
   return {
     companyName,
     setCompanyName,
@@ -122,5 +143,6 @@ export function useCompanyService() {
     handleEdit,
     message,
     messageType,
+    handleDeleteAllCompanies,
   };
 }

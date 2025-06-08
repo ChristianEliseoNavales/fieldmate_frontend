@@ -188,7 +188,7 @@ function ForgotPassword({ isOpen, onClose, email, setEmail }) {
                 onClick={() => setShowNewPassword((prev) => !prev)}
                 className="absolute right-4 top-8 transform -translate-y-1/2 cursor-pointer text-gray-600"
               >
-                {showNewPassword ? <FaEyeSlash /> : <FaEye />}
+                {showNewPassword ? <FaEye /> : <FaEyeSlash />}
               </span>
             </div>
 
@@ -204,7 +204,7 @@ function ForgotPassword({ isOpen, onClose, email, setEmail }) {
                 onClick={() => setShowConfirmPassword((prev) => !prev)}
                 className="absolute right-4 top-8 transform -translate-y-1/2 cursor-pointer text-gray-600"
               >
-                {showConfirmPassword ? <FaEyeSlash /> : <FaEye />}
+                {showConfirmPassword ? <FaEye /> : <FaEyeSlash />}
               </span>
             </div>
           </>

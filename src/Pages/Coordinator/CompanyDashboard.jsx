@@ -52,33 +52,68 @@ function CompanyDashboard() {
 
   const absentInterns = present !== null ? interns.length - present : null;
 
-  return (
+return (
     <div className="flex flex-col min-h-screen">
-      <CompanySidebar isExpanded={isSidebarExpanded} setIsExpanded={setIsSidebarExpanded} />
-      <div className={`flex-1 flex flex-col transition-all duration-300 ease-in-out ${isSidebarExpanded ? "ml-[400px]" : "ml-[106px]"} bg-[#F5F7FB]`}>
+      {/* ------------- Sidebar ------------- */}
+      <CompanySidebar
+        isExpanded={isSidebarExpanded}
+        setIsExpanded={setIsSidebarExpanded}
+      />
+
+      {/* ------------- Main panel ------------- */}
+      <div
+        className={`flex-1 flex flex-col transition-all duration-300 ease-in-out ${
+          isSidebarExpanded ? "ml-[400px]" : "ml-[106px]"
+        } bg-[#F5F7FB]`}
+      >
+        {/* Header */}
         <CompanyHeader isExpanded={isSidebarExpanded} firstName={firstName} />
 
-        <CompanyDashboardStats
-          onDataReady={({ presentInterns, lateInterns, pendingAttendance, unreadJournals }) => {
-            setPresent(presentInterns);
-            setLate(lateInterns);
-            setPendingAttendance(pendingAttendance);
-            setUnreadJournals(unreadJournals);
-          }}
-        />
+        {/* Dashboard Stats – reserve height so the layout never shifts */}
+        <div className="min-h-[70px]">
+          <CompanyDashboardStats
+            onDataReady={({
+              presentInterns,
+              lateInterns,
+              pendingAttendance,
+              unreadJournals,
+            }) => {
+              setPresent(presentInterns);
+              setLate(lateInterns);
+              setPendingAttendance(pendingAttendance);
+              setUnreadJournals(unreadJournals);
+            }}
+          />
+        </div>
 
-        <div className="px-8 grid grid-cols-3 gap-6 mt-[100px] mb-10">
+        {/* Main grid */}
+        <div
+          className={`px-8 grid grid-cols-3 gap-6 ${
+            loading || <Skeleton/> ? "mt-[40px]" : "mt-[100px]"
+          } mb-10 transition-all`}
+        >
+          {/* ---------------- LEFT COLUMN (2/3) ---------------- */}
           <div className="col-span-2 space-y-6">
-            {/* Company Info */}
-            <div className="bg-white p-5 rounded-[10px] shadow-md flex items-center justify-between border border-[#D9D9D9]  transition-shadow">
+            {/* Greeting card */}
+            <div className="bg-white p-5 rounded-[10px] shadow-md flex items-center justify-between border border-[#D9D9D9] transition-shadow">
               <div className="flex items-center gap-4 h-[118px]">
                 <LuUser size={65} className="text-[#1F3463]" />
                 <div>
-                  <div className="text-[33px] font-semibold text-[#1F3463]">
-                    {loading ? <Skeleton width="200px" height="36px" /> : `Hello, ${firstName || "Intern"}!`}
+                  {/* name (fixed height) */}
+                  <div className="text-[30px] font-semibold h-[40px] flex items-center">
+                    {loading ? (
+                      <Skeleton width="200px" height="36px" />
+                    ) : (
+                      `Hello, ${firstName || "Intern"}!`
+                    )}
                   </div>
-                  <div className="text-[20px] text-gray-600 mt-1">
-                    {loading ? <Skeleton width="150px" height="24px" /> : `${company || "Intern"} Intern`}
+                  {/* company (fixed height) */}
+                  <div className="text-[18px] text-gray-600 mt-1 h-[28px] flex items-center">
+                    {loading ? (
+                      <Skeleton width="150px" height="24px" />
+                    ) : (
+                      `${company || "Intern"} Intern`
+                    )}
                   </div>
                 </div>
               </div>
@@ -86,10 +121,12 @@ function CompanyDashboard() {
 
             {/* Attendance Summary */}
             <div className="bg-white p-6 rounded-[10px] shadow-md border border-[#D9D9D9] h-[287px]">
-              <div className="text-[25px] font-semibold text-[#1F3463] mb-4">Daily Attendance Summary</div>
+              <div className="text-[25px] font-semibold text-[#1F3463] mb-4">
+                Daily Attendance Summary
+              </div>
 
               <div className="grid grid-cols-3 gap-4">
-                {/* Present Card */}
+                {/* Present */}
                 <div className="bg-[#EDEEF3] rounded-lg border-l-[6px] border-[#22C55E] shadow-sm">
                   <SummaryCard
                     label="Present"
@@ -98,8 +135,7 @@ function CompanyDashboard() {
                     icon="/pictures/Green.png"
                   />
                 </div>
-
-                {/* Late Card */}
+                {/* Late */}
                 <div className="bg-[#EDEEF3] rounded-lg border-l-[6px] border-[#F97316] shadow-sm">
                   <SummaryCard
                     label="Late"
@@ -108,8 +144,7 @@ function CompanyDashboard() {
                     icon="/pictures/Orange.png"
                   />
                 </div>
-
-                {/* Absent Card */}
+                {/* Absent */}
                 <div className="bg-[#EDEEF3] rounded-lg border-l-[6px] border-[#DB2777] shadow-sm">
                   <SummaryCard
                     label="Absent"
@@ -123,15 +158,30 @@ function CompanyDashboard() {
 
             {/* Tracking & Journal */}
             <div className="grid grid-cols-2 gap-6 h-[320px]">
-              <TrackingCard title="Attendance Tracking" count={pendingAttendance} color="#FF4400" buttonLabel="Go to Attendance Tracking" onClick={handleCardNavigation} />
-              <TrackingCard title="Journal Submission" count={unreadJournals} color="#FF4400" buttonLabel="Go to Journal Submissions" onClick={handleCardNavigation} />
+              <TrackingCard
+                title="Attendance Tracking"
+                count={pendingAttendance}
+                color="#FF4400"
+                buttonLabel="Go to Attendance Tracking"
+                onClick={handleCardNavigation}
+              />
+              <TrackingCard
+                title="Journal Submission"
+                count={unreadJournals}
+                color="#FF4400"
+                buttonLabel="Go to Journal Submissions"
+                onClick={handleCardNavigation}
+              />
             </div>
           </div>
 
-          {/* Right Panel */}
+          {/* ---------------- RIGHT COLUMN (1/3) ---------------- */}
           <div className="space-y-6">
+            {/* Intern overview */}
             <div className="bg-white p-6 rounded-[10px] shadow-md text-center h-[287px] border border-[#D9D9D9] group">
-              <p className="text-[25px] text-start font-semibold text-[#1F3463]">Interns Overview</p>
+              <p className="text-[25px] text-start font-semibold text-[#1F3463]">
+                Interns Overview
+              </p>
               <div
                 className="border-2 border-[#0385FF] h-[183px] rounded-[10px] mt-2 flex items-center justify-center relative overflow-hidden cursor-pointer group hover:bg-[#F5F6FA] transition"
                 onClick={() => {
@@ -139,27 +189,45 @@ function CompanyDashboard() {
                   setCurrentPage(1);
                 }}
               >
+                {/* Count block – fixed height so no jump */}
                 <div className="flex flex-col items-center justify-center transition-opacity duration-300 group-hover:opacity-0 absolute">
-                  <div className="text-[90px] font-bold text-[#1F3463]">
-                    {loading ? <Skeleton width="150px" height="120px" className="mt-10" /> : `${interns.length}`}
+                  <div className="text-[90px] font-bold text-[#1F3463] h-[100px] flex items-center justify-center">
+                    {loading ? (
+                      <Skeleton width="150px" height="90px" />
+                    ) : (
+                      `${interns.length}`
+                    )}
                   </div>
-                  <p className="text-[20px] text-[#0059AB] font-medium mb-5">Current Committed Interns</p>
+                  <p className="text-[20px] text-[#0059AB] font-medium mb-5 h-[30px] flex items-center justify-center">
+                    {loading ? (
+                      <Skeleton width="100px" height="24px" />
+                    ) : (
+                      "Current Committed Interns"
+                    )}
+                  </p>
                 </div>
+                {/* Hover text */}
                 <div className="opacity-0 group-hover:opacity-100 transition-opacity duration-300 absolute">
-                  <button className="text-[#0059AB] text-[20px] font-medium cursor-pointer">View Interns List</button>
+                  <button className="text-[#0059AB] text-[20px] font-medium cursor-pointer">
+                    View Interns List
+                  </button>
                 </div>
               </div>
             </div>
 
-            <Calendar className=" py-9.5" />
+            {/* Calendar */}
+            <Calendar className="py-9.5" />
           </div>
         </div>
 
-        {/* Modal */}
+        {/* ---------------- Modal ---------------- */}
         {showModal && (
           <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/30 backdrop-blur-sm">
             <div className="bg-white w-[600px] h-[560px] p-6 rounded-xl relative shadow-lg pt-13 flex flex-col">
-              <button onClick={() => setShowModal(false)} className="text-black text-[25px] mb-4 cursor-pointer absolute right-4 top-4">
+              <button
+                onClick={() => setShowModal(false)}
+                className="text-black text-[25px] mb-4 cursor-pointer absolute right-4 top-4"
+              >
                 <IoMdClose />
               </button>
 
@@ -167,7 +235,7 @@ function CompanyDashboard() {
                 {company} Interns
               </div>
 
-              {/* Scrollable list container */}
+              {/* Scrollable list */}
               <div className="flex-1 pr-2">
                 <ul className="text-[20px]">
                   {paginatedInterns.map((user) => (
@@ -176,16 +244,18 @@ function CompanyDashboard() {
                         {`${user.firstName[0] ?? ""}${user.lastName[0] ?? ""}`.toUpperCase()}
                       </div>
                       <div className="flex-1 pl-[25%] border-b border-black/10 py-3">
-                        <span className="font-medium">{user.firstName} {user.lastName}</span>
+                        <span className="font-medium">
+                          {user.firstName} {user.lastName}
+                        </span>
                       </div>
                     </li>
                   ))}
                 </ul>
               </div>
 
-              {/* Fixed pagination buttons */}
+              {/* Pagination */}
               {interns.length >= internsPerPage && (
-                <div className="mt-4 pt-4 flex justify-center space-x-4 text-[20px] ">
+                <div className="mt-4 pt-4 flex justify-center space-x-4 text-[20px]">
                   <button
                     disabled={currentPage === 1}
                     onClick={() => setCurrentPage((p) => p - 1)}
@@ -223,7 +293,13 @@ const SummaryCard = ({ label, interns, color, icon }) => {
       <div className="flex justify-between items-center mt-5">
         <div>
           <div className={`text-[36px] font-bold text-[#1F3463] ${colorMap[color]}`}>
-            {interns !== null ? interns : <Skeleton width="40px" />}
+            {interns !== null ? (
+              interns
+            ) : (
+              <div className="my-[7px]">
+                <Skeleton width="40px" height="40px"/>
+              </div>
+            )}
           </div>
           <p className={`text-[18px] font-medium ${colorMap[color]}`}>Interns</p>
         </div>
@@ -236,24 +312,46 @@ const SummaryCard = ({ label, interns, color, icon }) => {
   );
 };
 
-const TrackingCard = ({ title, count, color, buttonLabel, onClick }) => (
-  <div className="bg-white p-6 rounded-[10px] shadow-md text-center border border-[#D9D9D9]  transition-shadow">
-    <div>
+const TrackingCard = ({ title, count, color, buttonLabel, onClick }) => {
+  // pick blue when there are no items, otherwise keep the color passed in
+  const displayColor = count === 0 ? "#0059AB" : color;
+
+  return (
+    <div className="bg-white p-6 rounded-[10px] shadow-md text-center border border-[#D9D9D9] transition-shadow">
       <p className="text-[22px] font-semibold text-[#1F3463]">{title}</p>
-      <h1 className="flex justify-center font-bold text-[100px]" style={{ color }}>
-        {count !== null ? count : <Skeleton width="70px" height="100px" />}
+
+      {/* count */}
+      <h1
+        className="flex justify-center font-bold text-[100px]"
+        style={{ color: displayColor }}
+      >
+        {count !== null ? (
+          count
+        ) : (
+          <div className="my-[25px]">
+            <Skeleton width="70px" height="100px" />
+          </div>
+        )}
       </h1>
-      <p className="text-[18px] font-medium text-gray-600" style={{ color }}>
-        {title.includes("Attendance") ? "Pending Attendance" : "Unread Journal Submissions"}
+
+      {/* label */}
+      <p
+        className="text-[18px] font-medium"
+        style={{ color: displayColor }}
+      >
+        {title.includes("Attendance")
+          ? "Pending Attendance"
+          : "Unread Journal Submissions"}
       </p>
+
+      <button
+        className="bg-[#0385FF] text-white mt-4 py-2 px-6 text-[18px] rounded-[8px] hover:bg-[#0576dd] transition-colors cursor-pointer"
+        onClick={() => onClick(buttonLabel)}
+      >
+        {buttonLabel}
+      </button>
     </div>
-    <button
-      className="bg-[#0385FF] text-white mt-4 py-2 px-6 text-[18px] rounded-[8px] hover:bg-[#0576dd] transition-colors"
-      onClick={() => onClick(buttonLabel)}
-    >
-      {buttonLabel}
-    </button>
-  </div>
-);
+  );
+};
 
 export default CompanyDashboard;
