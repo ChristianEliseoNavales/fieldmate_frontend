@@ -51,12 +51,27 @@ export default function useCreateAccount() {
     if (!lastName) newErrors.lastName = true;
     if (!email) newErrors.email = true;
     if (!role) newErrors.role = true;
-    if (role === "Coordinator" && !supervisorNumber) newErrors.supervisorNumber = true;
 
     const emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
     if (email && !emailPattern.test(email)) {
       newErrors.email = true;
       setError("Please enter a valid email address.");
+    }
+
+    if (role === "Coordinator") {
+      if (!supervisorNumber) {
+        newErrors.supervisorNumber = true;
+        setError("Admin code is required.");
+        setErrorFields(newErrors);
+        return false;
+      }
+
+      if (supervisorNumber !== import.meta.env.VITE_ADMIN_CODE) {
+        newErrors.supervisorNumber = true;
+        setError("Invalid admin code.");
+        setErrorFields(newErrors);
+        return false;
+      }
     }
 
     if (Object.keys(newErrors).length > 0) {
@@ -65,16 +80,11 @@ export default function useCreateAccount() {
       return false;
     }
 
-    if (role === "Coordinator" && supervisorNumber !== import.meta.env.VITE_ADMIN_CODE) {
-      setError("Invalid admin code.");
-      setErrorFields({ supervisorNumber: true });
-      return false;
-    }
-
     setError("");
     setErrorFields({});
     return true;
   };
+
 
   const validateStep2 = () => {
     const newErrors = {};
@@ -131,7 +141,6 @@ export default function useCreateAccount() {
           lastName,
           email,
           role,
-          supervisorNumber: role === "Coordinator" ? supervisorNumber : "",
           company,
           arrangement,
         }),

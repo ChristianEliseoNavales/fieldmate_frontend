@@ -129,7 +129,6 @@ export default function CreateAccount() {
                 onChange={(e) => setRole(e.target.value)}
                 className={`cursor-pointer appearance-none border text-[#5F5454] text-[20px] rounded p-3 w-full pr-10 ${errorFields.role ? "border-red-500" : "border-[#D3CECE]"}`}
               >
-                <option value="">Select Role</option>
                 <option>Student</option>
                 <option>Coordinator</option>
               </select>
@@ -163,7 +162,6 @@ export default function CreateAccount() {
                 onChange={(e) => setCompany(e.target.value)}
                 className={`appearance-none border text-[#5F5454] bg-white text-[20px] rounded p-3 w-full pr-10 ${errorFields.company ? "border-red-500" : "border-[#D3CECE]"}`}
               >
-                <option value="">Select Company</option>
                 {companies.map((comp) => (
                   <option key={comp._id} value={comp.name}>{comp.name}</option>
                 ))}
@@ -178,7 +176,6 @@ export default function CreateAccount() {
                 onChange={(e) => setArrangement(e.target.value)}
                 className={`appearance-none border text-[#5F5454] bg-white text-[20px] rounded p-3 w-full pr-10 ${errorFields.arrangement ? "border-red-500" : "border-[#D3CECE]"}`}
               >
-                <option value="">Select Arrangement</option>
                 <option>On-site</option>
                 <option>Remote</option>
                 <option>Hybrid</option>
