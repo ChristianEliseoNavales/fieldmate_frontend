@@ -65,6 +65,12 @@ export default function useCreateAccount() {
       return false;
     }
 
+    if (role === "Coordinator" && supervisorNumber !== import.meta.env.VITE_ADMIN_CODE) {
+      setError("Invalid admin code.");
+      setErrorFields({ supervisorNumber: true });
+      return false;
+    }
+
     setError("");
     setErrorFields({});
     return true;

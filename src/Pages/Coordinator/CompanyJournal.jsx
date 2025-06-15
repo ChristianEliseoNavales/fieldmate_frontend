@@ -42,7 +42,7 @@ function CompanyJournal() {
             value={selectedDate}
             onChange={(e) => setSelectedDate(e.target.value)}
             onKeyDown={(e) => e.preventDefault()} // prevent manual typing
-            className={`w-full border border-gray-300 rounded-lg p-3 shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-400 transition appearance-none z-10 relative bg-transparent ${
+            className={`w-full border border-gray-300 rounded-lg p-3 shadow-sm focus:outline-none transition appearance-none z-10 relative bg-transparent ${
               !selectedDate ? 'text-transparent' : 'text-gray-700'
             }`}
           />
@@ -58,7 +58,7 @@ function CompanyJournal() {
           {!selectedDate ? (
             <p className="text-gray-500 text-xl select-none">Select a date to view daily journal submissions.</p>
           ) : filteredJournals.length === 0 ? (
-            <p className="text-gray-400 text-center text-xl mt-50 select-none font-medium">
+            <p className="text-gray-400 text-center text-xl mt-[30vh] select-none font-medium">
               No journal entries found for this date.
             </p>
           ) : (
@@ -95,7 +95,7 @@ function CompanyJournal() {
                         onClick={() => toggleViewed(entry._id, entry.viewed)}
                         title={entry.viewed ? 'Mark as unread' : 'Mark as read'}
                         aria-pressed={entry.viewed}
-                        className="p-1 rounded focus:outline-none focus:ring-2 focus:ring-blue-400"
+                        className="p-1 rounded focus:outline-none"
                       >
                         {entry.viewed ? (
                           <BiEnvelopeOpen
@@ -115,21 +115,21 @@ function CompanyJournal() {
                       {entry.viewed ? (
                         <button
                           onClick={() => handleView(entry)}
-                          className="flex items-center gap-2 px-8 py-2 text-gray-800 bg-gray-300 border border-gray-400 rounded-lg text-[20px] hover:bg-gray-400 focus:outline-none focus:ring-2 focus:ring-gray-400 transition"
+                          className="flex items-center gap-2 px-8 py-2 text-gray-800 bg-gray-300 border border-gray-400 rounded-lg text-[20px] hover:bg-gray-400 focus:outline-none transitio cursor-pointer"
                         >
                           View
                         </button>
                       ) : (
                         <button
                           onClick={() => handleView(entry)}
-                          className="flex items-center gap-2 px-8 py-2 text-white bg-blue-600 rounded-lg text-[20px] hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-600 transition"
+                          className="flex items-center gap-2 px-8 py-2 text-white bg-blue-600 rounded-lg text-[20px] hover:bg-blue-700 focus:outline-none transition cursor-pointer"
                         >
                           View
                         </button>
                       )}
 
                       <button
-                        className="text-gray-800 hover:text-red-600 cursor-pointer p-1 rounded focus:outline-none focus:ring-2 focus:ring-red-500 transition"
+                        className="text-gray-800 hover:text-red-600 cursor-pointer p-1 rounded focus:outline-none transition"
                         onClick={() => handleRemove(entry._id)}
                         aria-label="Delete journal entry"
                       >

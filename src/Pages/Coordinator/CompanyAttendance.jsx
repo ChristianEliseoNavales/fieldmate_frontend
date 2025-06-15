@@ -68,7 +68,7 @@ function CompanyAttendance() {
           )}
 
           {selectedDate && filteredAttendances.length === 0 && (
-            <p className="text-gray-400 text-center text-xl mt-10 select-none font-medium">
+            <p className="text-gray-400 text-center text-xl mt-[30vh] select-none font-medium">
               No attendance record for this date.
             </p>
           )}

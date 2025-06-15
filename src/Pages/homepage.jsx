@@ -348,13 +348,13 @@ function Homepage() {
         </div>
       </div>
 
-      <footer className="bg-[#1F3463] text-white w-full py-5">
+      <footer className="bg-[#1F3463] text-white w-full py-5 ">
         <div className=" mx-auto  ">
-          <div className="flex justify-between gap-8 items-center md:px-12 pt-8">
+          <div className="flex justify-between gap-8 md:px-30 pt-8 ">
             {/* Left Section - Project Info */}
             <div>
-              <h3 className="text-[50px] font-bold">FieldMate</h3>
-              <p className="text-[20px] mt-2 max-w-[478px] leading-relaxed">
+              <h3 className="text-[40px] font-bold">FieldMate</h3>
+              <p className="text-[18px] mt-2 max-w-[478px] leading-relaxed">
                 La Verdad Christian College Bachelor of Science in Information
                 System Field Practicum Attendance Tracking System.
               </p>
@@ -362,17 +362,17 @@ function Homepage() {
 
             {/* Middle Section - About Us & Social Media */}
             <div className="">
-              <h4 className="font-bold text-[23px]">About Us</h4>
-              <p className="text-[23px] mt-1">La Verdad Christian College</p>
-              <p className="text-[23px]">
+              <h4 className="font-bold text-[20px]">About Us</h4>
+              <p className="text-[20px] mt-1">La Verdad Christian College</p>
+              <p className="text-[20px]">
                 Bachelor of Science in Information Systems
               </p>
-              <p className="text-[23px]">Association of ICT Majors</p>
+              <p className="text-[20px]">Association of ICT Majors</p>
 
               {/* Social Icons */}
-              <h4 className="font-bold text-[23px]">Contact Us</h4>
+              <h4 className="font-bold text-[20px]">Contact Us</h4>
               <div className="flex justify-start space-x-4 mt-4">
-                <a href="#" className="text-white hover:text-gray-300">
+                <a href="https://www.facebook.com/lvcc.apalit" target="_blank" rel="noopener noreferrer" className="text-white hover:text-gray-300">
                   <FaFacebookF size={38} />
                 </a>
                 <a href="#" className="text-white hover:text-gray-300">
@@ -390,19 +390,19 @@ function Homepage() {
                 <img
                   src="pictures/logo.png"
                   alt="La Verdad Logo"
-                  className="h-[70px] mt-4"
+                  className="h-[70px] my-auto"
                 />
                 <div className="flex flex-col">
-                  <p className="text-[40px] font-custom max-w-[300px] ">
+                  <p className="text-[30px] font-custom max-w-[300px] ">
                     LA VERDAD
                   </p>
-                  <span className="text-[23px] font-custom">
+                  <span className="text-[20px] font-custom">
                     CHRISTIAN COLLEGE. INC.
                   </span>
                 </div>
               </div>
-              <span className="font-bold text-[25px]">
-                “Wisdom based on the Truth is Priceless”
+              <span className="mt-4 font-bold text-[23px] text-center">
+                “Wisdom based on the Truth is <br></br>Priceless”
               </span>
             </div>
           </div>

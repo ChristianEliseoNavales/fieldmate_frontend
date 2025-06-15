@@ -88,7 +88,7 @@ function CompanyList() {
             )}
             <button
               onClick={handleAddCompany}
-              className="bg-[#1E3A8A] hover:bg-[#162e72] text-white px-7 py-3 rounded-lg text-[20px] font-semibold transition-transform hover:scale-[1.02]"
+              className="bg-[#1E3A8A] hover:bg-[#162e72] text-white px-7 py-3 rounded-lg text-[20px] font-semibold transition-transform hover:scale-[1.02] cursor-pointer"
             >
               Add
             </button>
