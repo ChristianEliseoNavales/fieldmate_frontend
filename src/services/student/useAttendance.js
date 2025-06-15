@@ -8,6 +8,7 @@ export default function useAttendance() {
   const [currentTime, setCurrentTime] = useState(new Date());
   const [timeIn, setTimeIn] = useState("");
   const [timeOut, setTimeOut] = useState("");
+  const [date, setDate] = useState("");
   const [recordId, setRecordId] = useState(null);
   const [userEmail, setUserEmail] = useState("");
   const [canTimeIn, setCanTimeIn] = useState(false);
@@ -17,8 +18,13 @@ export default function useAttendance() {
   const [loading, setLoading] = useState(true);
   const BASE_URL = import.meta.env.VITE_API_BASE_URL;
 
+  // Keep live clock in PH time
   useEffect(() => {
-    const timer = setInterval(() => setCurrentTime(new Date()), 1000);
+    const timer = setInterval(() => {
+      const now = new Date();
+      const phTime = new Date(now.toLocaleString("en-US", { timeZone: "Asia/Manila" }));
+      setCurrentTime(phTime);
+    }, 1000);
     return () => clearInterval(timer);
   }, []);
 
@@ -30,22 +36,28 @@ export default function useAttendance() {
           params: { email },
         });
 
-        if (res.data) {
-          setRecordId(res.data._id);
-          setTimeIn(res.data.timeIn || "");
-          setTimeOut(res.data.timeOut || "");
-          setAttendanceSubmitted(!!res.data.submitted);
-          setSubmittedMessage(!!res.data.submitted);
-          setCanTimeIn(!res.data.timeIn);
-          setCanTimeOut(!!res.data.timeIn && !res.data.timeOut);
-        } else {
-          setCanTimeIn(true);
-        }
+      if (res.data) {
+        console.log("✅ Attendance fetched:", res.data);
+        console.log("✅ setTimeIn:", res.data.timeIn);
+        console.log("✅ setTimeOut:", res.data.timeOut);
+        console.log("✅ Date:", res.data.date);
+        setRecordId(res.data._id);
+        setTimeIn(res.data.timeIn ?? null);
+        setTimeOut(res.data.timeOut ?? null);
+        setDate(res.data.date ?? null);
+        setAttendanceSubmitted(!!res.data.submitted);
+        setSubmittedMessage(!!res.data.submitted);
+        setCanTimeIn(!res.data.timeIn);
+        setCanTimeOut(!!res.data.timeIn && !res.data.timeOut);
+      } else {
+        setCanTimeIn(true);
+      }
+
       } catch (err) {
         if (err.response?.status === 404) {
           setCanTimeIn(true);
         } else {
-          console.error("Error fetching attendance:", err);
+          console.error("❌ Error fetching attendance:", err);
         }
       } finally {
         const elapsed = Date.now() - start;
@@ -72,20 +84,21 @@ export default function useAttendance() {
         });
         setRecordId(res.data._id);
         setTimeIn(res.data.timeIn);
+        setDate(res.data.date);
         setCanTimeIn(false);
         setCanTimeOut(true);
       } catch (err) {
-        console.error("Failed to time in:", err);
+        console.error("❌ Failed to time in:", err);
       }
     } else if (canTimeOut && recordId) {
       try {
         const res = await secureAxios.put(
           `${BASE_URL}/attendance/timeout/${recordId}`
         );
-        setTimeOut(res.data.timeOut);
+        setTimeOut(res.data.timeOut); // Raw ISO string
         setCanTimeOut(false);
       } catch (err) {
-        console.error("Failed to time out:", err);
+        console.error("❌ Failed to time out:", err);
       }
     }
   };
@@ -96,7 +109,7 @@ export default function useAttendance() {
       setAttendanceSubmitted(true);
       setSubmittedMessage(true);
     } catch (err) {
-      console.error("Failed to submit attendance:", err);
+      console.error("❌ Failed to submit attendance:", err);
     }
   };
 
@@ -113,5 +126,6 @@ export default function useAttendance() {
     canTimeOut,
     handleTimeClick,
     handleSubmit,
+    date,
   };
 }

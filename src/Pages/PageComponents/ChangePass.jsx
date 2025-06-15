@@ -7,7 +7,6 @@ import {
   signOut,
 } from "firebase/auth";
 import { useNavigate } from "react-router-dom";
-import ForgotPassword from "./ForgotPassword";
 import { FaEye, FaEyeSlash } from "react-icons/fa"; // ✅ import icons
 
 function ChangePass({ isOpen, closeModal }) {
@@ -49,15 +48,9 @@ function ChangePass({ isOpen, closeModal }) {
       setSuccess("Password updated successfully!");
       setCurrentPassword("");
       setNewPassword("");
-      signOut(auth); // 🔐 Optional: Log user out after password change
-      navigate("/SignIn");
     } catch (err) {
       console.error("Password update error:", err);
-      setError(
-        err.code === "auth/wrong-password"
-          ? "Current password is incorrect."
-          : "Failed to update password. Try again."
-      );
+      setError("Incorrect Current Password.");
     } finally {
       setLoading(false);
     }

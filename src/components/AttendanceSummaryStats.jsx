@@ -27,6 +27,10 @@ const useAttendanceSummaryStats = (firstName, lastName) => {
             r.denied === false
         );
 
+        const allUserRecords = data.filter(
+          (r) => r.firstName === firstName && r.lastName === lastName
+        );
+
         // Present Days
         const presentDays = userRecords.length;
 
@@ -49,32 +53,43 @@ const useAttendanceSummaryStats = (firstName, lastName) => {
           0
         );
 
-        // Absent Days (excluding weekends)
+        // Absent Days
         let absentDays = 0;
-        const uniqueAttendanceDates = new Set(
-          userRecords.map((r) => new Date(r.date).toDateString())
+        const recordDates = new Set(
+          allUserRecords.map((r) => new Date(r.date).toDateString())
         );
 
-        if (userRecords.length > 0) {
-          const sortedDates = userRecords
+        if (allUserRecords.length > 0) {
+          const sortedDates = allUserRecords
             .map((r) => new Date(r.date))
             .sort((a, b) => a - b);
 
           const startDate = new Date(sortedDates[0]);
-          const endDate = new Date();
-          endDate.setDate(endDate.getDate() - 1); // yesterday
+          const today = new Date();
+          const yesterday = new Date();
+          yesterday.setDate(today.getDate() - 1);
 
           for (
             let d = new Date(startDate);
-            d <= endDate;
+            d <= yesterday;
             d.setDate(d.getDate() + 1)
           ) {
             const dayOfWeek = d.getDay();
             const dateStr = d.toDateString();
 
-            if (dayOfWeek !== 0 && dayOfWeek !== 6 && !uniqueAttendanceDates.has(dateStr)) {
+            if (dayOfWeek !== 0 && dayOfWeek !== 6 && !recordDates.has(dateStr)) {
               absentDays++;
             }
+          }
+
+          // Check if today has a denied record
+          const todayStr = today.toDateString();
+          const todayDenied = allUserRecords.some(
+            (r) => new Date(r.date).toDateString() === todayStr && r.denied === true
+          );
+
+          if (todayDenied && today.getDay() !== 0 && today.getDay() !== 6) {
+            absentDays++;
           }
         }
 
@@ -94,8 +109,11 @@ const useAttendanceSummaryStats = (firstName, lastName) => {
   }, [firstName, lastName]);
 
   const to24Hr = (timeStr) => {
+    if (!timeStr || typeof timeStr !== "string" || !timeStr.includes(" ")) return "00:00:00";
     const [time, modifier] = timeStr.split(" ");
-    let [hours, minutes] = time.split(":").map(Number);
+    const parts = time.split(":");
+    if (parts.length < 2) return "00:00:00";
+    let [hours, minutes] = parts.map(Number);
     if (modifier === "PM" && hours !== 12) hours += 12;
     if (modifier === "AM" && hours === 12) hours = 0;
     return `${String(hours).padStart(2, "0")}:${String(minutes).padStart(2, "0")}:00`;

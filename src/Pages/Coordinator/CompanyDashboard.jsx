@@ -50,7 +50,10 @@ function CompanyDashboard() {
     currentPage * internsPerPage
   );
 
-  const absentInterns = present !== null ? interns.length - present : null;
+  const absentInterns =
+    present !== null && interns.length !== null
+      ? Math.max(0, interns.length - present)
+      : null;
 
 return (
     <div className="flex flex-col min-h-screen">
