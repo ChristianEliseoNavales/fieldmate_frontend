@@ -24,6 +24,16 @@ function ChangePass({ isOpen, closeModal }) {
     setError("");
     setSuccess("");
 
+    if (!currentPassword) {
+      setError("Please enter your current password.");
+      return;
+    }
+
+    if (newPassword.length < 8) {
+      setError("New password must be at least 8 characters.");
+      return;
+    }
+
     const user = auth.currentUser;
     if (!user || !user.email) {
       setError("User is not authenticated.");
@@ -39,6 +49,8 @@ function ChangePass({ isOpen, closeModal }) {
       setSuccess("Password updated successfully!");
       setCurrentPassword("");
       setNewPassword("");
+      signOut(auth); // 🔐 Optional: Log user out after password change
+      navigate("/SignIn");
     } catch (err) {
       console.error("Password update error:", err);
       setError(
@@ -50,6 +62,7 @@ function ChangePass({ isOpen, closeModal }) {
       setLoading(false);
     }
   };
+
 
   if (!isOpen) return null;
 

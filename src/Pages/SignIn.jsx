@@ -11,30 +11,43 @@ export default function LoginPage() {
   const [password, setPassword] = useState("");
   const [isForgotModalOpen, setIsForgotModalOpen] = useState(false);
   const [resetEmail, setResetEmail] = useState("");
+  const [loginError, setLoginError] = useState(""); // ✅ New error state
   const navigate = useNavigate();
 
+  const getFriendlyErrorMessage = (code) => {
+    switch (code) {
+      case "auth/invalid-credential":
+        return "Incorrect email or password. Please try again.";
+      default:
+        return "An unexpected error occurred. Please try again.";
+    }
+  };
+
   const handleLogin = async () => {
+    setLoginError(""); // Clear any previous error
     try {
       const role = await loginWithEmail(email, password);
       if (role === "Student") navigate("/StudentDashboard");
       else if (role === "Coordinator") navigate("/CompanyDashboard");
       else if (role === "Admin") navigate("/AdminDashboard");
-      else alert("Unknown role.");
+      else setLoginError("Unknown user role. Please contact support.");
     } catch (error) {
-      alert(error.message);
+      const friendlyMessage = getFriendlyErrorMessage(error.code);
+      setLoginError(friendlyMessage);
     }
   };
 
   const handleGoogleSignIn = async () => {
+    setLoginError("");
     try {
       const role = await loginWithGoogle();
       if (role === "Student") navigate("/StudentDashboard");
       else if (role === "Coordinator") navigate("/CompanyDashboard");
       else if (role === "Admin") navigate("/AdminDashboard");
-      else alert("Unknown role.");
+      else setLoginError("Unknown user role. Please contact support.");
     } catch (error) {
       console.error("Google Sign-in error:", error);
-      alert(error.message);
+      setLoginError("Google sign-in failed. Please try again.");
     }
   };
 
@@ -45,7 +58,7 @@ export default function LoginPage() {
       setIsForgotModalOpen(false);
       setResetEmail("");
     } catch (error) {
-      alert(error.message);
+      alert("Failed to send password reset. Please check the email.");
       setResetEmail("");
     }
   };
@@ -83,13 +96,15 @@ export default function LoginPage() {
               className="absolute right-4 top-1/2 transform -translate-y-1/2 cursor-pointer"
               onClick={() => setShowPassword(!showPassword)}
             >
-              {showPassword ? (
-                <FaEye size={20} />
-              ) : (
-                <FaEyeSlash size={20} />
-              )}
+              {showPassword ? <FaEye size={20} /> : <FaEyeSlash size={20} />}
             </span>
           </div>
+          
+          {/* 🔴 Error Message Display */}
+          {loginError && (
+            <p className="text-red-600 text-[16px] -mt-2">{loginError}</p>
+          )}
+
           <div
             className="text-[#005CFA] text-[18px] cursor-pointer"
             onClick={() => setIsForgotModalOpen(true)}
@@ -139,6 +154,7 @@ export default function LoginPage() {
           </p>
         </div>
       </div>
+
       <div className="w-1/2">
         <img
           src="/pictures/LOGIN.png"

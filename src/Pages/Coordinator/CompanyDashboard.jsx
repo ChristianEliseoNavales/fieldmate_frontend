@@ -112,7 +112,7 @@ return (
                     {loading ? (
                       <Skeleton width="150px" height="24px" />
                     ) : (
-                      `${company || "Intern"} Intern`
+                      `${company || "Coordinator"} Coordinator`
                     )}
                   </div>
                 </div>

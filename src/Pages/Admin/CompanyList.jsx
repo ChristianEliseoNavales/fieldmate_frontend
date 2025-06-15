@@ -171,72 +171,81 @@ function CompanyList() {
                 </tbody>
               </table>
 
-              {/* ---------------- Pagination (space always reserved) ---------------- */}
-              <div className="h-[72px] flex justify-center items-center">
-                {companies.length > pageSize && (
-                  <div className="flex gap-2 text-[20px] select-none">
-                    {/* Prev */}
-                    <button
-                      onClick={() => setCurrentPage((p) => Math.max(p - 1, 1))}
-                      disabled={currentPage === 1}
-                      className="p-2 disabled:opacity-40 cursor-pointer"
-                    >
-                      <FaChevronLeft />
-                    </button>
+            {/* ---------------- Pagination (space always reserved) ---------------- */}
+            <div className="h-[72px] flex justify-center items-center">
+              {companies.length > pageSize && (
+                <div className="flex gap-2 text-[20px] select-none">
+                  {/* Prev */}
+                  <button
+                    onClick={() => setCurrentPage((p) => Math.max(p - 1, 1))}
+                    disabled={currentPage === 1}
+                    className="p-2 disabled:opacity-40 cursor-pointer"
+                  >
+                    <FaChevronLeft />
+                  </button>
 
-                    {/* First */}
-                    <button
-                      onClick={() => setCurrentPage(1)}
-                      disabled={currentPage === 1}
-                      className="p-2 disabled:opacity-40 cursor-pointer"
-                    >
-                      <FaAngleDoubleLeft />
-                    </button>
+                  {/* First */}
+                  <button
+                    onClick={() => setCurrentPage(1)}
+                    disabled={currentPage === 1}
+                    className="p-2 disabled:opacity-40 cursor-pointer"
+                  >
+                    <FaAngleDoubleLeft />
+                  </button>
 
-                    {/* Page numbers (show up to 3 around current) */}
-                    {pageNumbers
-                      .filter(
-                        (num) =>
-                          num === 1 ||
-                          num === totalPages ||
-                          Math.abs(num - currentPage) <= 1
-                      )
-                      .map((num) => (
-                        <button
-                          key={num}
-                          onClick={() => setCurrentPage(num)}
-                          className={`px-3 py-1 rounded-full w-[40px] cursor-pointer ${
-                            num === currentPage
-                              ? "font-semibold text-white bg-[#1E3A8A]"
-                              : "bg-[#E0E0E0] hover:bg-[#D0D0D0]"
-                          }`}
-                        >
-                          {num}
-                        </button>
-                      ))}
+                  {/* Page numbers with ellipsis */}
+                  {pageNumbers
+                    .filter((num) => {
+                      return (
+                        num === 1 ||
+                        num === totalPages ||
+                        (num >= currentPage - 1 && num <= currentPage + 1)
+                      );
+                    })
+                    .map((num, idx, arr) => {
+                      const prevNum = arr[idx - 1];
+                      const showEllipsis = prevNum && num - prevNum > 1;
 
-                    {/* Last */}
-                    <button
-                      onClick={() => setCurrentPage(totalPages)}
-                      disabled={currentPage === totalPages}
-                      className="p-2 disabled:opacity-40 cursor-pointer"
-                    >
-                      <FaAngleDoubleRight />
-                    </button>
+                      return (
+                        <React.Fragment key={num}>
+                          {showEllipsis && (
+                            <span className="px-2 text-gray-500">...</span>
+                          )}
+                          <button
+                            onClick={() => setCurrentPage(num)}
+                            className={`px-3 py-1 rounded-full w-[40px] cursor-pointer ${
+                              num === currentPage
+                                ? "font-semibold text-white bg-[#1E3A8A]"
+                                : "bg-[#E0E0E0] hover:bg-[#D0D0D0]"
+                            }`}
+                          >
+                            {num}
+                          </button>
+                        </React.Fragment>
+                      );
+                    })}
 
-                    {/* Next */}
-                    <button
-                      onClick={() =>
-                        setCurrentPage((p) => Math.min(p + 1, totalPages))
-                      }
-                      disabled={currentPage === totalPages}
-                      className="p-2 disabled:opacity-40 cursor-pointer"
-                    >
-                      <FaChevronRight />
-                    </button>
-                  </div>
-                )}
-              </div>
+                  {/* Last */}
+                  <button
+                    onClick={() => setCurrentPage(totalPages)}
+                    disabled={currentPage === totalPages}
+                    className="p-2 disabled:opacity-40 cursor-pointer"
+                  >
+                    <FaAngleDoubleRight />
+                  </button>
+
+                  {/* Next */}
+                  <button
+                    onClick={() => setCurrentPage((p) => Math.min(p + 1, totalPages))}
+                    disabled={currentPage === totalPages}
+                    className="p-2 disabled:opacity-40 cursor-pointer"
+                  >
+                    <FaChevronRight />
+                  </button>
+                </div>
+              )}
+            </div>
+
             </div>
           </div>
 

@@ -31,39 +31,34 @@ function AdminDashboard() {
   const { firstName } = useAdminInfo(BASE_URL);
   const { companies, coordinators, loading } = useDashboardStats(BASE_URL);
 
-  /* ---------- helpers ---------- */
   const groupedCoordinators = groupCoordinatorsByCompany(coordinators);
   const totalCompanyPages = Math.ceil(companies.length / itemsPerPage) || 1;
-  const companyPageNumbers = Array.from(
-    { length: totalCompanyPages },
-    (_, i) => i + 1
-  );
+  const totalCoordinatorPages = selectedCoordinatorGroup
+    ? Math.ceil(groupedCoordinators[selectedCoordinatorGroup].length / itemsPerPage) || 1
+    : 1;
 
-  const totalCoordinatorPages =
-    selectedCoordinatorGroup
-      ? Math.ceil(
-          groupedCoordinators[selectedCoordinatorGroup].length / itemsPerPage
-        ) || 1
-      : 1;
-  const coordinatorPageNumbers = Array.from(
-    { length: totalCoordinatorPages },
-    (_, i) => i + 1
-  );
+  const renderPageNumbers = (current, total) => {
+    const pages = [];
+    if (total <= 5) {
+      for (let i = 1; i <= total; i++) pages.push(i);
+    } else {
+      pages.push(1);
+      if (current > 3) pages.push("...");
+      const rangeStart = Math.max(2, current - 1);
+      const rangeEnd = Math.min(total - 1, current + 1);
+      for (let i = rangeStart; i <= rangeEnd; i++) pages.push(i);
+      if (current < total - 2) pages.push("...");
+      pages.push(total);
+    }
+    return pages;
+  };
 
   return (
     <div className="flex min-h-screen bg-[#F4F6F8]">
-      <AdminSidebar
-        isExpanded={isSidebarExpanded}
-        setIsExpanded={setIsSidebarExpanded}
-      />
-      <div
-        className={`flex flex-col flex-1 transition-all duration-300 ease-in-out ${
-          isSidebarExpanded ? "ml-[400px]" : "ml-[106px]"
-        }`}
-      >
-        <AdminHeader isExpanded={isSidebarExpanded}/>
+      <AdminSidebar isExpanded={isSidebarExpanded} setIsExpanded={setIsSidebarExpanded} />
+      <div className={`flex flex-col flex-1 transition-all duration-300 ease-in-out ${isSidebarExpanded ? "ml-[400px]" : "ml-[106px]"}`}>
+        <AdminHeader isExpanded={isSidebarExpanded} />
         <div className="flex-1 flex flex-col">
-          {/* ----------- greeting card ----------- */}
           <div className="mt-25 px-5">
             <div className="bg-white p-5 rounded-[10px] shadow-sm flex items-center justify-between border border-[#D9D9D9]">
               <div className="flex items-center gap-4 h-[118px]">
@@ -72,11 +67,7 @@ function AdminDashboard() {
                 </div>
                 <div>
                   <div className="text-[30px] font-semibold text-gray-800">
-                    {loading ? (
-                      <Skeleton width="200px" height="36px" />
-                    ) : (
-                      `Hello, ${firstName || "Admin"}!`
-                    )}
+                    {loading ? <Skeleton width="200px" height="36px" /> : `Hello, ${firstName || "Admin"}!`}
                   </div>
                   <p className="text-[18px] text-gray-600">Admin</p>
                 </div>
@@ -88,120 +79,60 @@ function AdminDashboard() {
             {/* ----------- totals ----------- */}
             <div className="space-y-6">
               <div className="bg-white p-6 rounded-[10px] shadow-sm border border-[#D9D9D9] text-center">
-                <p className="text-[24px] font-semibold text-gray-800">
-                  Total Number of Companies
-                </p>
+                <p className="text-[24px] font-semibold text-gray-800">Total Number of Companies</p>
                 <div className="flex justify-center items-center h-[205px] text-[140px] font-bold text-[#006fd6] mt-4 bg-[#FAFAFA] rounded-[8px] border border-[#D9D9D9]">
-                  {loading ? (
-                    <Skeleton width="120px" height="150px" />
-                  ) : (
-                    companies.length
-                  )}
+                  {loading ? <Skeleton width="120px" height="150px" /> : companies.length}
                 </div>
               </div>
-
               <div className="bg-white p-6 rounded-[10px] shadow-sm border border-[#D9D9D9] text-center">
-                <p className="text-[24px] font-semibold text-gray-800">
-                  Total Number of Company Coordinators
-                </p>
+                <p className="text-[24px] font-semibold text-gray-800">Total Number of Company Coordinators</p>
                 <div className="flex justify-center items-center h-[205px] text-[140px] font-bold text-[#006fd6] mt-4 bg-[#FAFAFA] rounded-[8px] border border-[#D9D9D9]">
-                  {loading ? (
-                    <Skeleton width="120px" height="150px" />
-                  ) : (
-                    coordinators.length
-                  )}
+                  {loading ? <Skeleton width="120px" height="150px" /> : coordinators.length}
                 </div>
               </div>
             </div>
 
             {/* ----------- Company List ----------- */}
             <div className="bg-white p-4 rounded-[10px] shadow-sm border border-[#D9D9D9] relative h-full flex flex-col justify-between">
-              <p className="bg-[#243D73] text-white text-[22px] font-semibold p-4 rounded mb-4">
-                Company List
-              </p>
-
+              <p className="bg-[#243D73] text-white text-[22px] font-semibold p-4 rounded mb-4">Company List</p>
               <div className="flex-1 overflow-y-auto">
                 <ul className="space-y-2 text-[20px] text-gray-800">
                   {loading ? (
                     <Skeleton width="90%" height="30px" />
                   ) : (
-                    companies
-                      .slice(
-                        (companyPage - 1) * itemsPerPage,
-                        companyPage * itemsPerPage
-                      )
-                      .map((c, idx) => (
-                        <li
-                          className="mx-4 pb-2 border-b border-[#E0E0E0]"
-                          key={c._id}
-                        >
-                          {(companyPage - 1) * itemsPerPage + idx + 1}. {c.name}
-                        </li>
-                      ))
+                    companies.slice((companyPage - 1) * itemsPerPage, companyPage * itemsPerPage).map((c, idx) => (
+                      <li className="mx-4 pb-2 border-b border-[#E0E0E0]" key={c._id}>
+                        {(companyPage - 1) * itemsPerPage + idx + 1}. {c.name}
+                      </li>
+                    ))
                   )}
                 </ul>
               </div>
 
-              {/* pagination */}
               {companies.length > itemsPerPage && !loading && (
                 <div className="absolute bottom-0 left-0 right-0 flex justify-center gap-2 text-[20px] mb-5 select-none">
-                  {/* prev */}
-                  <button
-                    onClick={() =>
-                      setCompanyPage((prev) => Math.max(prev - 1, 1))
-                    }
-                    disabled={companyPage === 1}
-                    className="p-2 disabled:opacity-40 cursor-pointer"
-                  >
+                  <button onClick={() => setCompanyPage((prev) => Math.max(prev - 1, 1))} disabled={companyPage === 1} className="p-2 disabled:opacity-40 cursor-pointer">
                     <FaChevronLeft />
                   </button>
-                  {/* first */}
-                  <button
-                    onClick={() => setCompanyPage(1)}
-                    disabled={companyPage === 1}
-                    className="p-2 disabled:opacity-40 cursor-pointer"
-                  >
+                  <button onClick={() => setCompanyPage(1)} disabled={companyPage === 1} className="p-2 disabled:opacity-40 cursor-pointer">
                     <FaAngleDoubleLeft />
                   </button>
-                  {/* numbers */}
-                  {companyPageNumbers
-                    .filter(
-                      (n) =>
-                        n === 1 ||
-                        n === totalCompanyPages ||
-                        Math.abs(n - companyPage) <= 1
-                    )
-                    .map((n) => (
-                      <button
-                        key={n}
-                        onClick={() => setCompanyPage(n)}
-                        className={`px-3 py-1 rounded-full w-[40px] cursor-pointer ${
-                          n === companyPage
-                            ? "font-semibold text-white bg-[#1E3A8A]"
-                            : "bg-[#E0E0E0] hover:bg-[#D0D0D0]"
-                        }`}
-                      >
-                        {n}
-                      </button>
-                    ))}
-                  {/* last */}
-                  <button
-                    onClick={() => setCompanyPage(totalCompanyPages)}
-                    disabled={companyPage === totalCompanyPages}
-                    className="p-2 disabled:opacity-40 cursor-pointer"
-                  >
+                  {renderPageNumbers(companyPage, totalCompanyPages).map((n, idx) => (
+                    <button
+                      key={idx}
+                      disabled={n === "..."}
+                      onClick={() => typeof n === "number" && setCompanyPage(n)}
+                      className={`px-3 py-1 rounded-full w-[40px] cursor-pointer ${
+                        n === companyPage ? "font-semibold text-white bg-[#1E3A8A]" : n === "..." ? "cursor-default" : "bg-[#E0E0E0] hover:bg-[#D0D0D0]"
+                      }`}
+                    >
+                      {n}
+                    </button>
+                  ))}
+                  <button onClick={() => setCompanyPage(totalCompanyPages)} disabled={companyPage === totalCompanyPages} className="p-2 disabled:opacity-40 cursor-pointer">
                     <FaAngleDoubleRight />
                   </button>
-                  {/* next */}
-                  <button
-                    onClick={() =>
-                      setCompanyPage((prev) =>
-                        Math.min(prev + 1, totalCompanyPages)
-                      )
-                    }
-                    disabled={companyPage === totalCompanyPages}
-                    className="p-2 disabled:opacity-40 cursor-pointer"
-                  >
+                  <button onClick={() => setCompanyPage((prev) => Math.min(prev + 1, totalCompanyPages))} disabled={companyPage === totalCompanyPages} className="p-2 disabled:opacity-40 cursor-pointer">
                     <FaChevronRight />
                   </button>
                 </div>

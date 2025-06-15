@@ -81,7 +81,7 @@ function CompanyHeader({ isExpanded }) {
 
   return (
     <header
-      className={`fixed top-0 z-40 flex justify-between items-center h-[100px] px-10 bg-[#F5F6FA] transition-shadow duration-300 ${
+      className={`fixed top-0 z-40 flex justify-between items-center h-[100px] px-10 bg-[#F9FAFD] transition-shadow duration-300 ${
         scrolled ? "shadow-md" : ""
       }`}
       style={{

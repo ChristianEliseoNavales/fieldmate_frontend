@@ -52,6 +52,12 @@ function ForgotPassword({ isOpen, onClose, email, setEmail }) {
 
     try {
       if (step === "email") {
+        const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+        if (!emailRegex.test(email)) {
+          setMessage("Please enter a valid email address.");
+          return;
+        }
+
         await axios.post(`${BASE_URL}/auth/request-otp`, { email });
         setStep("otp");
       } else if (step === "otp") {
@@ -64,6 +70,12 @@ function ForgotPassword({ isOpen, onClose, email, setEmail }) {
         await axios.post(`${BASE_URL}/auth/verify-otp`, { email, otp: enteredOtp });
         setStep("reset");
       } else {
+        // Validate password requirements
+        if (newPassword.length < 8) {
+          setMessage("New password must be at least 8 characters.");
+          return;
+        }
+
         if (newPassword !== confirmPassword) {
           setMessage("Passwords do not match.");
           return;
@@ -92,6 +104,7 @@ function ForgotPassword({ isOpen, onClose, email, setEmail }) {
       setLoading(false);
     }
   };
+
 
   const handleBack = () => {
     if (maxedOut || step === "success") return;

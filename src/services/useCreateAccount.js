@@ -21,6 +21,7 @@ export default function useCreateAccount() {
   const [companies, setCompanies] = useState([]);
 
   const [error, setError] = useState("");
+  const [errorFields, setErrorFields] = useState({});
 
   const navigate = useNavigate();
   const BASE_URL = import.meta.env.VITE_API_BASE_URL;
@@ -44,14 +45,68 @@ export default function useCreateAccount() {
   const handleContinue = () => setStep(2);
   const handleBack = () => setStep(1);
 
+  const validateStep1 = () => {
+    const newErrors = {};
+    if (!firstName) newErrors.firstName = true;
+    if (!lastName) newErrors.lastName = true;
+    if (!email) newErrors.email = true;
+    if (!role) newErrors.role = true;
+    if (role === "Coordinator" && !supervisorNumber) newErrors.supervisorNumber = true;
+
+    const emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    if (email && !emailPattern.test(email)) {
+      newErrors.email = true;
+      setError("Please enter a valid email address.");
+    }
+
+    if (Object.keys(newErrors).length > 0) {
+      setError((prev) => prev || "Please fill out all required fields.");
+      setErrorFields(newErrors);
+      return false;
+    }
+
+    setError("");
+    setErrorFields({});
+    return true;
+  };
+
+  const validateStep2 = () => {
+    const newErrors = {};
+    if (!company) newErrors.company = true;
+    if (!arrangement) newErrors.arrangement = true;
+    if (!password) newErrors.password = true;
+    if (!confirmPassword) newErrors.confirmPassword = true;
+
+    if (password && password.length < 8) {
+      newErrors.password = true;
+      setError("Password must be at least 8 characters.");
+    }
+
+    if (password && confirmPassword && password !== confirmPassword) {
+      newErrors.password = true;
+      newErrors.confirmPassword = true;
+      setError("Passwords do not match.");
+    }
+
+    if (Object.keys(newErrors).length > 0) {
+      setError((prev) => prev || "Please fill out all required fields.");
+      setErrorFields(newErrors);
+      return false;
+    }
+
+    setError("");
+    setErrorFields({});
+    return true;
+  };
+
   const handleSignup = async () => {
     if (password !== confirmPassword) {
-      BASE_URL("Passwords do not match.");
+      setError("Passwords do not match.");
       return;
     }
 
     if (!["On-site", "Remote", "Hybrid"].includes(arrangement)) {
-      BASE_URL("Please select a valid workplace arrangement.");
+      setError("Please select a valid workplace arrangement.");
       return;
     }
 
@@ -79,14 +134,26 @@ export default function useCreateAccount() {
       const data = await res.json();
 
       if (!res.ok) {
-        await user.delete(); // Cleanup on failure
+        await user.delete();
         throw new Error(data.message || "Failed to register user in backend.");
       }
 
       navigate("/SignIn");
     } catch (error) {
       console.error("Signup error:", error.message);
-      BASE_URL(error.message);
+      setError(error.message); 
+    }
+  };
+
+  const onContinue = () => {
+    if (validateStep1()) {
+      handleContinue();
+    }
+  };
+
+  const onSignup = () => {
+    if (validateStep2()) {
+      handleSignup();
     }
   };
 
@@ -123,8 +190,14 @@ export default function useCreateAccount() {
     handleBack,
     handleSignup,
     login,
+    onContinue,
+    onSignup,
 
+    validateStep1,
+    validateStep2,
     error,
     setError,
+    errorFields,
+    setErrorFields,
   };
 }
