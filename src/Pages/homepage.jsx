@@ -41,6 +41,29 @@ function Homepage() {
     return () => window.removeEventListener("scroll", handleScroll);
   }, []);
 
+  const events = [
+    {
+      date: "FEBRUARY 10",
+      title: "BSIS & ACT Program Orientation",
+    },
+    {
+      date: "FEBRUARY 24–28",
+      title: "La Verdad Christian College 26th Foundation Week",
+    },
+    {
+      date: "APRIL 7–14",
+      title: "Higher Education Midterm Exams",
+    },
+    {
+      date: "APRIL 21–25",
+      title: "8th ICT Week Celebration",
+    },
+    {
+      date: "APRIL 28",
+      title: "Higher Education - Recognition day",
+    },
+  ];
+
   const contentMap = {
     lvcc: {
       title: "LA VERDAD CHRISTIAN COLLEGE",
@@ -245,7 +268,7 @@ function Homepage() {
       </div>
 
       {/*  Skew Section */}
-      <div className="relative w-full h-110 overflow-hidden">
+      <div className="mt-[-50px] relative w-full h-110 overflow-hidden">
         <div className="absolute inset-0 bg-[#1E3A8A] transform skew-y-[10deg] origin-top-left"></div>
       </div>
 
@@ -321,28 +344,24 @@ function Homepage() {
             </h3>
             <p className="border-b border-2 text-[#959494] mx-5"></p>
             <div className="mt-4 space-y-4">
-              {Array(4)
-                .fill()
-                .map((_, i) => (
-                  <div
-                    key={i}
-                    className="flex items-center bg-[#F1F1F1] justify-between py-8 px-4 border-1 border-[#494949] rounded-md w-[630px]"
-                  >
-                    <div className="flex items-center space-x-4">
-                      <div className="">
-                        <CiCalendar size={66} />
-                      </div>
-                      <div>
-                        <h4 className="text-[26px] font-bold text-[#1F3463]">
-                          FEBRUARY 24–28
-                        </h4>
-                        <p className="text-[20px] ">
-                          La Verdad Christian College 26th Foundation Week
-                        </p>
-                      </div>
+              {events.map((event, i) => (
+                <div
+                  key={i}
+                  className="flex items-center bg-[#F1F1F1] justify-between py-[17px] px-4 border-1 border-[#494949] rounded-md w-[630px]"
+                >
+                  <div className="flex items-center space-x-4">
+                    <div>
+                      <CiCalendar size={66} />
+                    </div>
+                    <div>
+                      <h4 className="text-[26px] font-bold text-[#1F3463]">
+                        {event.date}
+                      </h4>
+                      <p className="text-[20px]">{event.title}</p>
                     </div>
                   </div>
-                ))}
+                </div>
+              ))}
             </div>
           </div>
         </div>
@@ -375,10 +394,10 @@ function Homepage() {
                 <a href="https://www.facebook.com/lvcc.apalit" target="_blank" rel="noopener noreferrer" className="text-white hover:text-gray-300">
                   <FaFacebookF size={38} />
                 </a>
-                <a href="#" className="text-white hover:text-gray-300">
+                <a href="https://www.instagram.com/explore/locations/307272513/la-verdad-christian-college/" target="_blank" rel="noopener noreferrer" className="text-white hover:text-gray-300">
                   <FaInstagram size={38} />
                 </a>
-                <a href="#" className="text-white hover:text-gray-300">
+                <a href="https://x.com/laverdadapalit" target="_blank" rel="noopener noreferrer" className="text-white hover:text-gray-300">
                   <FaTwitter size={38} />
                 </a>
               </div>
