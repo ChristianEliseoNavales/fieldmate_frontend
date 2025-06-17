@@ -117,11 +117,11 @@ function StudentDashboard() {
                         />
                         <path fill="none" stroke="#1F3463" strokeWidth="4"
                           strokeDasharray="100, 100"
-                          strokeDashoffset={100 - (summary.remainingDays / 56) * 100}
+                          strokeDashoffset={100 - (summary.remainingDays / 63) * 100}
                           d="M18 2.0845a 15.9155 15.9155 0 0 1 0 31.831a 15.9155 15.9155 0 0 1 0 -31.831"
                         />
                         <text x="18" y="20" textAnchor="middle" fill="#1F3463" fontSize="6" fontWeight="bold">
-                          {summary.remainingDays}/56
+                          {summary.remainingDays}/63
                         </text>
                       </svg>
                     )}

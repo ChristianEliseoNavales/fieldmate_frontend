@@ -115,7 +115,7 @@ function StandardPagination({
   return (
     <div className={`flex items-center justify-center ${styles.spacing} ${styles.container} select-none ${className}`}>
       {/* Page X of Y */}
-      <div className="flex items-center gap-2">
+      <div className="flex items-center gap-2 mr-10">
         <span>Page</span>
         <input
           type="text"
