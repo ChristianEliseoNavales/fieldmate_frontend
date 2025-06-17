@@ -6,12 +6,7 @@ import {
   LuChevronDown,
   LuChevronUp,
 } from "react-icons/lu";
-import {
-  FaChevronLeft,
-  FaChevronRight,
-  FaAngleDoubleLeft,
-  FaAngleDoubleRight,
-} from "react-icons/fa";
+import StandardPagination from "../../components/StandardPagination";
 import Footer from "../PageComponents/footer";
 import Skeleton from "../../components/Skeleton";
 import useAdminInfo from "../../services/admin/useAdminInfo";
@@ -37,21 +32,7 @@ function AdminDashboard() {
     ? Math.ceil(groupedCoordinators[selectedCoordinatorGroup].length / itemsPerPage) || 1
     : 1;
 
-  const renderPageNumbers = (current, total) => {
-    const pages = [];
-    if (total <= 5) {
-      for (let i = 1; i <= total; i++) pages.push(i);
-    } else {
-      pages.push(1);
-      if (current > 3) pages.push("...");
-      const rangeStart = Math.max(2, current - 1);
-      const rangeEnd = Math.min(total - 1, current + 1);
-      for (let i = rangeStart; i <= rangeEnd; i++) pages.push(i);
-      if (current < total - 2) pages.push("...");
-      pages.push(total);
-    }
-    return pages;
-  };
+
 
   return (
     <div className="flex min-h-screen bg-[#F4F6F8]">
@@ -109,32 +90,15 @@ function AdminDashboard() {
                 </ul>
               </div>
 
-              {companies.length > itemsPerPage && !loading && (
-                <div className="absolute bottom-0 left-0 right-0 flex justify-center gap-2 text-[20px] mb-5 select-none">
-                  <button onClick={() => setCompanyPage((prev) => Math.max(prev - 1, 1))} disabled={companyPage === 1} className="p-2 disabled:opacity-40 cursor-pointer">
-                    <FaChevronLeft />
-                  </button>
-                  <button onClick={() => setCompanyPage(1)} disabled={companyPage === 1} className="p-2 disabled:opacity-40 cursor-pointer">
-                    <FaAngleDoubleLeft />
-                  </button>
-                  {renderPageNumbers(companyPage, totalCompanyPages).map((n, idx) => (
-                    <button
-                      key={idx}
-                      disabled={n === "..."}
-                      onClick={() => typeof n === "number" && setCompanyPage(n)}
-                      className={`px-3 py-1 rounded-full w-[40px] cursor-pointer ${
-                        n === companyPage ? "font-semibold text-white bg-[#1E3A8A]" : n === "..." ? "cursor-default" : "bg-[#E0E0E0] hover:bg-[#D0D0D0]"
-                      }`}
-                    >
-                      {n}
-                    </button>
-                  ))}
-                  <button onClick={() => setCompanyPage(totalCompanyPages)} disabled={companyPage === totalCompanyPages} className="p-2 disabled:opacity-40 cursor-pointer">
-                    <FaAngleDoubleRight />
-                  </button>
-                  <button onClick={() => setCompanyPage((prev) => Math.min(prev + 1, totalCompanyPages))} disabled={companyPage === totalCompanyPages} className="p-2 disabled:opacity-40 cursor-pointer">
-                    <FaChevronRight />
-                  </button>
+              {!loading && (
+                <div className="absolute bottom-0 left-0 right-0 flex justify-center mb-5">
+                  <StandardPagination
+                    currentPage={companyPage}
+                    totalPages={totalCompanyPages}
+                    onPageChange={setCompanyPage}
+                    size="medium"
+                    className="text-[18px]"
+                  />
                 </div>
               )}
             </div>
@@ -198,72 +162,15 @@ function AdminDashboard() {
                     ))}
 
                   {/* pagination */}
-                  {groupedCoordinators[selectedCoordinatorGroup].length >
-                    itemsPerPage && (
-                    <div className="flex justify-center gap-2 mt-4 text-[16px] select-none">
-                      {/* prev */}
-                      <button
-                        onClick={() =>
-                          setCoordinatorPage((p) => Math.max(p - 1, 1))
-                        }
-                        disabled={coordinatorPage === 1}
-                        className="p-2 hover:bg-[#D0D0D0] disabled:opacity-40"
-                      >
-                        <FaChevronLeft />
-                      </button>
-                      {/* first */}
-                      <button
-                        onClick={() => setCoordinatorPage(1)}
-                        disabled={coordinatorPage === 1}
-                        className="p-2 hover:bg-[#D0D0D0] disabled:opacity-40"
-                      >
-                        <FaAngleDoubleLeft />
-                      </button>
-                      {/* numbers */}
-                      {coordinatorPageNumbers
-                        .filter(
-                          (n) =>
-                            n === 1 ||
-                            n === totalCoordinatorPages ||
-                            Math.abs(n - coordinatorPage) <= 1
-                        )
-                        .map((n) => (
-                          <button
-                            key={n}
-                            onClick={() => setCoordinatorPage(n)}
-                            className={`px-3 py-1 rounded-full w-[40px] ${
-                              n === coordinatorPage
-                                ? "font-semibold text-white bg-[#1E3A8A]"
-                                : "bg-[#E0E0E0] hover:bg-[#D0D0D0]"
-                            }`}
-                          >
-                            {n}
-                          </button>
-                        ))}
-                      {/* last */}
-                      <button
-                        onClick={() =>
-                          setCoordinatorPage(totalCoordinatorPages)
-                        }
-                        disabled={coordinatorPage === totalCoordinatorPages}
-                        className="p-2 bg-[#E0E0E0] rounded-full hover:bg-[#D0D0D0] disabled:opacity-40"
-                      >
-                        <FaAngleDoubleRight />
-                      </button>
-                      {/* next */}
-                      <button
-                        onClick={() =>
-                          setCoordinatorPage((p) =>
-                            Math.min(p + 1, totalCoordinatorPages)
-                          )
-                        }
-                        disabled={coordinatorPage === totalCoordinatorPages}
-                        className="p-2 bg-[#E0E0E0] rounded-full hover:bg-[#D0D0D0] disabled:opacity-40"
-                      >
-                        <FaChevronRight />
-                      </button>
-                    </div>
-                  )}
+                  <div className="flex justify-center mt-4">
+                    <StandardPagination
+                      currentPage={coordinatorPage}
+                      totalPages={totalCoordinatorPages}
+                      onPageChange={setCoordinatorPage}
+                      size="small"
+                      className="text-[14px]"
+                    />
+                  </div>
                 </div>
               )}
             </div>

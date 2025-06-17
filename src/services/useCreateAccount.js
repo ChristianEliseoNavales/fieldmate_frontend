@@ -11,11 +11,11 @@ export default function useCreateAccount() {
   const [firstName, setFirstName] = useState("");
   const [lastName, setLastName] = useState("");
   const [email, setEmail] = useState("");
-  const [role, setRole] = useState("Student");
+  const [role, setRole] = useState("");
   const [supervisorNumber, setSupervisorNumber] = useState("");
 
   const [company, setCompany] = useState("");
-  const [arrangement, setArrangement] = useState("On-site");
+  const [arrangement, setArrangement] = useState("");
   const [password, setPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
   const [companies, setCompanies] = useState([]);
@@ -32,9 +32,6 @@ export default function useCreateAccount() {
         const res = await fetch(`${BASE_URL}/companies`);
         const data = await res.json();
         setCompanies(data);
-        if (data.length > 0) {
-          setCompany(data[0].name);
-        }
       } catch (err) {
         console.error("Error fetching companies:", err);
       }

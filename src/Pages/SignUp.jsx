@@ -127,10 +127,11 @@ export default function CreateAccount() {
                 ref={roleRef}
                 value={role}
                 onChange={(e) => setRole(e.target.value)}
-                className={`cursor-pointer appearance-none border text-[#5F5454] text-[20px] rounded p-3 w-full pr-10 ${errorFields.role ? "border-red-500" : "border-[#D3CECE]"}`}
+                className={`cursor-pointer appearance-none border text-[20px] rounded p-3 w-full pr-10 ${errorFields.role ? "border-red-500" : "border-[#D3CECE]"} ${role === "" ? "text-[#B3B3B3]" : "text-[#5F5454]"}`}
               >
-                <option>Student</option>
-                <option>Coordinator</option>
+                <option value="" disabled hidden>Select Role</option>
+                <option value="Student">Student</option>
+                <option value="Coordinator">Coordinator</option>
               </select>
               <FaChevronDown className="absolute right-4 top-1/2 transform -translate-y-1/2 text-[#B3B3B3] pointer-events-none" />
             </div>
@@ -160,8 +161,9 @@ export default function CreateAccount() {
                 ref={companyRef}
                 value={company}
                 onChange={(e) => setCompany(e.target.value)}
-                className={`appearance-none border text-[#5F5454] bg-white text-[20px] rounded p-3 w-full pr-10 ${errorFields.company ? "border-red-500" : "border-[#D3CECE]"}`}
+                className={`appearance-none border bg-white text-[20px] rounded p-3 w-full pr-10 ${errorFields.company ? "border-red-500" : "border-[#D3CECE]"} ${company === "" ? "text-[#B3B3B3]" : "text-[#5F5454]"}`}
               >
+                <option value="" disabled hidden>Select Company</option>
                 {companies.map((comp) => (
                   <option key={comp._id} value={comp.name}>{comp.name}</option>
                 ))}
@@ -174,11 +176,12 @@ export default function CreateAccount() {
                 ref={arrangementRef}
                 value={arrangement}
                 onChange={(e) => setArrangement(e.target.value)}
-                className={`appearance-none border text-[#5F5454] bg-white text-[20px] rounded p-3 w-full pr-10 ${errorFields.arrangement ? "border-red-500" : "border-[#D3CECE]"}`}
+                className={`appearance-none border bg-white text-[20px] rounded p-3 w-full pr-10 ${errorFields.arrangement ? "border-red-500" : "border-[#D3CECE]"} ${arrangement === "" ? "text-[#B3B3B3]" : "text-[#5F5454]"}`}
               >
-                <option>On-site</option>
-                <option>Remote</option>
-                <option>Hybrid</option>
+                <option value="" disabled hidden>Select Arrangement</option>
+                <option value="On-site">On-site</option>
+                <option value="Remote">Remote</option>
+                <option value="Hybrid">Hybrid</option>
               </select>
               <FaChevronDown className="absolute right-4 top-1/2 transform -translate-y-1/2 text-[#B3B3B3] pointer-events-none" />
             </div>

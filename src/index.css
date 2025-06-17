@@ -65,6 +65,42 @@ body {
   animation: bounce 0.6s infinite;
 }
 
+/* TipTap Editor Styles */
+.ProseMirror {
+  outline: none;
+}
 
+.ProseMirror ul.bullet-list {
+  list-style-type: disc;
+  margin-left: 1.5rem;
+  padding-left: 0;
+}
 
-    
+.ProseMirror ol.ordered-list {
+  list-style-type: decimal;
+  margin-left: 1.5rem;
+  padding-left: 0;
+}
+
+.ProseMirror ul.bullet-list li,
+.ProseMirror ol.ordered-list li {
+  margin: 0.25rem 0;
+  padding-left: 0.5rem;
+}
+
+.ProseMirror ul.bullet-list li::marker,
+.ProseMirror ol.ordered-list li::marker {
+  color: #374151;
+}
+
+/* Nested lists */
+.ProseMirror ul.bullet-list ul.bullet-list {
+  list-style-type: circle;
+  margin-top: 0.25rem;
+  margin-bottom: 0.25rem;
+}
+
+.ProseMirror ul.bullet-list ul.bullet-list ul.bullet-list {
+  list-style-type: square;
+}
+
