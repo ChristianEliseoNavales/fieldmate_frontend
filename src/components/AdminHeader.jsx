@@ -1,12 +1,12 @@
 import React, { useState, useEffect } from "react";
 import { useLocation } from "react-router-dom";
-import { auth } from "../../firebase/firebase";
+import { auth, } from "../firebase/firebase";
 import { onAuthStateChanged } from "firebase/auth";
 import UserProfileModal from "./UserProfileModal";
-import Skeleton from "../../components/Skeleton";
-import secureAxios from "../../services/secureAxios"; // <-- Import secureAxios
+import Skeleton from "./Skeleton";
+import secureAxios from "../services/secureAxios";
 
-function Header({ isExpanded }) {
+function AdminHeader({ isExpanded }) {
   const location = useLocation();
   const [firstName, setFirstName] = useState("");
   const [lastName, setLastName] = useState("");
@@ -16,11 +16,8 @@ function Header({ isExpanded }) {
   const BASE_URL = import.meta.env.VITE_API_BASE_URL;
 
   const pageTitles = {
-    "/StudentDashboard": "Student Dashboard",
-    "/Attendance": "Attendance Submission",
-    "/Resources": "Role-Based Resources",
-    "/Journal": "Daily Journal",
-    "/ViewJournal": "Daily Journal",
+    "/AdminDashboard": "Admin Dashboard",
+    "/CompanyList": "Company List",
   };
 
   const title = pageTitles[location.pathname] || "Dashboard";
@@ -114,4 +111,4 @@ function Header({ isExpanded }) {
   );
 }
 
-export default Header;
+export default AdminHeader;

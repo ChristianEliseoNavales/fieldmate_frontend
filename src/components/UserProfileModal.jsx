@@ -2,11 +2,11 @@ import React, { useState, useRef, useEffect } from "react";
 import { FaChevronDown, FaCog, FaKey, FaSignOutAlt } from "react-icons/fa";
 import AccountSettingsModal from './AccountSettingModal';
 import ChangePass from './ChangePass'; 
-import { auth } from '../../firebase/firebase';
+import { auth } from '../firebase/firebase';
 import { onAuthStateChanged, signOut } from "firebase/auth";
 import LogoutConfirmationModal from "./LogoutConfirmationModal";
 import { useNavigate } from "react-router-dom";
-import secureAxios from '../../services/secureAxios';  // <-- import secureAxios
+import secureAxios from '../services/secureAxios';  // <-- import secureAxios
 
 const UserProfileModal = ({ name, initials }) => {
   const [isOpen, setIsOpen] = useState(false);

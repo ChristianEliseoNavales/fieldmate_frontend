@@ -6,7 +6,7 @@ import LoadingPage from './Pages/LoadingPage';
 
 // Public
 const Homepage = lazy(() => import('./Pages/homepage'));
-const Slider = lazy(() => import('./Pages/PageComponents/slider'));
+const Slider = lazy(() => import('./components/slider'));
 const SignUp = lazy(() => import('./Pages/SignUp'));
 const SignIn = lazy(() => import('./Pages/SignIn'));
 

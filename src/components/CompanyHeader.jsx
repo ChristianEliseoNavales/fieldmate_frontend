@@ -1,10 +1,10 @@
 import React, { useState, useEffect } from "react";
 import { useLocation } from "react-router-dom";
-import { auth } from "../../firebase/firebase";
+import { auth } from "../firebase/firebase";
 import { onAuthStateChanged } from "firebase/auth";
 import UserProfileModal from "./UserProfileModal";
-import Skeleton from "../../components/Skeleton";
-import secureAxios from "../../services/secureAxios";  // <-- import secureAxios
+import Skeleton from "./Skeleton";
+import secureAxios from "../services/secureAxios";  // <-- import secureAxios
 
 function CompanyHeader({ isExpanded }) {
   const location = useLocation();

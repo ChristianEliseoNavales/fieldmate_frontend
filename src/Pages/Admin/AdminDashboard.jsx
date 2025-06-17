@@ -1,13 +1,13 @@
 import React, { useState } from "react";
-import AdminSidebar from "../PageComponents/AdminSidebar";
-import AdminHeader from "../PageComponents/AdminHeader";
+import AdminSidebar from "../../components/AdminSidebar";
+import AdminHeader from "../../components/AdminHeader";
 import {
   LuUser,
   LuChevronDown,
   LuChevronUp,
 } from "react-icons/lu";
 import StandardPagination from "../../components/StandardPagination";
-import Footer from "../PageComponents/footer";
+import Footer from "../../components/footer";
 import Skeleton from "../../components/Skeleton";
 import useAdminInfo from "../../services/admin/useAdminInfo";
 import useDashboardStats from "../../services/admin/useDashboardStats";

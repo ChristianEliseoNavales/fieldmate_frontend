@@ -1,7 +1,7 @@
 import React from 'react';
-import CompanySidebar from '../PageComponents/CompanySidebar';
-import CompanyHeader from '../PageComponents/CompanyHeader';
-import Footer from '../PageComponents/footer';
+import CompanySidebar from '../../components/CompanySidebar';
+import CompanyHeader from '../../components/CompanyHeader';
+import Footer from '../../components/footer';
 import Skeleton from '../../components/Skeleton';
 import { IoArrowBackOutline } from "react-icons/io5";
 import useCompanyViewJournal from '../../services/coordinator/useCompanyViewJournal';

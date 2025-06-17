@@ -14,9 +14,9 @@ import {
   Redo,
 } from "lucide-react";
 import { FiAlertTriangle, FiCheckCircle } from "react-icons/fi";
-import Header from "../PageComponents/header";
-import Footer from "../PageComponents/footer";
-import Sidebar from "../PageComponents/sidebar";
+import Header from "../../components/header";
+import Footer from "../../components/footer";
+import Sidebar from "../../components/sidebar";
 
 function Journal() {
   const {

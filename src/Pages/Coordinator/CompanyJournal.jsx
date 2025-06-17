@@ -2,9 +2,9 @@ import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { FaRegTrashAlt } from 'react-icons/fa';
 import { BiEnvelope, BiEnvelopeOpen } from 'react-icons/bi';
-import CompanySidebar from '../PageComponents/CompanySidebar';
-import CompanyHeader from '../PageComponents/CompanyHeader';
-import Footer from '../PageComponents/footer';
+import CompanySidebar from '../../components/CompanySidebar';
+import CompanyHeader from '../../components/CompanyHeader';
+import Footer from '../../components/footer';
 import { useCompanyJournal } from '../../services/coordinator/useCompanyJournal';
 
 function CompanyJournal() {

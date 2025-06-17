@@ -1,7 +1,7 @@
 import React from 'react';
-import Sidebar from '../PageComponents/sidebar';
-import Footer from '../PageComponents/footer';
-import Header from '../PageComponents/header';
+import Sidebar from '../../components/sidebar';
+import Footer from '../../components/footer';
+import Header from '../../components/header';
 import Skeleton from '../../components/Skeleton';
 import useAttendance from '../../services/student/useAttendance';
 import { FiAlertTriangle } from "react-icons/fi";

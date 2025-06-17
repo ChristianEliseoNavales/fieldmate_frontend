@@ -1,10 +1,10 @@
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
-import Sidebar from "../PageComponents/sidebar";
-import Header from "../PageComponents/header";
-import Footer from "../PageComponents/footer";
+import Sidebar from "../../components/sidebar";
+import Header from "../../components/header";
+import Footer from "../../components/footer";
 import { LuUser } from "react-icons/lu";
-import Calendar from "../PageComponents/Calendar";
+import Calendar from "../../components/Calendar";
 import Skeleton from "../../components/Skeleton";
 import useAttendanceSummaryStats from "../../components/AttendanceSummaryStats";
 import RecentlyAccessedRole from "../../components/RecentlyAccessedRole";

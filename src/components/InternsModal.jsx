@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { FaArrowLeft } from "react-icons/fa";
 import { IoMdClose } from "react-icons/io";
-import StandardPagination from "../../components/StandardPagination";
+import StandardPagination from "./StandardPagination";
 
 function InternsModal({ isVisible, onClose, companyName, interns = [] }) {
   const [currentPage, setCurrentPage] = useState(1);

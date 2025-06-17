@@ -4,8 +4,8 @@ import { TiHome } from "react-icons/ti";
 import { PiBookOpenUserFill, PiSidebarFill } from "react-icons/pi";
 import { HiMiniPencilSquare } from "react-icons/hi2";
 import { useLocation, Link, useNavigate } from "react-router-dom";
-import secureAxios from "../../services/secureAxios";  // <-- updated here
-import { auth } from "../../firebase/firebase";
+import secureAxios from "../services/secureAxios";  // <-- updated here
+import { auth } from "../firebase/firebase";
 
 const Sidebar = ({ isExpanded, setIsExpanded }) => {
   const location = useLocation();

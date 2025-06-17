@@ -5,7 +5,7 @@ import { FaPhone } from "react-icons/fa6";
 import { BsEnvelopeFill } from "react-icons/bs";
 import { FaLocationDot } from "react-icons/fa6";
 import { CiCalendar } from "react-icons/ci";
-import Slider from "./PageComponents/slider";
+import Slider from "../components/slider";
 
 function Homepage() {
   const navigate = useNavigate();
@@ -60,7 +60,7 @@ function Homepage() {
     },
     {
       date: "APRIL 28",
-      title: "Higher Education - Recognition day",
+      title: "Higher Education - Recognition Day",
     },
   ];
 

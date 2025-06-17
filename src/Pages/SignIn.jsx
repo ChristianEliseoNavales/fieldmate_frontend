@@ -3,7 +3,7 @@ import { FaArrowLeft, FaEye, FaEyeSlash } from "react-icons/fa";
 import { FcGoogle } from "react-icons/fc";
 import { FiAlertTriangle, FiCheckCircle } from "react-icons/fi";
 import { useNavigate } from "react-router-dom";
-import ForgotPassword from "../Pages/PageComponents/ForgotPassword";
+import ForgotPassword from "../components/ForgotPassword";
 import { loginWithEmail, loginWithGoogle, resetPassword } from "../services/authService";
 
 export default function LoginPage() {

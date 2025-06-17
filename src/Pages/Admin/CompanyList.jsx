@@ -1,6 +1,6 @@
 import React, { useState } from "react";
-import AdminSidebar from "../PageComponents/AdminSidebar";
-import AdminHeader from "../PageComponents/AdminHeader";
+import AdminSidebar from "../../components/AdminSidebar";
+import AdminHeader from "../../components/AdminHeader";
 import { FiTrash2, FiAlertTriangle } from "react-icons/fi";
 import { LuPenLine } from "react-icons/lu";
 import StandardPagination from "../../components/StandardPagination";

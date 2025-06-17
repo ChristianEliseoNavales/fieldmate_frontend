@@ -1,7 +1,7 @@
 import React from 'react';
-import Header from '../PageComponents/header';
-import Sidebar from '../PageComponents/sidebar';
-import Footer from '../PageComponents/footer';
+import Header from '../../components/header';
+import Sidebar from '../../components/sidebar';
+import Footer from '../../components/footer';
 import Skeleton from '../../components/Skeleton';
 import useJournalData from '../../services/student/useJournalData';
 

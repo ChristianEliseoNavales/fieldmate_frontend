@@ -1,8 +1,8 @@
 import React, { useState, useEffect } from "react";
-import CompanySidebar from "../PageComponents/CompanySidebar";
-import CompanyHeader from "../PageComponents/CompanyHeader";
-import Footer from "../PageComponents/footer";
-import Calendar from "../PageComponents/Calendar";
+import CompanySidebar from "../../components/CompanySidebar";
+import CompanyHeader from "../../components/CompanyHeader";
+import Footer from "../../components/footer";
+import Calendar from "../../components/Calendar";
 import { LuUser } from "react-icons/lu";
 import { IoMdClose } from "react-icons/io";
 import StandardPagination from "../../components/StandardPagination";
