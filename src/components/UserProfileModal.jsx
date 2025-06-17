@@ -1,5 +1,5 @@
 import React, { useState, useRef, useEffect } from "react";
-import { FaChevronDown, FaCog, FaKey, FaSignOutAlt } from "react-icons/fa";
+import { FaChevronDown, FaKey, FaSignOutAlt } from "react-icons/fa";
 import AccountSettingsModal from './AccountSettingModal';
 import ChangePass from './ChangePass';
 import { auth } from '../firebase/firebase';
@@ -30,11 +30,6 @@ const UserProfileModal = ({ name, initials }) => {
     document.addEventListener("mousedown", handleClickOutside);
     return () => document.removeEventListener("mousedown", handleClickOutside);
   }, []);
-
-  const handleAccountSettingsClick = () => {
-    setIsOpen(false);
-    setIsAccountSettingsOpen(true);
-  };
 
   const handleChangePasswordClick = () => {
     setIsOpen(false);

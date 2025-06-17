@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { useNavigate } from "react-router-dom";
-import { FaArrowLeft, FaArrowRight } from "react-icons/fa";
+import { FaArrowLeft } from "react-icons/fa";
 import { TbArrowBadgeRightFilled, TbArrowBadgeLeftFilled } from "react-icons/tb";
 
 

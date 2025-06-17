@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { Outlet } from "react-router-dom";
-import Sidebar from "./components/Sidebar"; // adjust path if needed
+import Sidebar from "./sidebar"; 
 
 const Layout = () => {
   const [isExpanded, setIsExpanded] = useState(true); // default expanded

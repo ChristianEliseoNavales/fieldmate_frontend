@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import Sidebar from '../../components/sidebar';
 import Header from '../../components/header';
 import Footer from '../../components/footer';
-import { FaRegCopy, FaArrowLeft, FaExternalLinkAlt } from 'react-icons/fa';
+import { FaArrowLeft, FaExternalLinkAlt } from 'react-icons/fa';
 import useRecentRole from '../../services/use/useRecentRole';
 
 function UIUX() {

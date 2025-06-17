@@ -33,21 +33,15 @@ const useCompanyDashboardStats = (onDataReady) => {
         const userData = userRes.data;
         const company = userData.company;
 
-        const [attendanceRes, journalRes, usersRes] = await Promise.all([
+        const [attendanceRes, journalRes] = await Promise.all([
           secureAxios.get(`${BASE_URL}/attendance`),
-          secureAxios.get(`${BASE_URL}/journal`),
-          secureAxios.get(`${BASE_URL}/users`)
+          secureAxios.get(`${BASE_URL}/journal`)
         ]);
 
         const attendances = attendanceRes.data;
         const journals = journalRes.data;
-        const users = usersRes.data;
 
-        const today = new Date().toLocaleDateString("en-CA"); 
-
-        const interns = Array.isArray(users)
-          ? users.filter((u) => u.role === "student" && u.company === company)
-          : [];
+        const today = new Date().toLocaleDateString("en-CA");
 
         const todaysAttendances = Array.isArray(attendances)
           ? attendances.filter(
@@ -67,8 +61,6 @@ const useCompanyDashboardStats = (onDataReady) => {
           if (modifier === "AM" && hours === 12) hours = 0;
           return hours > 8 || (hours === 8 && minutes >= 15);
         }).length;
-
-        const presentEmails = todaysAttendances.map((a) => a.email);
 
         const pendingAttendance = attendances.filter(
           (a) => a.company === company && !a.approved && !a.denied

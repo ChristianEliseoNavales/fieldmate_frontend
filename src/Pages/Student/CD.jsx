@@ -2,14 +2,14 @@ import React, { useState } from 'react';
 import Sidebar from '../../components/sidebar';
 import Header from '../../components/header';
 import Footer from '../../components/footer';
-import { FaRegCopy, FaArrowLeft, FaExternalLinkAlt } from 'react-icons/fa';
+import { FaArrowLeft, FaExternalLinkAlt } from 'react-icons/fa';
 import { useNavigate } from "react-router-dom";
 import useRecentRole from '../../services/use/useRecentRole';
 
 function CD() {
   const [isSidebarExpanded, setIsSidebarExpanded] = useState(false);
   const navigate = useNavigate();
-  const { arrowBack: arrowBackToRecent } = useRecentRole("/CD");
+  useRecentRole("/CD");
 
   const arrowBack = () => {
     navigate('/Resources');

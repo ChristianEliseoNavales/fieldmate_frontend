@@ -1,6 +1,5 @@
 import React from "react";
 import { FaArrowLeft } from "react-icons/fa";
-import { IoMdClose } from "react-icons/io";
 import StandardPagination from "./StandardPagination";
 import useInternsModal from "../services/use/useInternsModal";
 
