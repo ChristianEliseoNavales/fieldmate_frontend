@@ -272,14 +272,6 @@ function Journal() {
                   </svg>
                   <span>Your work is automatically saved as you type</span>
                 </div>
-                {userEmail && (
-                  <div className="flex items-center space-x-2 text-xs">
-                    <svg className="w-3 h-3" fill="currentColor" viewBox="0 0 20 20">
-                      <path fillRule="evenodd" d="M10 9a3 3 0 100-6 3 3 0 000 6zm-7 9a7 7 0 1114 0H3z" clipRule="evenodd" />
-                    </svg>
-                    <span>Draft saved for: {userEmail}</span>
-                  </div>
-                )}
               </div>
             )}
 

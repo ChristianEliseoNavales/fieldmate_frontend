@@ -16,6 +16,7 @@ export default function useAttendance() {
   const [attendanceSubmitted, setAttendanceSubmitted] = useState(false);
   const [submittedMessage, setSubmittedMessage] = useState(false);
   const [loading, setLoading] = useState(true);
+  const [timeOutModalOpen, setTimeOutModalOpen] = useState(false);
   const BASE_URL = import.meta.env.VITE_API_BASE_URL;
 
   // Keep live clock in PH time
@@ -106,26 +107,35 @@ export default function useAttendance() {
         console.error("❌ Failed to time in:", err);
       }
     } else if (canTimeOut && recordId) {
-      try {
-        // Get the current Philippines time that matches the Clock Display
-        const phTime = new Date(currentTime.toLocaleString("en-US", { timeZone: "Asia/Manila" }));
-        const timeOutFormatted = phTime.toLocaleTimeString([], {
-          hour: '2-digit',
-          minute: '2-digit',
-          hour12: true,
-        });
+      // Open confirmation modal instead of directly submitting
+      setTimeOutModalOpen(true);
+    }
+  };
 
-        const res = await secureAxios.put(
-          `${BASE_URL}/attendance/timeout/${recordId}`,
-          {
-            timeOut: timeOutFormatted,
-          }
-        );
-        setTimeOut(res.data.timeOut);
-        setCanTimeOut(false);
-      } catch (err) {
-        console.error("❌ Failed to time out:", err);
-      }
+  const confirmTimeOut = async () => {
+    if (!canTimeOut || !recordId) return;
+
+    try {
+      // Get the current Philippines time that matches the Clock Display
+      const phTime = new Date(currentTime.toLocaleString("en-US", { timeZone: "Asia/Manila" }));
+      const timeOutFormatted = phTime.toLocaleTimeString([], {
+        hour: '2-digit',
+        minute: '2-digit',
+        hour12: true,
+      });
+
+      const res = await secureAxios.put(
+        `${BASE_URL}/attendance/timeout/${recordId}`,
+        {
+          timeOut: timeOutFormatted,
+        }
+      );
+      setTimeOut(res.data.timeOut);
+      setCanTimeOut(false);
+      setTimeOutModalOpen(false);
+    } catch (err) {
+      console.error("❌ Failed to time out:", err);
+      setTimeOutModalOpen(false);
     }
   };
 
@@ -152,6 +162,9 @@ export default function useAttendance() {
     canTimeOut,
     handleTimeClick,
     handleSubmit,
+    confirmTimeOut,
+    timeOutModalOpen,
+    setTimeOutModalOpen,
     date,
   };
 }

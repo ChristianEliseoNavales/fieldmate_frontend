@@ -4,6 +4,7 @@ import Footer from '../PageComponents/footer';
 import Header from '../PageComponents/header';
 import Skeleton from '../../components/Skeleton';
 import useAttendance from '../../services/student/useAttendance';
+import { FiAlertTriangle } from "react-icons/fi";
 
 const isValidDate = (dateStr) => {
   return dateStr && !isNaN(Date.parse(dateStr));
@@ -54,6 +55,9 @@ function AttendanceSubmission() {
     canTimeOut,
     handleTimeClick,
     handleSubmit,
+    confirmTimeOut,
+    timeOutModalOpen,
+    setTimeOutModalOpen,
     date,
   } = useAttendance();
 
@@ -197,6 +201,43 @@ function AttendanceSubmission() {
         </div>
 
         <Footer />
+
+        {/* ---------------- Time Out Confirmation Modal ---------------- */}
+        {timeOutModalOpen && (
+          <div className="fixed inset-0 backdrop-blur-sm bg-black/30 flex justify-center items-center z-50">
+            <div className="bg-white p-10 rounded-xl shadow-lg w-[650px] text-center">
+              <div className="flex justify-center mb-4">
+                <FiAlertTriangle size={48} className="text-orange-500" />
+              </div>
+              <p className="mb-4 text-[24px] text-[#374151] font-medium">
+                Confirm Time Out
+              </p>
+              <p className="mb-6 text-[18px] text-[#6B7280]">
+                Are you sure you want to time out? This will finalize your attendance for today.
+              </p>
+              <div className="mb-6 p-4 bg-orange-50 border border-orange-200 rounded-lg">
+                <p className="text-[16px] text-orange-800">
+                  <span className="font-semibold">⚠️ Important:</span> Once you time out, you{" "}
+                  <span className="font-bold">cannot time in again</span> for today. Make sure you're ready to end your work session.
+                </p>
+              </div>
+              <div className="flex justify-center text-[18px] gap-4">
+                <button
+                  onClick={confirmTimeOut}
+                  className="px-5 py-2 bg-[#64AD70] text-white rounded-lg w-[140px] hover:brightness-90 transition"
+                >
+                  YES
+                </button>
+                <button
+                  onClick={() => setTimeOutModalOpen(false)}
+                  className="px-5 py-2 bg-[#D84040] text-white rounded-lg w-[140px] hover:brightness-90 transition"
+                >
+                  NO
+                </button>
+              </div>
+            </div>
+          </div>
+        )}
       </div>
     </div>
   );
