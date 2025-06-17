@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import secureAxios from "../services/secureAxios";
+import secureAxios from "../secureAxios";
 
 const useAttendanceSummaryStats = (firstName, lastName) => {
   const [summary, setSummary] = useState({
@@ -106,7 +106,7 @@ const useAttendanceSummaryStats = (firstName, lastName) => {
     };
 
     fetchStats();
-  }, [firstName, lastName]);
+  }, [firstName, lastName, BASE_URL]);
 
   const to24Hr = (timeStr) => {
     if (!timeStr || typeof timeStr !== "string" || !timeStr.includes(" ")) return "00:00:00";

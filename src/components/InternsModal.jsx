@@ -1,30 +1,19 @@
-import React, { useState } from "react";
+import React from "react";
 import { FaArrowLeft } from "react-icons/fa";
 import { IoMdClose } from "react-icons/io";
 import StandardPagination from "./StandardPagination";
+import useInternsModal from "../services/use/useInternsModal";
 
 function InternsModal({ isVisible, onClose, companyName, interns = [] }) {
-  const [currentPage, setCurrentPage] = useState(1);
-  const itemsPerPage = 6; // Optimal for modal display
+  const {
+    currentPage,
+    totalPages,
+    startIndex,
+    paginatedInterns,
+    handlePageChange
+  } = useInternsModal(isVisible, interns);
 
   if (!isVisible) return null;
-
-  // Calculate pagination values
-  const totalPages = Math.ceil(interns.length / itemsPerPage) || 1;
-  const startIndex = (currentPage - 1) * itemsPerPage;
-  const endIndex = startIndex + itemsPerPage;
-  const paginatedInterns = interns.slice(startIndex, endIndex);
-
-  const handlePageChange = (page) => {
-    setCurrentPage(page);
-  };
-
-  // Reset to page 1 when modal opens or interns change
-  React.useEffect(() => {
-    if (isVisible) {
-      setCurrentPage(1);
-    }
-  }, [isVisible, interns.length]);
 
   return (
     <div className="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-40 backdrop-blur-sm">

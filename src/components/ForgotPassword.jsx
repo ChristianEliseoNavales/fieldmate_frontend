@@ -93,7 +93,7 @@ function ForgotPassword({ isOpen, onClose, email, setEmail }) {
 
         if (serverMsg.includes("Too many") || newAttempts >= 3) {
           setMaxedOut(true);
-          setMessage("Maximum attempts reached. Please try again after 10 minutes.");
+          setMessage("Maximum attempts reached. Please try again.");
         } else {
           setMessage(serverMsg || "Incorrect OTP. Try again.");
         }

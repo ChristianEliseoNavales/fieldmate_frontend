@@ -1,18 +1,13 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import Sidebar from '../../components/sidebar';
 import Header from '../../components/header';
 import Footer from '../../components/footer';
 import { FaRegCopy, FaArrowLeft, FaExternalLinkAlt } from 'react-icons/fa';
-import { useNavigate } from "react-router-dom";
-
+import useRecentRole from '../../services/use/useRecentRole';
 
 function PM() {
   const [isSidebarExpanded, setIsSidebarExpanded] = useState(false);
-  const navigate = useNavigate();
-
-  const arrowBack = () => {
-    navigate(-1);
-  };
+  const { arrowBack } = useRecentRole("/PM");
 
   const topics = [
     {
@@ -45,9 +40,7 @@ function PM() {
     }
   ];
 
-  useEffect(() => {
-    localStorage.setItem("recentRole", "/PM");
-  }, []);
+
 
   return (
     <div className="flex flex-col ">

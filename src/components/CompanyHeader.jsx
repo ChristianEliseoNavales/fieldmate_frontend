@@ -1,19 +1,13 @@
 import React, { useState, useEffect } from "react";
 import { useLocation } from "react-router-dom";
-import { auth } from "../firebase/firebase";
-import { onAuthStateChanged } from "firebase/auth";
 import UserProfileModal from "./UserProfileModal";
 import Skeleton from "./Skeleton";
-import secureAxios from "../services/secureAxios";  // <-- import secureAxios
+import useCompanyHeader from "../services/use/useCompanyHeader";
 
 function CompanyHeader({ isExpanded }) {
   const location = useLocation();
-  const [firstName, setFirstName] = useState("");
-  const [lastName, setLastName] = useState("");
-  const [email, setEmail] = useState("");
-  const [loading, setLoading] = useState(true);
   const [scrolled, setScrolled] = useState(false);
-  const BASE_URL = import.meta.env.VITE_API_BASE_URL;
+  const { firstName, lastName, email, loading } = useCompanyHeader();
 
   const pageTitles = {
     '/CompanyDashboard': 'Company Dashboard',
@@ -31,43 +25,7 @@ function CompanyHeader({ isExpanded }) {
     return () => window.removeEventListener("scroll", onScroll);
   }, []);
 
-  useEffect(() => {
-    const cachedUser = localStorage.getItem("userInfo");
 
-    if (cachedUser) {
-      const user = JSON.parse(cachedUser);
-      setFirstName(user.firstName);
-      setLastName(user.lastName);
-      setEmail(user.email);
-      setLoading(false); // ✅ immediately stop loading
-    } else {
-      const unsubscribe = onAuthStateChanged(auth, async (user) => {
-        if (user?.email) {
-          try {
-            // Use secureAxios here for authenticated requests
-            const res = await secureAxios.get(`${BASE_URL}/user`, {
-              params: { email: user.email },
-            });
-            const data = res.data;
-            if (data?.firstName && data?.lastName && data?.email) {
-              localStorage.setItem("userInfo", JSON.stringify(data)); // ✅ cache it
-              setFirstName(data.firstName);
-              setLastName(data.lastName);
-              setEmail(data.email);
-            } else {
-              console.warn("User data not found or incomplete:", data);
-            }
-          } catch (error) {
-            console.error("Failed to fetch user info:", error);
-          } finally {
-            setLoading(false);
-          }
-        }
-      });
-
-      return () => unsubscribe();
-    }
-  }, []);
 
   const getInitials = (firstName, lastName) => {
     const getFirstInitial = (str) => {

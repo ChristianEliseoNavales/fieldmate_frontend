@@ -8,8 +8,8 @@ import { IoMdClose } from "react-icons/io";
 import StandardPagination from "../../components/StandardPagination";
 import CompanyDashboardStats from "../../components/CompanyDashboardStats";
 import Skeleton from "../../components/Skeleton";
-import { useNavigate } from "react-router-dom";
 import userInfo from "../../services/userInfo";
+import useCompanyDashboard from "../../services/coordinator/useCompanyDashboard";
 
 function CompanyDashboard() {
   const [isSidebarExpanded, setIsSidebarExpanded] = useState(false);
@@ -19,43 +19,26 @@ function CompanyDashboard() {
   const [pendingAttendance, setPendingAttendance] = useState(null);
   const [unreadJournals, setUnreadJournals] = useState(null);
   const [showModal, setShowModal] = useState(false);
-  const [interns, setInterns] = useState([]);
-  const [currentPage, setCurrentPage] = useState(1);
-  const internsPerPage = 5;
 
-  const navigate = useNavigate();
   const BASE_URL = import.meta.env.VITE_API_BASE_URL;
   const { firstName, lastName, company, loading } = userInfo(BASE_URL);
-
-  const handleCardNavigation = (buttonLabel) => {
-    if (buttonLabel === "Go to Attendance Tracking") navigate("/CompanyAttendance");
-    else if (buttonLabel === "Go to Journal Submissions") navigate("/CompanyJournal");
-  };
-
-  useEffect(() => {
-    if (showModal || company) {
-      fetch(`${BASE_URL}/users`)
-        .then(res => res.json())
-        .then(data => {
-          const filtered = data.filter(user => user.role === "Student" && user.company === company);
-          setInterns(filtered);
-        })
-        .catch(err => console.error("Error fetching interns:", err));
-    }
-  }, [showModal, company]);
+  const {
+    interns,
+    currentPage,
+    setCurrentPage,
+    totalPages,
+    paginatedInterns,
+    internsPerPage,
+    handleCardNavigation,
+    resetPagination
+  } = useCompanyDashboard(company);
 
   // Reset to page 1 when modal opens
   useEffect(() => {
     if (showModal) {
-      setCurrentPage(1);
+      resetPagination();
     }
-  }, [showModal]);
-
-  const totalPages = Math.ceil(interns.length / internsPerPage) || 1;
-  const paginatedInterns = interns.slice(
-    (currentPage - 1) * internsPerPage,
-    currentPage * internsPerPage
-  );
+  }, [showModal, resetPagination]);
 
   const absentInterns =
     present !== null && interns.length !== null

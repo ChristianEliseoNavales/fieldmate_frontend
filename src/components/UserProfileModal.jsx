@@ -1,50 +1,25 @@
 import React, { useState, useRef, useEffect } from "react";
 import { FaChevronDown, FaCog, FaKey, FaSignOutAlt } from "react-icons/fa";
 import AccountSettingsModal from './AccountSettingModal';
-import ChangePass from './ChangePass'; 
+import ChangePass from './ChangePass';
 import { auth } from '../firebase/firebase';
-import { onAuthStateChanged, signOut } from "firebase/auth";
+import { signOut } from "firebase/auth";
 import LogoutConfirmationModal from "./LogoutConfirmationModal";
 import { useNavigate } from "react-router-dom";
-import secureAxios from '../services/secureAxios';  // <-- import secureAxios
+import useUserProfile from "../services/use/useUserProfile";
 
 const UserProfileModal = ({ name, initials }) => {
   const [isOpen, setIsOpen] = useState(false);
   const [isAccountSettingsOpen, setIsAccountSettingsOpen] = useState(false);
   const [isChangePasswordOpen, setIsChangePasswordOpen] = useState(false);
-  const [firstName, setFirstName] = useState("");
-  const [lastName, setLastName] = useState("");
-  const [email, setEmail] = useState("");
   const [isLogoutConfirmOpen, setIsLogoutConfirmOpen] = useState(false);
   const dropdownRef = useRef(null);
   const navigate = useNavigate();
-  const BASE_URL = import.meta.env.VITE_API_BASE_URL;
+  const { firstName, lastName, email, getInitials } = useUserProfile();
 
   const toggleDropdown = () => setIsOpen(prev => !prev);
 
-  useEffect(() => {
-    const unsubscribe = onAuthStateChanged(auth, async (user) => {
-      if (user && user.email) {
-        try {
-          // Use secureAxios instead of fetch to include token
-          const res = await secureAxios.get(`${BASE_URL}/user`, {
-            params: { email: user.email }
-          });
-          const data = res.data;
-          if (data && data.firstName && data.lastName && data.email) {
-            setFirstName(data.firstName);
-            setLastName(data.lastName);
-            setEmail(data.email);
-          } else {
-            console.warn("User data not found or incomplete:", data);
-          }
-        } catch (error) {
-          console.error("Failed to fetch user info:", error);
-        }
-      }
-    });
-    return () => unsubscribe();
-  }, []);
+
 
   useEffect(() => {
     const handleClickOutside = (event) => {
@@ -80,14 +55,7 @@ const UserProfileModal = ({ name, initials }) => {
     }
   };
 
-  const getInitials = (firstName, lastName) => {
-    const getFirstInitial = (str) => {
-      const firstWord = str?.trim().split(" ")[0] || "";
-      return firstWord.charAt(0).toUpperCase();
-    };
 
-    return `${getFirstInitial(firstName)}${getFirstInitial(lastName)}`;
-  };
 
   return (
     <div className="relative" ref={dropdownRef}>

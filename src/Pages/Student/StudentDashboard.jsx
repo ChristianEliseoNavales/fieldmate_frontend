@@ -1,14 +1,14 @@
 import React, { useState } from "react";
-import { useNavigate } from "react-router-dom";
 import Sidebar from "../../components/sidebar";
 import Header from "../../components/header";
 import Footer from "../../components/footer";
 import { LuUser } from "react-icons/lu";
 import Calendar from "../../components/Calendar";
 import Skeleton from "../../components/Skeleton";
-import useAttendanceSummaryStats from "../../components/AttendanceSummaryStats";
+import useAttendanceSummaryStats from "../../services/use/useAttendanceSummaryStats";
 import RecentlyAccessedRole from "../../components/RecentlyAccessedRole";
 import userInfo from "../../services/userInfo";
+import useStudentDashboard from "../../services/student/useStudentDashboard";
 
 function StudentDashboard() {
   const [isSidebarExpanded, setIsSidebarExpanded] = useState(false);
@@ -16,14 +16,7 @@ function StudentDashboard() {
 
   const { firstName, lastName, company, loading } = userInfo(BASE_URL);
   const summary = useAttendanceSummaryStats(firstName, lastName);
-
-  const today = new Date();
-  const currentYear = today.getFullYear();
-  const currentMonth = today.getMonth();
-  const monthName = today.toLocaleString("default", { month: "long" });
-  const firstDay = new Date(currentYear, currentMonth, 1).getDay();
-  const daysInMonth = new Date(currentYear, currentMonth + 1, 0).getDate();
-  const navigate = useNavigate();
+  const { navigate, today, currentYear, currentMonth, firstDay, daysInMonth } = useStudentDashboard();
 
   const daysArray = [];
   for (let i = 0; i < firstDay; i++) daysArray.push(null);
