@@ -32,8 +32,12 @@ export default function useAttendance() {
     const checkAttendance = async (email) => {
       const start = Date.now();
       try {
+        // Get current Philippines date to ensure consistency
+        const phTime = new Date(new Date().toLocaleString("en-US", { timeZone: "Asia/Manila" }));
+        const todayPH = phTime.toLocaleDateString();
+
         const res = await secureAxios.get(`${BASE_URL}/attendance/today`, {
-          params: { email },
+          params: { email, date: todayPH },
         });
 
       if (res.data) {
@@ -79,8 +83,19 @@ export default function useAttendance() {
   const handleTimeClick = async () => {
     if (canTimeIn) {
       try {
+        // Get the current Philippines time that matches the Clock Display
+        const phTime = new Date(currentTime.toLocaleString("en-US", { timeZone: "Asia/Manila" }));
+        const timeInFormatted = phTime.toLocaleTimeString([], {
+          hour: '2-digit',
+          minute: '2-digit',
+          hour12: true,
+        });
+        const dateFormatted = phTime.toLocaleDateString();
+
         const res = await secureAxios.post(`${BASE_URL}/attendance/timein`, {
           email: userEmail,
+          timeIn: timeInFormatted,
+          date: dateFormatted,
         });
         setRecordId(res.data._id);
         setTimeIn(res.data.timeIn);
@@ -92,10 +107,21 @@ export default function useAttendance() {
       }
     } else if (canTimeOut && recordId) {
       try {
+        // Get the current Philippines time that matches the Clock Display
+        const phTime = new Date(currentTime.toLocaleString("en-US", { timeZone: "Asia/Manila" }));
+        const timeOutFormatted = phTime.toLocaleTimeString([], {
+          hour: '2-digit',
+          minute: '2-digit',
+          hour12: true,
+        });
+
         const res = await secureAxios.put(
-          `${BASE_URL}/attendance/timeout/${recordId}`
+          `${BASE_URL}/attendance/timeout/${recordId}`,
+          {
+            timeOut: timeOutFormatted,
+          }
         );
-        setTimeOut(res.data.timeOut); // Raw ISO string
+        setTimeOut(res.data.timeOut);
         setCanTimeOut(false);
       } catch (err) {
         console.error("❌ Failed to time out:", err);
