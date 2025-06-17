@@ -100,7 +100,7 @@ function Homepage() {
 
   return (
       <div
-        className={`relative w-full min-h-screen bg-white transition-opacity duration-1000 ease-in ${
+        className={`relative w-full min-h-screen bg-white transition-opacity duration-300 ease-in ${
           fadeIn ? "opacity-100" : "opacity-0"
         }`}
       >

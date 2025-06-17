@@ -14,9 +14,9 @@ function LoadingPage() {
           clearInterval(interval);
           return 100;
         }
-        return prev + 10;
+        return prev + 5;
       });
-    }, 400);
+    }, 200);
   }, []);
 
   // When loading reaches 100%, start fade-out
@@ -40,7 +40,7 @@ function LoadingPage() {
 
   return (
     <div
-      className={`relative h-screen w-full overflow-hidden transition-opacity duration-700 ${
+      className={`relative h-screen w-full overflow-hidden transition-opacity duration-300 ${
         fadeOut ? 'opacity-0' : 'opacity-100'
       }`}
     >
@@ -58,7 +58,7 @@ function LoadingPage() {
         />
         <div className="w-[430px] h-[14px] bg-white rounded-full overflow-hidden">
           <div
-            className="h-full bg-[#556689] transition-all duration-500"
+            className="h-full bg-[#556689] transition-all duration-300"
             style={{ width: `${progress}%` }}
           ></div>
         </div>
