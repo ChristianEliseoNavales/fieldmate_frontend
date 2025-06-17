@@ -28,7 +28,6 @@ function CompanyDashboard() {
     setCurrentPage,
     totalPages,
     paginatedInterns,
-    internsPerPage,
     handleCardNavigation,
     resetPagination
   } = useCompanyDashboard(company);
@@ -257,7 +256,7 @@ return (
               </div>
 
               {/* Pagination */}
-              {interns.length >= internsPerPage && (
+              {totalPages > 1 && (
                 <div className="mt-4 pt-4 border-t border-gray-200">
                   <StandardPagination
                     currentPage={currentPage}

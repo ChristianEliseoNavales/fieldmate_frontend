@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useCallback } from "react";
 import { useNavigate } from "react-router-dom";
 import secureAxios from "../secureAxios";
 
@@ -22,6 +22,8 @@ const useCompanyDashboard = (company) => {
           const data = response.data;
           const filtered = data.filter(user => user.role === "Student" && user.company === company);
           setInterns(filtered);
+          // Reset to page 1 when data changes
+          setCurrentPage(1);
         } catch (err) {
           console.error("Error fetching interns:", err);
         }
@@ -30,20 +32,23 @@ const useCompanyDashboard = (company) => {
     }
   }, [company, BASE_URL]);
 
-  // Reset to page 1 when modal opens
-  const resetPagination = () => {
+  // Reset to page 1 when modal opens - use useCallback to prevent unnecessary re-renders
+  const resetPagination = useCallback(() => {
     setCurrentPage(1);
-  };
+  }, []);
 
   const totalPages = Math.ceil(interns.length / internsPerPage) || 1;
+
+  // Ensure currentPage doesn't exceed totalPages
+  const safePage = Math.min(currentPage, totalPages);
   const paginatedInterns = interns.slice(
-    (currentPage - 1) * internsPerPage,
-    currentPage * internsPerPage
+    (safePage - 1) * internsPerPage,
+    safePage * internsPerPage
   );
 
   return {
     interns,
-    currentPage,
+    currentPage: safePage,
     setCurrentPage,
     totalPages,
     paginatedInterns,
