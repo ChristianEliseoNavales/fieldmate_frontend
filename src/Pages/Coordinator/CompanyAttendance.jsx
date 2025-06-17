@@ -104,15 +104,15 @@ function CompanyAttendance() {
                       <td className="py-7 px-6 pr-15 flex justify-end items-center gap-4">
                         <button
                           onClick={() => confirmAction(record._id, 'approve')}
-                          className="bg-[#64AD70] text-white px-5 py-3 rounded-lg font-semibold shadow-md 
-                                     hover:bg-[#4E8F5A] hover:shadow-lg active:scale-[0.97] transition-transform duration-150 ease-in-out"
+                          className="bg-[#64AD70] text-white px-5 py-3 rounded-lg font-semibold shadow-md
+                                     hover:bg-[#4E8F5A] hover:shadow-lg active:scale-[0.97] transition-transform duration-150 ease-in-out cursor-pointer"
                         >
                           Approve
                         </button>
                         <button
                           onClick={() => confirmAction(record._id, 'deny')}
-                          className="bg-[#D84040] text-white px-10 py-3 rounded-lg font-semibold shadow-md 
-                                     hover:bg-[#B02A2A] hover:shadow-lg active:scale-[0.97] transition-transform duration-150 ease-in-out"
+                          className="bg-[#D84040] text-white px-10 py-3 rounded-lg font-semibold shadow-md
+                                     hover:bg-[#B02A2A] hover:shadow-lg active:scale-[0.97] transition-transform duration-150 ease-in-out cursor-pointer"
                         >
                           Deny
                         </button>
@@ -143,13 +143,13 @@ function CompanyAttendance() {
             <div className="flex justify-center text-[18px] gap-4">
               <button
                 onClick={handleModalConfirm}
-                className="px-5 py-2 bg-[#64AD70] text-white rounded-lg w-[140px] hover:brightness-90 transition"
+                className="px-5 py-2 bg-[#64AD70] text-white rounded-lg w-[140px] hover:brightness-90 transition cursor-pointer"
               >
                 YES
               </button>
               <button
                 onClick={handleModalCancel}
-                className="px-5 py-2 bg-[#D84040] text-white rounded-lg w-[140px] hover:brightness-90 transition"
+                className="px-5 py-2 bg-[#D84040] text-white rounded-lg w-[140px] hover:brightness-90 transition cursor-pointer"
               >
                 NO
               </button>

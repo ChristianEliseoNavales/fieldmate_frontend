@@ -33,7 +33,7 @@ function InternsModal({ isVisible, onClose, companyName, interns = [] }) {
         <div className="flex items-center justify-between mb-4">
           <button
             onClick={onClose}
-            className="text-black text-xl hover:text-gray-600 transition-colors"
+            className="text-black text-xl hover:text-gray-600 transition-colors cursor-pointer"
             title="Close modal"
           >
             <FaArrowLeft />

@@ -91,7 +91,7 @@ function Explore() {
 
           {/* Sign Up Button (now back in main view) */}
           <div className="mt-5 flex justify-center">
-            <button className="bg-[#1E3A8A] text-white text-[22px] px-10 py-3 rounded-lg font-semibold h-[65px]" onClick={signUp}>
+            <button className="bg-[#1E3A8A] text-white text-[22px] px-10 py-3 rounded-lg font-semibold h-[65px] cursor-pointer" onClick={signUp}>
               Sign Up Now
             </button>
           </div>
@@ -158,7 +158,7 @@ function Explore() {
 
           {/* Sign Up Button */}
           <div className="mt-5 flex justify-center">
-            <button className="bg-[#1E3A8A] text-white text-[22px] px-10 py-3 rounded-lg font-semibold h-[65px]" onClick={signUp}>
+            <button className="bg-[#1E3A8A] text-white text-[22px] px-10 py-3 rounded-lg font-semibold h-[65px] cursor-pointer" onClick={signUp}>
               Sign Up Now
             </button>
           </div>

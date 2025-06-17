@@ -56,7 +56,7 @@ function Journal() {
               <div className="flex flex-wrap items-center gap-2 px-4 py-4 border-b text-gray-600">
                 <button
                   onClick={() => editor.chain().focus().toggleBold().run()}
-                  className={`p-2 rounded hover:bg-gray-200 transition-colors ${
+                  className={`p-2 rounded hover:bg-gray-200 transition-colors cursor-pointer ${
                     editor.isActive('bold') ? 'bg-gray-300 text-gray-800' : ''
                   }`}
                   title="Bold"
@@ -65,7 +65,7 @@ function Journal() {
                 </button>
                 <button
                   onClick={() => editor.chain().focus().toggleItalic().run()}
-                  className={`p-2 rounded hover:bg-gray-200 transition-colors ${
+                  className={`p-2 rounded hover:bg-gray-200 transition-colors cursor-pointer ${
                     editor.isActive('italic') ? 'bg-gray-300 text-gray-800' : ''
                   }`}
                   title="Italic"
@@ -74,7 +74,7 @@ function Journal() {
                 </button>
                 <button
                   onClick={() => editor.chain().focus().toggleUnderline().run()}
-                  className={`p-2 rounded hover:bg-gray-200 transition-colors ${
+                  className={`p-2 rounded hover:bg-gray-200 transition-colors cursor-pointer ${
                     editor.isActive('underline') ? 'bg-gray-300 text-gray-800' : ''
                   }`}
                   title="Underline"
@@ -93,7 +93,7 @@ function Journal() {
                         .setMark("textStyle", { fontSize: newSize })
                         .run();
                     }}
-                    className="w-8 h-8 flex items-center justify-center text-xl rounded hover:bg-gray-200 transition-colors"
+                    className="w-8 h-8 flex items-center justify-center text-xl rounded hover:bg-gray-200 transition-colors cursor-pointer"
                     title="Decrease Font Size"
                   >
                     −
@@ -115,7 +115,7 @@ function Journal() {
                         .setMark("textStyle", { fontSize: newSize })
                         .run();
                     }}
-                    className="w-8 h-8 flex items-center justify-center text-xl rounded hover:bg-gray-200 transition-colors"
+                    className="w-8 h-8 flex items-center justify-center text-xl rounded hover:bg-gray-200 transition-colors cursor-pointer"
                     title="Increase Font Size"
                   >
                     +
@@ -124,7 +124,7 @@ function Journal() {
                 <span className="mx-2">|</span>
                 <button
                   onClick={() => editor.chain().focus().setTextAlign("left").run()}
-                  className={`p-2 rounded hover:bg-gray-200 transition-colors ${
+                  className={`p-2 rounded hover:bg-gray-200 transition-colors cursor-pointer ${
                     editor.isActive({ textAlign: 'left' }) ? 'bg-gray-300 text-gray-800' : ''
                   }`}
                   title="Align Left"
@@ -135,7 +135,7 @@ function Journal() {
                   onClick={() =>
                     editor.chain().focus().setTextAlign("center").run()
                   }
-                  className={`p-2 rounded hover:bg-gray-200 transition-colors ${
+                  className={`p-2 rounded hover:bg-gray-200 transition-colors cursor-pointer ${
                     editor.isActive({ textAlign: 'center' }) ? 'bg-gray-300 text-gray-800' : ''
                   }`}
                   title="Align Center"
@@ -146,7 +146,7 @@ function Journal() {
                   onClick={() =>
                     editor.chain().focus().setTextAlign("right").run()
                   }
-                  className={`p-2 rounded hover:bg-gray-200 transition-colors ${
+                  className={`p-2 rounded hover:bg-gray-200 transition-colors cursor-pointer ${
                     editor.isActive({ textAlign: 'right' }) ? 'bg-gray-300 text-gray-800' : ''
                   }`}
                   title="Align Right"
@@ -156,7 +156,7 @@ function Journal() {
                 <span className="mx-2">|</span>
                 <button
                   onClick={() => editor.chain().focus().toggleBulletList().run()}
-                  className={`p-2 rounded hover:bg-gray-200 transition-colors ${
+                  className={`p-2 rounded hover:bg-gray-200 transition-colors cursor-pointer ${
                     editor.isActive('bulletList') ? 'bg-gray-300 text-gray-800' : ''
                   }`}
                   title="Bullet List"
@@ -165,7 +165,7 @@ function Journal() {
                 </button>
                 <button
                   onClick={() => editor.chain().focus().toggleOrderedList().run()}
-                  className={`p-2 rounded hover:bg-gray-200 transition-colors ${
+                  className={`p-2 rounded hover:bg-gray-200 transition-colors cursor-pointer ${
                     editor.isActive('orderedList') ? 'bg-gray-300 text-gray-800' : ''
                   }`}
                   title="Numbered List"
@@ -179,7 +179,7 @@ function Journal() {
                   className={`p-2 rounded transition-colors ${
                     !editor.can().undo()
                       ? 'text-gray-400 cursor-not-allowed'
-                      : 'hover:bg-gray-200 text-gray-600'
+                      : 'hover:bg-gray-200 text-gray-600 cursor-pointer'
                   }`}
                   title="Undo"
                 >
@@ -191,7 +191,7 @@ function Journal() {
                   className={`p-2 rounded transition-colors ${
                     !editor.can().redo()
                       ? 'text-gray-400 cursor-not-allowed'
-                      : 'hover:bg-gray-200 text-gray-600'
+                      : 'hover:bg-gray-200 text-gray-600 cursor-pointer'
                   }`}
                   title="Redo"
                 >
@@ -246,7 +246,7 @@ function Journal() {
                   {(draftStatus === 'saved' || draftStatus === 'restored') && (
                     <button
                       onClick={clearDraft}
-                      className="text-xs text-gray-500 hover:text-gray-700 underline"
+                      className="text-xs text-gray-500 hover:text-gray-700 underline cursor-pointer"
                       title="Clear saved draft"
                     >
                       Clear Draft
@@ -277,7 +277,9 @@ function Journal() {
 
             {/* Submit button */}
             <button
-              className="text-[28px] px-6 py-2 bg-[#1E3A8A] hover:bg-[#1E40AF] text-white rounded disabled:opacity-50 transition-colors"
+              className={`text-[28px] px-6 py-2 bg-[#1E3A8A] hover:bg-[#1E40AF] text-white rounded transition-colors ${
+                !editor?.getText().trim() ? "disabled:opacity-50 cursor-not-allowed" : "cursor-pointer"
+              }`}
               onClick={handleSubmit}
               disabled={!editor?.getText().trim()}
             >
@@ -308,13 +310,13 @@ function Journal() {
               <div className="flex justify-center text-[18px] gap-4">
                 <button
                   onClick={confirmSubmit}
-                  className="px-5 py-2 bg-[#64AD70] text-white rounded-lg w-[140px] hover:brightness-90 transition"
+                  className="px-5 py-2 bg-[#64AD70] text-white rounded-lg w-[140px] hover:brightness-90 transition cursor-pointer"
                 >
                   YES
                 </button>
                 <button
                   onClick={() => setConfirmModalOpen(false)}
-                  className="px-5 py-2 bg-[#D84040] text-white rounded-lg w-[140px] hover:brightness-90 transition"
+                  className="px-5 py-2 bg-[#D84040] text-white rounded-lg w-[140px] hover:brightness-90 transition cursor-pointer"
                 >
                   NO
                 </button>
@@ -343,7 +345,7 @@ function Journal() {
               <div className="flex justify-center text-[18px]">
                 <button
                   onClick={() => setNotificationModal({ isOpen: false, message: "", type: "" })}
-                  className="px-5 py-2 bg-[#64AD70] text-white rounded-lg w-[140px] hover:brightness-90 transition"
+                  className="px-5 py-2 bg-[#64AD70] text-white rounded-lg w-[140px] hover:brightness-90 transition cursor-pointer"
                 >
                   OK
                 </button>

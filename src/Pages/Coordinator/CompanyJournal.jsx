@@ -117,7 +117,7 @@ function CompanyJournal() {
                       </button>
 
                       <button
-                        className="text-gray-800 hover:text-red-600 p-1 transition"
+                        className="text-gray-800 hover:text-red-600 p-1 transition cursor-pointer"
                         onClick={() => confirmDelete(entry._id)}
                       >
                         <FaRegTrashAlt size={26} />

@@ -63,7 +63,7 @@ function RecentlyAccessedRole({ loading }) {
       </h2>
 
       <div
-        className="relative flex-1 w-full rounded-[10px] overflow-hidden flex items-center justify-center shadow-md border border-[#D1D5DB]"
+        className="relative flex-1 w-full rounded-[10px] overflow-hidden flex items-center justify-center shadow-md border border-[#D1D5DB] cursor-pointer"
         onClick={handleClick}
       >
         {/* Background */}

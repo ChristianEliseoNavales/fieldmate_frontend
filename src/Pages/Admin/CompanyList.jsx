@@ -145,10 +145,10 @@ function CompanyList() {
                                   <div className="w-[160px] flex justify-center gap-6 text-[#0059AB]">
                                     <LuPenLine
                                       size={26}
-                                      className={`cursor-pointer ${
+                                      className={`${
                                         company.isReferenced
                                           ? "text-gray-400 cursor-not-allowed"
-                                          : "hover:text-[#023e7d]"
+                                          : "hover:text-[#023e7d] cursor-pointer"
                                       }`}
                                       onClick={() => {
                                         if (!company.isReferenced) {
@@ -161,10 +161,10 @@ function CompanyList() {
                                     />
                                     <FiTrash2
                                       size={26}
-                                      className={`cursor-pointer ${
+                                      className={`${
                                         company.isReferenced
                                           ? "text-gray-400 cursor-not-allowed"
-                                          : "text-red-500 hover:text-red-600"
+                                          : "text-red-500 hover:text-red-600 cursor-pointer"
                                       }`}
                                       onClick={() => {
                                         if (!company.isReferenced) {
@@ -222,7 +222,7 @@ function CompanyList() {
                     <div className="flex justify-center text-[18px]">
                       <button
                         onClick={() => setDeleteModalOpen(false)}
-                        className="px-5 py-2 bg-[#6B7280] text-white rounded-lg w-[140px] hover:brightness-90 transition"
+                        className="px-5 py-2 bg-[#6B7280] text-white rounded-lg w-[140px] hover:brightness-90 transition cursor-pointer"
                       >
                         OK
                       </button>
@@ -238,13 +238,13 @@ function CompanyList() {
                     <div className="flex justify-center text-[18px] gap-4">
                       <button
                         onClick={handleDelete}
-                        className="px-5 py-2 bg-[#64AD70] text-white rounded-lg w-[140px] hover:brightness-90 transition"
+                        className="px-5 py-2 bg-[#64AD70] text-white rounded-lg w-[140px] hover:brightness-90 transition cursor-pointer"
                       >
                         YES
                       </button>
                       <button
                         onClick={() => setDeleteModalOpen(false)}
-                        className="px-5 py-2 bg-[#D84040] text-white rounded-lg w-[140px] hover:brightness-90 transition"
+                        className="px-5 py-2 bg-[#D84040] text-white rounded-lg w-[140px] hover:brightness-90 transition cursor-pointer"
                       >
                         NO
                       </button>
@@ -277,7 +277,7 @@ function CompanyList() {
                     <div className="flex justify-center text-[18px] font-medium">
                       <button
                         onClick={() => setEditModalOpen(false)}
-                        className="px-4 py-2 bg-[#6B7280] text-white rounded-lg w-[140px] hover:brightness-90 transition"
+                        className="px-4 py-2 bg-[#6B7280] text-white rounded-lg w-[140px] hover:brightness-90 transition cursor-pointer"
                       >
                         OK
                       </button>
@@ -301,13 +301,13 @@ function CompanyList() {
                     <div className="flex justify-center gap-4 text-[18px] font-medium">
                       <button
                         onClick={() => setEditModalOpen(false)}
-                        className="px-4 py-2 border border-[#D1D5DB] bg-[#F3F4F6] rounded-lg w-1/2 hover:bg-[#E5E7EB] transition"
+                        className="px-4 py-2 border border-[#D1D5DB] bg-[#F3F4F6] rounded-lg w-1/2 hover:bg-[#E5E7EB] transition cursor-pointer"
                       >
                         Cancel
                       </button>
                       <button
                         onClick={handleEdit}
-                        className="px-4 py-2 bg-[#1E3A8A] text-white rounded-lg w-1/2 hover:bg-[#162e72] transition"
+                        className="px-4 py-2 bg-[#1E3A8A] text-white rounded-lg w-1/2 hover:bg-[#162e72] transition cursor-pointer"
                       >
                         Save
                       </button>
@@ -342,13 +342,13 @@ function CompanyList() {
                 <div className="flex justify-center text-[18px] gap-4">
                   <button
                     onClick={confirmDeleteAllCompanies}
-                    className="px-5 py-2 bg-[#64AD70] text-white rounded-lg w-[140px] hover:brightness-90 transition"
+                    className="px-5 py-2 bg-[#64AD70] text-white rounded-lg w-[140px] hover:brightness-90 transition cursor-pointer"
                   >
                     YES
                   </button>
                   <button
                     onClick={() => setDeleteAllModalOpen(false)}
-                    className="px-5 py-2 bg-[#D84040] text-white rounded-lg w-[140px] hover:brightness-90 transition"
+                    className="px-5 py-2 bg-[#D84040] text-white rounded-lg w-[140px] hover:brightness-90 transition cursor-pointer"
                   >
                     NO
                   </button>

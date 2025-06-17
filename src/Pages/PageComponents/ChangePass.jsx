@@ -1,27 +1,28 @@
-import React, { useState } from "react";
+import { useState } from "react";
 import { auth } from "../../firebase/firebase";
 import {
   reauthenticateWithCredential,
   EmailAuthProvider,
   updatePassword,
-  signOut,
 } from "firebase/auth";
-import { useNavigate } from "react-router-dom";
-import { FaEye, FaEyeSlash } from "react-icons/fa"; // ✅ import icons
+import { FaEye, FaEyeSlash } from "react-icons/fa";
 
 function ChangePass({ isOpen, closeModal }) {
   const [currentPassword, setCurrentPassword] = useState("");
   const [newPassword, setNewPassword] = useState("");
+  const [confirmPassword, setConfirmPassword] = useState("");
   const [error, setError] = useState("");
   const [success, setSuccess] = useState("");
   const [loading, setLoading] = useState(false);
   const [showCurrentPass, setShowCurrentPass] = useState(false); // ✅ toggle state
   const [showNewPass, setShowNewPass] = useState(false); // ✅ toggle state
-  const navigate = useNavigate();
+  const [showConfirmPass, setShowConfirmPass] = useState(false); // ✅ toggle state
+  const [confirmPasswordError, setConfirmPasswordError] = useState("");
 
   const handleSave = async () => {
     setError("");
     setSuccess("");
+    setConfirmPasswordError("");
 
     if (!currentPassword) {
       setError("Please enter your current password.");
@@ -30,6 +31,17 @@ function ChangePass({ isOpen, closeModal }) {
 
     if (newPassword.length < 8) {
       setError("New password must be at least 8 characters.");
+      return;
+    }
+
+    if (!confirmPassword) {
+      setError("Please confirm your new password.");
+      return;
+    }
+
+    if (newPassword !== confirmPassword) {
+      setConfirmPasswordError("Passwords do not match.");
+      setError("Passwords do not match.");
       return;
     }
 
@@ -48,6 +60,7 @@ function ChangePass({ isOpen, closeModal }) {
       setSuccess("Password updated successfully!");
       setCurrentPassword("");
       setNewPassword("");
+      setConfirmPassword("");
     } catch (err) {
       console.error("Password update error:", err);
       setError("Incorrect Current Password.");
@@ -116,7 +129,17 @@ function ChangePass({ isOpen, closeModal }) {
                       type={showNewPass ? "text" : "password"}
                       id="new-password"
                       value={newPassword}
-                      onChange={(e) => setNewPassword(e.target.value)}
+                      onChange={(e) => {
+                        setNewPassword(e.target.value);
+                        // Clear confirm password error when new password changes
+                        if (confirmPasswordError) {
+                          setConfirmPasswordError("");
+                        }
+                        // Clear general error if it's about password mismatch
+                        if (error === "Passwords do not match.") {
+                          setError("");
+                        }
+                      }}
                       className="w-full border border-[#C4C4C4] bg-[#F9FAFD] rounded-[8px] p-5 pr-14"
                     />
                     <button
@@ -128,6 +151,50 @@ function ChangePass({ isOpen, closeModal }) {
                     </button>
                   </div>
                 </div>
+
+                {/* Confirm Password */}
+                <div>
+                  <label
+                    htmlFor="confirm-password"
+                    className="text-[20px] font-semibold text-[#3F3F46] block mb-1"
+                  >
+                    Confirm Password
+                  </label>
+                  <div className="relative">
+                    <input
+                      type={showConfirmPass ? "text" : "password"}
+                      id="confirm-password"
+                      value={confirmPassword}
+                      onChange={(e) => {
+                        setConfirmPassword(e.target.value);
+                        // Clear confirm password error when user starts typing
+                        if (confirmPasswordError) {
+                          setConfirmPasswordError("");
+                        }
+                        // Clear general error if it's about password mismatch
+                        if (error === "Passwords do not match.") {
+                          setError("");
+                        }
+                      }}
+                      className={`w-full border ${
+                        confirmPasswordError || (confirmPassword && newPassword && newPassword !== confirmPassword)
+                          ? "border-red-500"
+                          : "border-[#C4C4C4]"
+                      } bg-[#F9FAFD] rounded-[8px] p-5 pr-14`}
+                    />
+                    <button
+                      type="button"
+                      onClick={() => setShowConfirmPass((prev) => !prev)}
+                      className="absolute right-4 top-1/2 transform -translate-y-1/2 text-gray-600 cursor-pointer text-[22px]"
+                    >
+                      {showConfirmPass ? <FaEye /> : <FaEyeSlash />}
+                    </button>
+                  </div>
+                  {/* Real-time validation error message */}
+                  {confirmPassword && newPassword && newPassword !== confirmPassword && (
+                    <p className="text-red-600 text-[16px] mt-1">Passwords do not match</p>
+                  )}
+                </div>
               </div>
 
               {/* Feedback */}
@@ -137,16 +204,22 @@ function ChangePass({ isOpen, closeModal }) {
               {/* Buttons */}
               <div className="flex mt-6 mb-2 gap-2 font-semibold">
                 <button
-                  className="px-4 py-2 text-gray-700 border border-[#C4C4C4] rounded-[8px] bg-[#F5F5F5] w-1/2 text-[23px] cursor-pointer hover:bg-[#E8E8E8]"
+                  className={`px-4 py-2 text-gray-700 border border-[#C4C4C4] rounded-[8px] bg-[#F5F5F5] w-1/2 text-[23px] hover:bg-[#E8E8E8] ${
+                    loading ? "cursor-not-allowed" : "cursor-pointer"
+                  }`}
                   onClick={closeModal}
                   disabled={loading}
                 >
                   Cancel
                 </button>
                 <button
-                  className="px-4 py-2 bg-[#1E3A8A] text-white rounded-[8px] w-1/2 text-[23px] disabled:opacity-50 cursor-pointer hover:bg-[#1F3463]"
+                  className={`px-4 py-2 bg-[#1E3A8A] text-white rounded-[8px] w-1/2 text-[23px] hover:bg-[#1F3463] ${
+                    loading || !currentPassword || !newPassword || !confirmPassword || (newPassword !== confirmPassword)
+                      ? "disabled:opacity-50 cursor-not-allowed"
+                      : "cursor-pointer"
+                  }`}
                   onClick={handleSave}
-                  disabled={loading || !currentPassword || !newPassword}
+                  disabled={loading || !currentPassword || !newPassword || !confirmPassword || (newPassword !== confirmPassword)}
                 >
                   {loading ? "Saving..." : "Save Changes"}
                 </button>

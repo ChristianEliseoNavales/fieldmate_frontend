@@ -60,13 +60,13 @@ const AccountSettingsModal = ({ isOpen, closeModal }) => {
             </div>
             <div className="flex mt-6 gap-2 font-semibold">
               <button
-                className="px-4 py-2 text-gray-700 border border-[#C4C4C4] rounded-[10px] bg-[#F5F5F5] w-1/2 text-[23px]"
+                className="px-4 py-2 text-gray-700 border border-[#C4C4C4] rounded-[10px] bg-[#F5F5F5] w-1/2 text-[23px] cursor-pointer"
                 onClick={closeModal}
               >
                 Cancel
               </button>
               <button
-                className="px-4 py-2 bg-[#1E3A8A] text-white rounded w-1/2 text-[23px] rounded-[10px]"
+                className="px-4 py-2 bg-[#1E3A8A] text-white rounded w-1/2 text-[23px] rounded-[10px] cursor-pointer"
                 onClick={handleSave}
               >
                 Save Changes

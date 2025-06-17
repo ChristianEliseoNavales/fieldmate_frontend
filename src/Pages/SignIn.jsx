@@ -193,7 +193,7 @@ export default function LoginPage() {
             <div className="flex justify-center text-[18px]">
               <button
                 onClick={() => setNotificationModal({ isOpen: false, message: "", type: "" })}
-                className="px-5 py-2 bg-[#64AD70] text-white rounded-lg w-[140px] hover:brightness-90 transition"
+                className="px-5 py-2 bg-[#64AD70] text-white rounded-lg w-[140px] hover:brightness-90 transition cursor-pointer"
               >
                 OK
               </button>

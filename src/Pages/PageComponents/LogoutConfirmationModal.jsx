@@ -15,13 +15,13 @@ const LogoutConfirmationModal = ({ isOpen, onConfirm, onCancel }) => {
         </p>
         <div className="flex justify-center text-[18px] gap-4">
           <button
-            className="px-5 py-2 bg-[#64AD70] text-white rounded-lg w-[140px] hover:brightness-90 transition"
+            className="px-5 py-2 bg-[#64AD70] text-white rounded-lg w-[140px] hover:brightness-90 transition cursor-pointer"
             onClick={onConfirm}
           >
             YES
           </button>
           <button
-            className="px-5 py-2 bg-[#D84040] text-white rounded-lg w-[140px] hover:brightness-90 transition"
+            className="px-5 py-2 bg-[#D84040] text-white rounded-lg w-[140px] hover:brightness-90 transition cursor-pointer"
             onClick={onCancel}
           >
             NO

@@ -147,8 +147,8 @@ function StandardPagination({
           className={`
             ${styles.button}
             flex items-center justify-center rounded
-            ${currentPage === 1 
-              ? 'bg-gray-200 text-gray-400 cursor-not-allowed' 
+            ${currentPage === 1
+              ? 'bg-gray-200 text-gray-400 cursor-not-allowed'
               : 'bg-gray-200 text-gray-700 hover:bg-gray-300 cursor-pointer'
             }
             transition-colors duration-200
@@ -164,8 +164,8 @@ function StandardPagination({
           className={`
             ${styles.button}
             flex items-center justify-center rounded font-medium
-            ${currentPage === 1 
-              ? 'bg-blue-600 text-white cursor-default' 
+            ${currentPage === 1
+              ? 'bg-blue-600 text-white cursor-default'
               : 'bg-gray-200 text-gray-700 hover:bg-gray-300 cursor-pointer'
             }
             transition-colors duration-200
@@ -196,8 +196,8 @@ function StandardPagination({
             className={`
               ${styles.button}
               flex items-center justify-center rounded font-medium
-              ${currentPage === totalPages 
-                ? 'bg-blue-600 text-white cursor-default' 
+              ${currentPage === totalPages
+                ? 'bg-blue-600 text-white cursor-default'
                 : 'bg-gray-200 text-gray-700 hover:bg-gray-300 cursor-pointer'
               }
               transition-colors duration-200
@@ -215,8 +215,8 @@ function StandardPagination({
           className={`
             ${styles.button}
             flex items-center justify-center rounded
-            ${currentPage === totalPages 
-              ? 'bg-gray-200 text-gray-400 cursor-not-allowed' 
+            ${currentPage === totalPages
+              ? 'bg-gray-200 text-gray-400 cursor-not-allowed'
               : 'bg-gray-200 text-gray-700 hover:bg-gray-300 cursor-pointer'
             }
             transition-colors duration-200

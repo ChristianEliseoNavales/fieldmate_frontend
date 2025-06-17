@@ -32,7 +32,7 @@ function CompanyViewJournal() {
         <div className="flex flex-col flex-1 px-10 py-6">
           <div className="bg-[#F9FAFD] mt-20 ml-10 mr-10 border border-[#B9B9B9] rounded-md shadow-lg px-10 h-[75vh] flex flex-col">
             <div className="h-[40px] mb-5 mt-10 flex items-center">
-              <IoArrowBackOutline className='text-[30px] mr-5' onClick={handleBackClick}/> {firstName && lastName ? (
+              <IoArrowBackOutline className='text-[30px] mr-5 cursor-pointer' onClick={handleBackClick}/> {firstName && lastName ? (
                 <h2 className="text-[25px] font-semibold">
                   {firstName} {lastName} -{' '}
                   {new Date(createdAt).toLocaleDateString('en-US', {

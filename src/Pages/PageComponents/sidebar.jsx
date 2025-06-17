@@ -199,7 +199,7 @@ const Sidebar = ({ isExpanded, setIsExpanded }) => {
       <div className="pb-3 w-full px-4 py-3 flex flex-col gap-4">
         <button
           onClick={toggleSidebar}
-          className={`bg-[#1F3463] mb-2`}
+          className={`bg-[#1F3463] mb-2 cursor-pointer`}
           aria-label="Toggle Sidebar"
           type="button"
         >
