@@ -13,6 +13,7 @@ import {
   Undo,
   Redo,
 } from "lucide-react";
+import { FiAlertTriangle, FiCheckCircle } from "react-icons/fi";
 import Header from "../PageComponents/header";
 import Footer from "../PageComponents/footer";
 import Sidebar from "../PageComponents/sidebar";
@@ -22,11 +23,14 @@ function Journal() {
     editor,
     fontSize,
     setFontSize,
-    isChecked,
-    setIsChecked,
     isSidebarExpanded,
     setIsSidebarExpanded,
     handleSubmit,
+    confirmSubmit,
+    confirmModalOpen,
+    setConfirmModalOpen,
+    notificationModal,
+    setNotificationModal,
     draftStatus,
     clearDraft,
     userEmail,
@@ -255,18 +259,7 @@ function Journal() {
             </div>
           )}
 
-          {/* Checkbox */}
-          <div className="flex items-center mt-6 space-x-3">
-            <input
-              type="checkbox"
-              checked={isChecked}
-              onChange={() => setIsChecked(!isChecked)}
-              className="h-4 w-4"
-            />
-            <label className="text-gray-600 text-[25px]">
-              You agree to submit this entry. Once submitted, the entry cannot be edited.
-            </label>
-          </div>
+
 
           {/* Draft Info and Submit button */}
           <div className="mt-6 space-y-4">
@@ -294,12 +287,78 @@ function Journal() {
             <button
               className="text-[28px] px-6 py-2 bg-[#1E3A8A] hover:bg-[#1E40AF] text-white rounded disabled:opacity-50 transition-colors"
               onClick={handleSubmit}
-              disabled={!isChecked || !editor?.getText().trim()}
+              disabled={!editor?.getText().trim()}
             >
               Submit
             </button>
           </div>
         </div>
+
+        {/* ---------------- Confirmation Modal ---------------- */}
+        {confirmModalOpen && (
+          <div className="fixed inset-0 backdrop-blur-sm bg-black/30 flex justify-center items-center z-50">
+            <div className="bg-white p-10 rounded-xl shadow-lg w-[650px] text-center">
+              <div className="flex justify-center mb-4">
+                <FiAlertTriangle size={48} className="text-blue-500" />
+              </div>
+              <p className="mb-4 text-[24px] text-[#374151] font-medium">
+                Submit Journal Entry
+              </p>
+              <p className="mb-6 text-[18px] text-[#6B7280]">
+                Are you sure you want to submit this journal entry?
+              </p>
+              <div className="mb-6 p-4 bg-blue-50 border border-blue-200 rounded-lg">
+                <p className="text-[16px] text-blue-800">
+                  <span className="font-semibold">⚠️ Important:</span> Once submitted, this entry{" "}
+                  <span className="font-bold">cannot be edited or deleted</span>. Please review your content carefully before confirming.
+                </p>
+              </div>
+              <div className="flex justify-center text-[18px] gap-4">
+                <button
+                  onClick={confirmSubmit}
+                  className="px-5 py-2 bg-[#64AD70] text-white rounded-lg w-[140px] hover:brightness-90 transition"
+                >
+                  YES
+                </button>
+                <button
+                  onClick={() => setConfirmModalOpen(false)}
+                  className="px-5 py-2 bg-[#D84040] text-white rounded-lg w-[140px] hover:brightness-90 transition"
+                >
+                  NO
+                </button>
+              </div>
+            </div>
+          </div>
+        )}
+
+        {/* Notification Modal */}
+        {notificationModal.isOpen && (
+          <div className="fixed inset-0 backdrop-blur-sm bg-black/30 flex justify-center items-center z-50">
+            <div className="bg-white p-10 rounded-xl shadow-lg w-[650px] text-center">
+              <div className="flex justify-center mb-4">
+                {notificationModal.type === "success" ? (
+                  <FiCheckCircle size={48} className="text-green-500" />
+                ) : (
+                  <FiAlertTriangle size={48} className="text-red-500" />
+                )}
+              </div>
+              <p className="mb-4 text-[24px] text-[#374151] font-medium">
+                {notificationModal.type === "success" ? "Success" : "Error"}
+              </p>
+              <p className="mb-6 text-[18px] text-[#6B7280]">
+                {notificationModal.message}
+              </p>
+              <div className="flex justify-center text-[18px]">
+                <button
+                  onClick={() => setNotificationModal({ isOpen: false, message: "", type: "" })}
+                  className="px-5 py-2 bg-[#64AD70] text-white rounded-lg w-[140px] hover:brightness-90 transition"
+                >
+                  OK
+                </button>
+              </div>
+            </div>
+          </div>
+        )}
       </div>
       <Footer />
     </div>

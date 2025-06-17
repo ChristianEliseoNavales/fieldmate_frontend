@@ -134,19 +134,24 @@ function CompanyJournal() {
 
       {/* Confirmation Modal */}
       {showModal && (
-        <div className="fixed inset-0 z-50 bg-black/40 flex items-center justify-center backdrop-blur-sm">
-          <div className="bg-white rounded-lg p-8 max-w-md w-full shadow-lg">
-            <p className="text-center text-gray-600 text-[20px] mb-6">Are you sure you want to <strong>DELETE</strong> this journal entry?</p>
-            <div className="flex justify-center gap-4">
+        <div className="fixed inset-0 backdrop-blur-sm bg-black/30 flex justify-center items-center z-50">
+          <div className="bg-white p-10 rounded-xl shadow-lg w-[650px] text-center">
+            <p className="mb-4 text-[24px] text-[#374151] font-medium">
+              Delete Journal Entry
+            </p>
+            <p className="mb-6 text-[18px] text-[#6B7280]">
+              Are you sure you want to <span className="font-bold text-red-500">DELETE</span> this journal entry?
+            </p>
+            <div className="flex justify-center text-[18px] gap-4">
               <button
                 onClick={handleConfirmDelete}
-                className="text-[20px] bg-green-600 hover:bg-green-700 text-white font-semibold py-3 px-12 rounded-lg shadow-md transition cursor-pointer"
+                className="px-5 py-2 bg-[#64AD70] text-white rounded-lg w-[140px] hover:brightness-90 transition"
               >
                 YES
               </button>
               <button
                 onClick={handleCancelDelete}
-                className="text-[20px] bg-red-500 hover:bg-red-700 text-white font-semibold py-3 px-12 rounded-lg shadow-md transition cursor-pointer"
+                className="px-5 py-2 bg-[#D84040] text-white rounded-lg w-[140px] hover:brightness-90 transition"
               >
                 NO
               </button>

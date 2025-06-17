@@ -137,10 +137,11 @@ const draftManager = {
 
 const useJournalEditor = () => {
   const [isSidebarExpanded, setIsSidebarExpanded] = useState(false);
-  const [isChecked, setIsChecked] = useState(false);
   const [fontSize, setFontSize] = useState(14);
   const [draftStatus, setDraftStatus] = useState(''); // '', 'saving', 'saved', 'restored'
   const [userEmail, setUserEmail] = useState('');
+  const [confirmModalOpen, setConfirmModalOpen] = useState(false);
+  const [notificationModal, setNotificationModal] = useState({ isOpen: false, message: "", type: "" });
   const navigate = useNavigate();
   const BASE_URL = import.meta.env.VITE_API_BASE_URL;
 
@@ -311,15 +312,44 @@ const useJournalEditor = () => {
     }
   }, [userEmail]);
 
-  const handleSubmit = async () => {
+  const handleSubmit = () => {
     const user = auth.currentUser;
     if (!user || !user.email) {
-      alert("You must be logged in to submit a journal.");
+      setNotificationModal({
+        isOpen: true,
+        message: "You must be logged in to submit a journal.",
+        type: "error"
+      });
       return;
     }
 
     const content = editor?.getHTML();
-    if (isChecked && content?.trim()) {
+    if (!content?.trim()) {
+      setNotificationModal({
+        isOpen: true,
+        message: "Please write something before submitting.",
+        type: "error"
+      });
+      return;
+    }
+
+    // Open confirmation modal
+    setConfirmModalOpen(true);
+  };
+
+  const confirmSubmit = async () => {
+    const user = auth.currentUser;
+    if (!user || !user.email) {
+      setNotificationModal({
+        isOpen: true,
+        message: "You must be logged in to submit a journal.",
+        type: "error"
+      });
+      return;
+    }
+
+    const content = editor?.getHTML();
+    if (content?.trim()) {
       try {
         const response = await secureAxios.post(`${BASE_URL}/journal`, {
           content,
@@ -330,13 +360,17 @@ const useJournalEditor = () => {
         // Clear the draft on successful submission
         clearDraft();
 
+        setConfirmModalOpen(false);
         navigate("/ViewJournal");
       } catch (err) {
         console.error(err);
-        alert("Failed to submit journal.");
+        setNotificationModal({
+          isOpen: true,
+          message: "Failed to submit journal.",
+          type: "error"
+        });
+        setConfirmModalOpen(false);
       }
-    } else {
-      alert("Please agree to the terms and write something.");
     }
   };
 
@@ -350,11 +384,14 @@ const useJournalEditor = () => {
     editor,
     fontSize,
     setFontSize,
-    isChecked,
-    setIsChecked,
     isSidebarExpanded,
     setIsSidebarExpanded,
     handleSubmit,
+    confirmSubmit,
+    confirmModalOpen,
+    setConfirmModalOpen,
+    notificationModal,
+    setNotificationModal,
     draftStatus,
     clearDraft,
     userEmail,

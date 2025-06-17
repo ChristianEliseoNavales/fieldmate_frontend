@@ -9,16 +9,18 @@ export function useCompanyService() {
   const [companies, setCompanies] = useState([]);
   const [editModalOpen, setEditModalOpen] = useState(false);
   const [deleteModalOpen, setDeleteModalOpen] = useState(false);
+  const [deleteAllModalOpen, setDeleteAllModalOpen] = useState(false);
   const [selectedCompany, setSelectedCompany] = useState(null);
   const [editedName, setEditedName] = useState("");
   const [currentPage, setCurrentPage] = useState(1);
   const [message, setMessage] = useState("");
   const [messageType, setMessageType] = useState("");
+  const [companiesWithReferences, setCompaniesWithReferences] = useState([]);
 
   const totalPages = Math.ceil(companies.length / pageSize);
 
   useEffect(() => {
-    fetchCompanies();
+    fetchCompaniesWithReferences();
   }, []);
 
   async function fetchCompanies() {
@@ -28,6 +30,27 @@ export function useCompanyService() {
     } catch (err) {
       setMessage("Failed to load companies.");
       setMessageType("error");
+    }
+  }
+
+  async function fetchCompaniesWithReferences() {
+    try {
+      const res = await secureAxios.get(`${BASE_URL}/companies/with-references`);
+      setCompanies(res.data);
+      setCompaniesWithReferences(res.data);
+    } catch (err) {
+      setMessage("Failed to load companies.");
+      setMessageType("error");
+    }
+  }
+
+  async function checkCompanyReferences(companyName) {
+    try {
+      const res = await secureAxios.get(`${BASE_URL}/companies/${encodeURIComponent(companyName)}/references`);
+      return res.data;
+    } catch (err) {
+      console.error("Failed to check company references:", err);
+      return { isReferenced: false, userCount: 0, users: [] };
     }
   }
 
@@ -44,16 +67,15 @@ export function useCompanyService() {
       const res = await secureAxios.post(`${BASE_URL}/companies`, {
         name: trimmedName,
       });
-      const newCompany = res.data;              // ← contains createdAt
-
-      // 1️⃣ Put it at the VERY BEGINNING
-      setCompanies(prev => [newCompany, ...prev]);
 
       // (optional) reset UI
       setCompanyName("");
       setCurrentPage(1);  // jump back to first page
       setMessage("Company added!");
       setMessageType("success");
+
+      // Refresh the companies with references
+      fetchCompaniesWithReferences();
     } catch (err) {
       setMessage(err.response?.data?.message || "Failed to add.");
       setMessageType("error");
@@ -71,9 +93,17 @@ export function useCompanyService() {
       setDeleteModalOpen(false);
       setMessage("Company deleted successfully.");
       setMessageType("success");
+      // Refresh the companies with references
+      fetchCompaniesWithReferences();
     } catch (err) {
-      setMessage("Failed to delete company.");
+      if (err.response?.status === 409 && err.response?.data?.isReferenced) {
+        const { userCount, users } = err.response.data;
+        setMessage(`Cannot delete company. It is currently assigned to ${userCount} user(s): ${users.map(u => `${u.firstName} ${u.lastName}`).join(', ')}`);
+      } else {
+        setMessage(err.response?.data?.message || "Failed to delete company.");
+      }
       setMessageType("error");
+      setDeleteModalOpen(false);
     }
   }
 
@@ -93,9 +123,17 @@ export function useCompanyService() {
       setEditModalOpen(false);
       setMessage("Company updated successfully.");
       setMessageType("success");
+      // Refresh the companies with references
+      fetchCompaniesWithReferences();
     } catch (err) {
-      setMessage("Failed to update company.");
+      if (err.response?.status === 409 && err.response?.data?.isReferenced) {
+        const { userCount, users } = err.response.data;
+        setMessage(`Cannot edit company. It is currently assigned to ${userCount} user(s): ${users.map(u => `${u.firstName} ${u.lastName}`).join(', ')}`);
+      } else {
+        setMessage(err.response?.data?.message || "Failed to update company.");
+      }
       setMessageType("error");
+      setEditModalOpen(false);
     }
   }
 
@@ -104,20 +142,37 @@ export function useCompanyService() {
     currentPage * pageSize
   );
 
-  const handleDeleteAllCompanies = async () => {
-  if (!confirm("Are you sure you want to delete ALL companies?")) return;
+  const handleDeleteAllCompanies = () => {
+    setDeleteAllModalOpen(true);
+  };
 
-  try {
-    const res = await secureAxios.delete(`${BASE_URL}/companies/deleteAll`);
-    setCompanies([]); // Clear UI list
-    setMessage("All companies deleted successfully.");
-    setMessageType("success");
-  } catch (err) {
-    console.error("Failed to delete all companies:", err);
-    setMessage("Failed to delete all companies.");
-    setMessageType("error");
-  }
-};
+  const confirmDeleteAllCompanies = async () => {
+    try {
+      const res = await secureAxios.delete(`${BASE_URL}/companies/deleteAll`);
+
+      if (res.data.deletedCount === 0) {
+        setMessage("No companies were deleted. All companies are currently assigned to users.");
+        setMessageType("error");
+      } else {
+        setMessage(`${res.data.deletedCount} unreferenced companies deleted successfully. ${res.data.remainingCompanies} companies remain.`);
+        setMessageType("success");
+      }
+
+      setDeleteAllModalOpen(false);
+      // Refresh the companies list
+      fetchCompaniesWithReferences();
+    } catch (err) {
+      if (err.response?.status === 409) {
+        setMessage(err.response.data.message);
+        setMessageType("error");
+      } else {
+        console.error("Failed to delete companies:", err);
+        setMessage("Failed to delete companies.");
+        setMessageType("error");
+      }
+      setDeleteAllModalOpen(false);
+    }
+  };
 
   return {
     companyName,
@@ -128,6 +183,8 @@ export function useCompanyService() {
     setEditModalOpen,
     deleteModalOpen,
     setDeleteModalOpen,
+    deleteAllModalOpen,
+    setDeleteAllModalOpen,
     selectedCompany,
     setSelectedCompany,
     editedName,
@@ -138,11 +195,15 @@ export function useCompanyService() {
     pageSize,
     paginatedCompanies,
     fetchCompanies,
+    fetchCompaniesWithReferences,
+    checkCompanyReferences,
+    companiesWithReferences,
     handleAddCompany,
     handleDelete,
     handleEdit,
     message,
     messageType,
     handleDeleteAllCompanies,
+    confirmDeleteAllCompanies,
   };
 }

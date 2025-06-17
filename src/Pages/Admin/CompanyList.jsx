@@ -1,17 +1,11 @@
 import React, { useState } from "react";
 import AdminSidebar from "../PageComponents/AdminSidebar";
 import AdminHeader from "../PageComponents/AdminHeader";
-import { FiTrash2 } from "react-icons/fi";
+import { FiTrash2, FiAlertTriangle } from "react-icons/fi";
 import { LuPenLine } from "react-icons/lu";
 import StandardPagination from "../../components/StandardPagination";
 import { useCompanyService } from "../../services/admin/companyService";
 
-/**
- * The component keeps the same visual palette but improves two UX issues:
- * 1. Prevents layout shift when pagination appears by always reserving space for it.
- * 2. Row borders now render **only** for rows that actually contain data, so empty
- *    placeholder rows stay visually blank until filled.
- */
 function CompanyList() {
   const [isSidebarExpanded, setIsSidebarExpanded] = useState(false);
 
@@ -23,6 +17,8 @@ function CompanyList() {
     setEditModalOpen,
     deleteModalOpen,
     setDeleteModalOpen,
+    deleteAllModalOpen,
+    setDeleteAllModalOpen,
     selectedCompany,
     setSelectedCompany,
     editedName,
@@ -35,6 +31,7 @@ function CompanyList() {
     handleAddCompany,
     handleDelete,
     handleDeleteAllCompanies,
+    confirmDeleteAllCompanies,
     handleEdit,
     message,
     messageType,
@@ -130,26 +127,52 @@ function CompanyList() {
                             <td>
                               {company ? (
                                 <div className="flex items-center justify-around w-full px-6 text-[20px] text-[#374151] font-medium">
-                                  <div className="w-[300px] text-start truncate">
+                                  <div className="w-[300px] text-start truncate flex items-center gap-2">
                                     {company.name}
+                                    {company.isReferenced && (
+                                      <div className="flex items-center gap-1">
+                                        <FiAlertTriangle
+                                          size={16}
+                                          className="text-orange-500"
+                                          title={`Referenced by ${company.userCount} user(s)`}
+                                        />
+                                        <span className="text-xs text-orange-600 font-normal">
+                                          ({company.userCount} users)
+                                        </span>
+                                      </div>
+                                    )}
                                   </div>
                                   <div className="w-[160px] flex justify-center gap-6 text-[#0059AB]">
                                     <LuPenLine
                                       size={26}
-                                      className="cursor-pointer hover:text-[#023e7d]"
+                                      className={`cursor-pointer ${
+                                        company.isReferenced
+                                          ? "text-gray-400 cursor-not-allowed"
+                                          : "hover:text-[#023e7d]"
+                                      }`}
                                       onClick={() => {
-                                        setSelectedCompany(company);
-                                        setEditedName(company.name);
-                                        setEditModalOpen(true);
+                                        if (!company.isReferenced) {
+                                          setSelectedCompany(company);
+                                          setEditedName(company.name);
+                                          setEditModalOpen(true);
+                                        }
                                       }}
+                                      title={company.isReferenced ? "Cannot edit: Company is assigned to users" : "Edit company"}
                                     />
                                     <FiTrash2
                                       size={26}
-                                      className="cursor-pointer text-red-500 hover:text-red-600"
+                                      className={`cursor-pointer ${
+                                        company.isReferenced
+                                          ? "text-gray-400 cursor-not-allowed"
+                                          : "text-red-500 hover:text-red-600"
+                                      }`}
                                       onClick={() => {
-                                        setSelectedCompany(company);
-                                        setDeleteModalOpen(true);
+                                        if (!company.isReferenced) {
+                                          setSelectedCompany(company);
+                                          setDeleteModalOpen(true);
+                                        }
                                       }}
+                                      title={company.isReferenced ? "Cannot delete: Company is assigned to users" : "Delete company"}
                                     />
                                   </div>
                                 </div>
@@ -181,25 +204,53 @@ function CompanyList() {
           {deleteModalOpen && (
             <div className="fixed inset-0 backdrop-blur-sm bg-black/30 flex justify-center items-center z-50">
               <div className="bg-white p-10 rounded-xl shadow-lg w-[550px] text-center">
-                <p className="mb-6 text-[24px] text-[#374151] font-medium">
-                  Are you sure you want to{" "}
-                  <span className="font-bold text-red-500">DELETE</span> this
-                  company?
-                </p>
-                <div className="flex justify-center text-[18px] gap-4">
-                  <button
-                    onClick={handleDelete}
-                    className="px-5 py-2 bg-[#64AD70] text-white rounded-lg w-[140px] hover:brightness-90 transition"
-                  >
-                    YES
-                  </button>
-                  <button
-                    onClick={() => setDeleteModalOpen(false)}
-                    className="px-5 py-2 bg-[#D84040] text-white rounded-lg w-[140px] hover:brightness-90 transition"
-                  >
-                    NO
-                  </button>
-                </div>
+                {selectedCompany?.isReferenced ? (
+                  <>
+                    <div className="flex justify-center mb-4">
+                      <FiAlertTriangle size={48} className="text-orange-500" />
+                    </div>
+                    <p className="mb-6 text-[24px] text-[#374151] font-medium">
+                      Cannot Delete Company
+                    </p>
+                    <p className="mb-6 text-[18px] text-[#6B7280]">
+                      This company is currently assigned to{" "}
+                      <span className="font-bold text-orange-600">
+                        {selectedCompany.userCount} user(s)
+                      </span>{" "}
+                      and cannot be deleted.
+                    </p>
+                    <div className="flex justify-center text-[18px]">
+                      <button
+                        onClick={() => setDeleteModalOpen(false)}
+                        className="px-5 py-2 bg-[#6B7280] text-white rounded-lg w-[140px] hover:brightness-90 transition"
+                      >
+                        OK
+                      </button>
+                    </div>
+                  </>
+                ) : (
+                  <>
+                    <p className="mb-6 text-[24px] text-[#374151] font-medium">
+                      Are you sure you want to{" "}
+                      <span className="font-bold text-red-500">DELETE</span> this
+                      company?
+                    </p>
+                    <div className="flex justify-center text-[18px] gap-4">
+                      <button
+                        onClick={handleDelete}
+                        className="px-5 py-2 bg-[#64AD70] text-white rounded-lg w-[140px] hover:brightness-90 transition"
+                      >
+                        YES
+                      </button>
+                      <button
+                        onClick={() => setDeleteModalOpen(false)}
+                        className="px-5 py-2 bg-[#D84040] text-white rounded-lg w-[140px] hover:brightness-90 transition"
+                      >
+                        NO
+                      </button>
+                    </div>
+                  </>
+                )}
               </div>
             </div>
           )}
@@ -207,32 +258,99 @@ function CompanyList() {
           {/* ---------------- Edit Modal ---------------- */}
           {editModalOpen && (
             <div className="fixed inset-0 backdrop-blur-sm bg-black/30 flex justify-center items-center z-50">
-              <div className="bg-white p-10 rounded-xl shadow-lg w-[687px]">
-                <p className="text-[30px] font-bold mb-4 text-center text-[#1F2937]">
-                  Edit Company
+              <div className="bg-white p-10 rounded-xl shadow-lg w-[650px] text-center">
+                {selectedCompany?.isReferenced ? (
+                  <>
+                    <div className="flex justify-center mb-4">
+                      <FiAlertTriangle size={48} className="text-orange-500" />
+                    </div>
+                    <p className="mb-4 text-[24px] text-[#374151] font-medium">
+                      Cannot Edit Company
+                    </p>
+                    <p className="mb-6 text-[18px] text-[#6B7280] text-center">
+                      This company is currently assigned to{" "}
+                      <span className="font-bold text-orange-600">
+                        {selectedCompany.userCount} user(s)
+                      </span>{" "}
+                      and cannot be edited.
+                    </p>
+                    <div className="flex justify-center text-[18px] font-medium">
+                      <button
+                        onClick={() => setEditModalOpen(false)}
+                        className="px-4 py-2 bg-[#6B7280] text-white rounded-lg w-[140px] hover:brightness-90 transition"
+                      >
+                        OK
+                      </button>
+                    </div>
+                  </>
+                ) : (
+                  <>
+                    <p className="mb-4 text-[24px] text-[#374151] font-medium">
+                      Edit Company
+                    </p>
+                    <p className="text-[20px] font-medium mb-3 text-[#374151]">
+                      Rename Company:
+                    </p>
+                    <input
+                      type="text"
+                      value={editedName}
+                      onChange={(e) => setEditedName(e.target.value)}
+                      className="border border-[#D1D5DB] px-4 py-2 w-full mb-6 rounded-lg bg-white h-[61px] text-[18px] focus:outline-none focus:ring-2 focus:ring-[#1E3A8A] transition"
+                      placeholder="New company name"
+                    />
+                    <div className="flex justify-center gap-4 text-[18px] font-medium">
+                      <button
+                        onClick={() => setEditModalOpen(false)}
+                        className="px-4 py-2 border border-[#D1D5DB] bg-[#F3F4F6] rounded-lg w-1/2 hover:bg-[#E5E7EB] transition"
+                      >
+                        Cancel
+                      </button>
+                      <button
+                        onClick={handleEdit}
+                        className="px-4 py-2 bg-[#1E3A8A] text-white rounded-lg w-1/2 hover:bg-[#162e72] transition"
+                      >
+                        Save
+                      </button>
+                    </div>
+                  </>
+                )}
+              </div>
+            </div>
+          )}
+
+          {/* ---------------- Delete All Modal ---------------- */}
+          {deleteAllModalOpen && (
+            <div className="fixed inset-0 backdrop-blur-sm bg-black/30 flex justify-center items-center z-50">
+              <div className="bg-white p-10 rounded-xl shadow-lg w-[650px] text-center">
+                <div className="flex justify-center mb-4">
+                  <FiAlertTriangle size={48} className="text-orange-500" />
+                </div>
+                <p className="mb-4 text-[24px] text-[#374151] font-medium">
+                  Delete All Unreferenced Companies
                 </p>
-                <p className="text-[20px] font-medium mb-3 text-[#374151]">
-                  Rename Company:
+                <p className="mb-6 text-[18px] text-[#6B7280]">
+                  Are you sure you want to delete all unreferenced companies?
                 </p>
-                <input
-                  type="text"
-                  value={editedName}
-                  onChange={(e) => setEditedName(e.target.value)}
-                  className="border border-[#D1D5DB] px-4 py-2 w-full mb-6 rounded-lg bg-white h-[61px] text-[18px] focus:outline-none focus:ring-2 focus:ring-[#1E3A8A] transition"
-                  placeholder="New company name"
-                />
-                <div className="flex justify-center gap-4 text-[18px] font-medium">
+                <div className="mb-6 p-4 bg-orange-50 border border-orange-200 rounded-lg">
+                  <p className="text-[16px] text-orange-800">
+                    <span className="font-semibold">⚠️ Important:</span> Only companies that are{" "}
+                    <span className="font-bold">not assigned to any users</span> will be deleted.
+                    Companies currently assigned to users will be{" "}
+                    <span className="font-bold text-green-700">preserved</span> to maintain data integrity.
+                  </p>
+                </div>
+                <div className="flex justify-center text-[18px] gap-4">
                   <button
-                    onClick={() => setEditModalOpen(false)}
-                    className="px-4 py-2 border border-[#D1D5DB] bg-[#F3F4F6] rounded-lg w-1/2 hover:bg-[#E5E7EB] transition"
+                    onClick={confirmDeleteAllCompanies}
+                    className="px-5 py-2 bg-[#64AD70] text-white rounded-lg w-[140px] hover:brightness-90 transition"
                   >
-                    Cancel
+                    YES
                   </button>
                   <button
-                    onClick={handleEdit}
-                    className="px-4 py-2 bg-[#1E3A8A] text-white rounded-lg w-1/2 hover:bg-[#162e72] transition"
+                    onClick={() => setDeleteAllModalOpen(false)}
+                    className="px-5 py-2 bg-[#D84040] text-white rounded-lg w-[140px] hover:brightness-90 transition"
                   >
-                    Save
+                    NO
                   </button>
                 </div>
               </div>

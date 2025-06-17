@@ -55,10 +55,12 @@ function CompanyDashboardStats({ onDataReady }) {
             )
           : [];
 
-        const presentInterns = todaysAttendances.length;
+        // Count present interns excluding denied attendance records
+        const presentInterns = todaysAttendances.filter((a) => a.denied !== true).length;
 
+        // Count late interns excluding denied attendance records
         const lateInterns = todaysAttendances.filter((a) => {
-          if (!a.timeIn) return false;
+          if (!a.timeIn || a.denied === true) return false;
           const [time, modifier] = a.timeIn.split(" ");
           let [hours, minutes] = time.split(":").map(Number);
           if (modifier === "PM" && hours !== 12) hours += 12;

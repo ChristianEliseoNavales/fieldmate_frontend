@@ -130,25 +130,28 @@ function CompanyAttendance() {
 
       {/* Confirmation modal */}
       {modalVisible && (
-        <div className="fixed inset-0 z-50 backdrop-blur-sm bg-black/30 flex items-center justify-center px-4">
-          <div className="bg-white p-8 rounded-xl shadow-xl max-w-md w-full">
-            <p className="text-[20px] text-center mb-8 text-gray-700 font-medium">
+        <div className="fixed inset-0 backdrop-blur-sm bg-black/30 flex justify-center items-center z-50">
+          <div className="bg-white p-10 rounded-xl shadow-lg w-[650px] text-center">
+            <p className="mb-4 text-[24px] text-[#374151] font-medium">
+              Confirm Attendance Action
+            </p>
+            <p className="mb-6 text-[18px] text-[#6B7280]">
               Are you sure you want to{' '}
               <span className="font-bold text-blue-600">{modalAction}</span>{' '}
               this attendance record?
             </p>
-            <div className="flex justify-center gap-6">
+            <div className="flex justify-center text-[18px] gap-4">
               <button
                 onClick={handleModalConfirm}
-                className="text-[20px] bg-green-600 hover:bg-green-700 text-white font-semibold py-3 px-12 rounded-lg shadow-md transition"
+                className="px-5 py-2 bg-[#64AD70] text-white rounded-lg w-[140px] hover:brightness-90 transition"
               >
-                Yes
+                YES
               </button>
               <button
                 onClick={handleModalCancel}
-                className="text-[20px] bg-red-500 hover:bg-red-700 text-white font-semibold py-3 px-12 rounded-lg shadow-md transition"
+                className="px-5 py-2 bg-[#D84040] text-white rounded-lg w-[140px] hover:brightness-90 transition"
               >
-                No
+                NO
               </button>
             </div>
           </div>

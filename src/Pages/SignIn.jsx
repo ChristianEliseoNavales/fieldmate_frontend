@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import { FaArrowLeft, FaEye, FaEyeSlash } from "react-icons/fa";
 import { FcGoogle } from "react-icons/fc";
+import { FiAlertTriangle, FiCheckCircle } from "react-icons/fi";
 import { useNavigate } from "react-router-dom";
 import ForgotPassword from "../Pages/PageComponents/ForgotPassword";
 import { loginWithEmail, loginWithGoogle, resetPassword } from "../services/authService";
@@ -12,6 +13,7 @@ export default function LoginPage() {
   const [isForgotModalOpen, setIsForgotModalOpen] = useState(false);
   const [resetEmail, setResetEmail] = useState("");
   const [loginError, setLoginError] = useState(""); // ✅ New error state
+  const [notificationModal, setNotificationModal] = useState({ isOpen: false, message: "", type: "" });
   const navigate = useNavigate();
 
   const getFriendlyErrorMessage = (code) => {
@@ -54,11 +56,19 @@ export default function LoginPage() {
   const handlePasswordReset = async () => {
     try {
       await resetPassword(resetEmail);
-      alert("Password reset email sent!");
+      setNotificationModal({
+        isOpen: true,
+        message: "Password reset email sent successfully!",
+        type: "success"
+      });
       setIsForgotModalOpen(false);
       setResetEmail("");
     } catch (error) {
-      alert("Failed to send password reset. Please check the email.");
+      setNotificationModal({
+        isOpen: true,
+        message: "Failed to send password reset. Please check the email.",
+        type: "error"
+      });
       setResetEmail("");
     }
   };
@@ -162,6 +172,35 @@ export default function LoginPage() {
           className="w-full h-full object-cover"
         />
       </div>
+
+      {/* Notification Modal */}
+      {notificationModal.isOpen && (
+        <div className="fixed inset-0 backdrop-blur-sm bg-black/30 flex justify-center items-center z-50">
+          <div className="bg-white p-10 rounded-xl shadow-lg w-[650px] text-center">
+            <div className="flex justify-center mb-4">
+              {notificationModal.type === "success" ? (
+                <FiCheckCircle size={48} className="text-green-500" />
+              ) : (
+                <FiAlertTriangle size={48} className="text-red-500" />
+              )}
+            </div>
+            <p className="mb-4 text-[24px] text-[#374151] font-medium">
+              {notificationModal.type === "success" ? "Success" : "Error"}
+            </p>
+            <p className="mb-6 text-[18px] text-[#6B7280]">
+              {notificationModal.message}
+            </p>
+            <div className="flex justify-center text-[18px]">
+              <button
+                onClick={() => setNotificationModal({ isOpen: false, message: "", type: "" })}
+                className="px-5 py-2 bg-[#64AD70] text-white rounded-lg w-[140px] hover:brightness-90 transition"
+              >
+                OK
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
     </div>
   );
 }
