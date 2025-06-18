@@ -15,23 +15,6 @@
 
 </div>
 
----
-
-## 📋 Table of Contents
-
-- [Project Overview](#-project-overview)
-- [Architecture](#-architecture)
-- [Features](#-features)
-- [Technologies Used](#️-technologies-used)
-- [Setup Instructions](#-setup-instructions)
-- [API Documentation](#-api-documentation)
-- [Database Schema](#-database-schema)
-- [Frontend Structure](#-frontend-structure)
-- [Development Guidelines](#-development-guidelines)
-- [Deployment](#-deployment)
-- [Dependencies](#-dependencies)
-- [Troubleshooting](#-troubleshooting)
-- [Project Team](#️-project-team)
 
 ---
 
