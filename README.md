@@ -4,7 +4,7 @@
 
 ![FieldMate Logo](https://github.com/user-attachments/assets/b161406e-bc19-47dd-a846-1963b1fa5d7f)
 
-[![MIT License](https://img.shields.io/badge/License-MIT-green.svg)](https://choosealicense.com/licenses/mit/)
+
 [![Status](https://img.shields.io/badge/Status-In%20Development-blue.svg)](https://learn-vanguard.vercel.app/)
 [![Made with React](https://img.shields.io/badge/Made%20with-React-61dafb.svg)](https://reactjs.org/)
 [![Built with Vite](https://img.shields.io/badge/Built%20with-Vite-646cff.svg)](https://vitejs.dev/)
