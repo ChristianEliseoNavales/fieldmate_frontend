@@ -28,7 +28,6 @@ The system aims to:
 - **Streamline Attendance Tracking**: Replace manual processes with a digital time-in/time-out system
 - **Enhance Transparency**: Provide real-time visibility into attendance records for all stakeholders
 - **Provide Learning Resources**: Offer role-based educational materials tailored to specific internship responsibilities
-- **Improve Efficiency**: Reduce administrative overhead and eliminate delays in attendance verification
 
 ### 🔍 Project Scope
 
