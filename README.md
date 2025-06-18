@@ -37,7 +37,6 @@ The system aims to:
 - **Attendance Management**: Comprehensive time tracking with approval workflows
 - **Journal System**: Daily activity logging and review capabilities
 - **Resource Repository**: Organized learning materials by role (Project Manager, Creative Director, UI/UX Designer, SQA)
-- **User Management**: Complete authentication and authorization system
 
 ---
 
