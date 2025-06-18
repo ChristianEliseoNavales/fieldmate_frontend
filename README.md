@@ -83,14 +83,9 @@ FieldMate follows a modern full-stack architecture with clear separation of conc
 - **Company Dashboard**: Overview of all assigned students
 - **Attendance Review**: Approve/deny student attendance submissions
 - **Journal Monitoring**: Review and track student daily activities
-- **Student Management**: View student profiles and progress
-- **Reporting**: Generate attendance and activity reports
 
 ### 👨‍💻 Admin Features
-- **System Administration**: Complete user and system management
 - **Company Management**: Add, edit, and manage partner companies
-- **User Registration**: Approve and manage user accounts
-- **System Analytics**: Overall system usage and performance metrics
 
 ### 🔐 Security Features
 - **Firebase Authentication**: Secure login with email/password and Google OAuth
