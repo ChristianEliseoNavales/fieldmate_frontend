@@ -14,9 +14,9 @@ function ChangePass({ isOpen, closeModal }) {
   const [error, setError] = useState("");
   const [success, setSuccess] = useState("");
   const [loading, setLoading] = useState(false);
-  const [showCurrentPass, setShowCurrentPass] = useState(false); // ✅ toggle state
-  const [showNewPass, setShowNewPass] = useState(false); // ✅ toggle state
-  const [showConfirmPass, setShowConfirmPass] = useState(false); // ✅ toggle state
+  const [showCurrentPass, setShowCurrentPass] = useState(false); 
+  const [showNewPass, setShowNewPass] = useState(false);
+  const [showConfirmPass, setShowConfirmPass] = useState(false); 
   const [confirmPasswordError, setConfirmPasswordError] = useState("");
 
   const handleSave = async () => {

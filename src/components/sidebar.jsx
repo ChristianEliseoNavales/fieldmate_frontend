@@ -4,7 +4,7 @@ import { TiHome } from "react-icons/ti";
 import { PiBookOpenUserFill, PiSidebarFill } from "react-icons/pi";
 import { HiMiniPencilSquare } from "react-icons/hi2";
 import { useLocation, Link, useNavigate } from "react-router-dom";
-import secureAxios from "../services/secureAxios";  // <-- updated here
+import secureAxios from "../services/secureAxios"; 
 import { auth } from "../firebase/firebase";
 
 const Sidebar = ({ isExpanded, setIsExpanded }) => {
@@ -53,7 +53,7 @@ const Sidebar = ({ isExpanded, setIsExpanded }) => {
         return;
       }
 
-      const userRes = await secureAxios.get(`${BASE_URL}/user?email=${user.email}`); // replaced axios
+      const userRes = await secureAxios.get(`${BASE_URL}/user?email=${user.email}`); 
       const { firstName, lastName } = userRes.data;
 
       if (!firstName || !lastName) {
@@ -65,7 +65,7 @@ const Sidebar = ({ isExpanded, setIsExpanded }) => {
         `${BASE_URL}/journal/today?firstName=${encodeURIComponent(
           firstName
         )}&lastName=${encodeURIComponent(lastName)}`
-      ); // replaced axios
+      ); 
 
       if (res.data?.exists && res.data?.content) {
         navigate("/ViewJournal");

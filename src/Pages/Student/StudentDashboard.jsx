@@ -179,7 +179,6 @@ function StudentDashboard() {
             </div>
 
             {/* Calendar */}
-            {/* <div className="bg-white p-6 rounded-xl shadow-md border border-[#D1D5DB]"> */}
               <Calendar year={currentYear} month={currentMonth} />
           </div>
         </div>

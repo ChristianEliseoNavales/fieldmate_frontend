@@ -38,18 +38,18 @@ function AdminHeader({ isExpanded }) {
       setFirstName(user.firstName);
       setLastName(user.lastName);
       setEmail(user.email);
-      setLoading(false); // ✅ immediately stop loading
+      setLoading(false);
     } else {
       const unsubscribe = onAuthStateChanged(auth, async (user) => {
         if (user?.email) {
           try {
-            // Replace fetch with secureAxios
+            
             const res = await secureAxios.get(`${BASE_URL}/user`, {
               params: { email: user.email },
             });
             const data = res.data;
             if (data?.firstName && data?.lastName && data?.email) {
-              localStorage.setItem("userInfo", JSON.stringify(data)); // ✅ cache it
+              localStorage.setItem("userInfo", JSON.stringify(data)); 
               setFirstName(data.firstName);
               setLastName(data.lastName);
               setEmail(data.email);

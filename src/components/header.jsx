@@ -4,7 +4,7 @@ import { auth } from "../firebase/firebase";
 import { onAuthStateChanged } from "firebase/auth";
 import UserProfileModal from "./UserProfileModal";
 import Skeleton from "./Skeleton";
-import secureAxios from "../services/secureAxios"; // <-- Import secureAxios
+import secureAxios from "../services/secureAxios";
 
 function Header({ isExpanded }) {
   const location = useLocation();
@@ -41,7 +41,7 @@ function Header({ isExpanded }) {
       setFirstName(user.firstName);
       setLastName(user.lastName);
       setEmail(user.email);
-      setLoading(false); // ✅ immediately stop loading
+      setLoading(false); 
     } else {
       const unsubscribe = onAuthStateChanged(auth, async (user) => {
         if (user?.email) {
@@ -52,7 +52,7 @@ function Header({ isExpanded }) {
             });
             const data = res.data;
             if (data?.firstName && data?.lastName && data?.email) {
-              localStorage.setItem("userInfo", JSON.stringify(data)); // ✅ cache it
+              localStorage.setItem("userInfo", JSON.stringify(data)); 
               setFirstName(data.firstName);
               setLastName(data.lastName);
               setEmail(data.email);

@@ -12,7 +12,7 @@ export default function LoginPage() {
   const [password, setPassword] = useState("");
   const [isForgotModalOpen, setIsForgotModalOpen] = useState(false);
   const [resetEmail, setResetEmail] = useState("");
-  const [loginError, setLoginError] = useState(""); // ✅ New error state
+  const [loginError, setLoginError] = useState("");
   const [notificationModal, setNotificationModal] = useState({ isOpen: false, message: "", type: "" });
   const navigate = useNavigate();
 

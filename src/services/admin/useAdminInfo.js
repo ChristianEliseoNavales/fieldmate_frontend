@@ -1,7 +1,7 @@
 import { useState, useEffect } from 'react';
 import { onAuthStateChanged } from "firebase/auth";
 import { auth } from '../../firebase/firebase';
-import secureAxios from '../../services/secureAxios'; // adjust path if needed
+import secureAxios from '../../services/secureAxios'; 
 
 const useAdminInfo = (BASE_URL) => {
   const [firstName, setFirstName] = useState("");

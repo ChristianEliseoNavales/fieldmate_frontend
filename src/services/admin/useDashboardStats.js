@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react';
-import secureAxios from '../../services/secureAxios'; // adjust path if needed
+import secureAxios from '../../services/secureAxios'; 
 
 const useDashboardStats = (BASE_URL) => {
   const [companies, setCompanies] = useState([]);
@@ -9,7 +9,7 @@ const useDashboardStats = (BASE_URL) => {
   useEffect(() => {
     const fetchStats = async () => {
       try {
-        // Using secureAxios instead of fetch
+        
         const [compRes, usersRes] = await Promise.all([
           secureAxios.get(`${BASE_URL}/companies`),
           secureAxios.get(`${BASE_URL}/users`)

@@ -11,7 +11,7 @@ import OrderedList from "@tiptap/extension-ordered-list";
 import ListItem from "@tiptap/extension-list-item";
 import History from "@tiptap/extension-history";
 import { Extension } from "@tiptap/core";
-import secureAxios from "../../services/secureAxios"; // secureAxios with Firebase auth token
+import secureAxios from "../../services/secureAxios"; 
 
 const FontSize = Extension.create({
   name: "fontSize",

@@ -78,15 +78,6 @@ const UserProfileModal = ({ name, initials }) => {
           </div>
           <p className="border-t border-[#959494]"></p>
           <ul className="p-2 text-[23px]">
-            {/* Uncomment this if needed
-            <li
-              className="flex items-center gap-2 p-2 hover:bg-[#E8EEFF] cursor-pointer"
-              onClick={handleAccountSettingsClick}
-            >
-              <FaCog className="h-7 w-7" />
-              Account Settings
-            </li>
-            */}
             <li
               className="flex items-center gap-2 p-2 hover:bg-[#E8EEFF] cursor-pointer"
               onClick={handleChangePasswordClick}
