@@ -27,7 +27,6 @@ FieldMate is a comprehensive digital attendance tracking system designed specifi
 The system aims to:
 - **Streamline Attendance Tracking**: Replace manual processes with a digital time-in/time-out system
 - **Enhance Transparency**: Provide real-time visibility into attendance records for all stakeholders
-- **Facilitate Communication**: Enable daily journal submissions for better coordination between students and supervisors
 - **Provide Learning Resources**: Offer role-based educational materials tailored to specific internship responsibilities
 - **Improve Efficiency**: Reduce administrative overhead and eliminate delays in attendance verification
 
